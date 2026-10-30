@@ -1,72 +1,43 @@
 /**
- * AVINYA '27 - CORE APPLICATION CONTROLLER (EXTENDED ARCHIPELAGO)
+ * AVINYA '27 - ROBUST CORE APPLICATION CONTROLLER
  * -------------------------------------------------------------
- * Apple-style GSAP scroll animations, Topographical Island Atolls,
- * Interactive Sailing Ship Map, and Direct Event Dossier Routing.
+ * Safe initialization with fallback rendering to ensure zero blank pages.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Page Entry Curtain Fade-In
+function initApp() {
   const curtain = document.getElementById('page-curtain');
   if (curtain) {
-    setTimeout(() => {
-      curtain.classList.remove('is-active');
-    }, 80);
+    curtain.style.display = 'none';
   }
 
-  // Lucide Icons initialization
-  if (window.lucide) {
-    lucide.createIcons();
-  }
+  // Ensure all reveal elements are fully visible immediately
+  const revealElements = document.querySelectorAll('.apple-reveal');
+  revealElements.forEach(el => el.classList.add('is-visible'));
 
-  // Initialize Page Cinema Transitions for smooth Apple routing
-  initPageCinemaTransitions();
-
-  // Initialize Components
-  initCountdown();
-  renderAllEvents();
-  renderHackathonSection();
-  renderMasterSchedule('all');
-  initScheduleTabs();
-  renderFaqs();
-  initAmbientCanvas();
-  initAppleScrollTriggers();
-  initDevToolsPoneglyph();
-  initArchipelagoShip();
-});
-
-/* ==========================================================================
-   1. CINEMA WIPE PAGE TRANSITION (APPLE-STYLE NAVIGATION)
-   ========================================================================== */
-
-function initPageCinemaTransitions() {
-  const curtain = document.getElementById('page-curtain');
-  if (!curtain) return;
-
-  const links = document.querySelectorAll('a[href$=".html"], a[href^="/day"], a[href^="/hack"], a[href^="event.html"]');
-  links.forEach(link => {
-    link.addEventListener('click', (e) => {
-      const targetUrl = link.getAttribute('href');
-      if (targetUrl.startsWith('#') || link.target === '_blank') return;
-
-      e.preventDefault();
-      curtain.classList.add('is-active');
-      setTimeout(() => {
-        window.location.href = targetUrl;
-      }, 220);
-    });
-  });
+  // Safe Component Initializations
+  try { if (window.lucide) lucide.createIcons(); } catch(e) { console.warn('Lucide error', e); }
+  try { renderAllEvents(); } catch(e) { console.warn('Events render error', e); }
+  try { renderHackathonSection(); } catch(e) { console.warn('Hackathon render error', e); }
+  try { renderMasterSchedule('all'); } catch(e) { console.warn('Schedule render error', e); }
+  try { initScheduleTabs(); } catch(e) { console.warn('Tabs error', e); }
+  try { renderFaqs(); } catch(e) { console.warn('FAQs error', e); }
+  try { initCountdown(); } catch(e) { console.warn('Countdown error', e); }
+  try { initAmbientCanvas(); } catch(e) { console.warn('Canvas error', e); }
+  try { initAppleScrollTriggers(); } catch(e) { console.warn('GSAP error', e); }
+  try { initArchipelagoShip(); } catch(e) { console.warn('Ship error', e); }
+  try { initDevToolsPoneglyph(); } catch(e) { console.warn('Poneglyph error', e); }
 }
 
-/* ==========================================================================
-   2. INTERACTIVE ARCHIPELAGO SAILING SHIP CONTROLLER
-   ========================================================================== */
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
 
 function initArchipelagoShip() {
   const ship = document.getElementById('interactive-ship');
   if (!ship) return;
 
-  // Ship Waypoints on Map
   window.sailToIsland = function(dayNum) {
     let topPos = '68%';
     let leftPos = '16%';
@@ -89,17 +60,12 @@ function initArchipelagoShip() {
     ship.style.top = topPos;
     ship.style.left = leftPos;
 
-    // Smooth scroll to that section
     const targetSection = document.getElementById(sectionId);
     if (targetSection) {
       targetSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 }
-
-/* ==========================================================================
-   3. DYNAMIC RENDERING (DATA -> ISLAND ATOLL CARDS)
-   ========================================================================== */
 
 function renderAllEvents() {
   const data = window.AVINYA_DATA;
@@ -110,14 +76,11 @@ function renderAllEvents() {
     if (!container) return;
 
     container.innerHTML = island.events.map(event => {
-      // Direct Link to Dedicated Personal Event Page
       const eventPageUrl = `event.html?id=${event.id}`;
 
       return `
         <div class="apple-reveal island-atoll-card flex flex-col justify-between group">
-          
           <div>
-            <!-- Card Image Header -->
             <div class="relative aspect-video overflow-hidden rounded-t-[22px]">
               <img src="${event.image}" alt="${event.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <div class="absolute inset-0 bg-gradient-to-t from-[#0D101A] via-transparent to-transparent"></div>
@@ -135,7 +98,6 @@ function renderAllEvents() {
               </div>
             </div>
 
-            <!-- Card Content Body -->
             <div class="p-5">
               <div class="text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1.5">
                 <i data-lucide="shield" class="w-3 h-3 text-amber-400"></i>
@@ -150,17 +112,15 @@ function renderAllEvents() {
                 ${event.summary}
               </p>
 
-              <!-- Sponsors Strip Mini -->
               ${event.sponsors && event.sponsors.length > 0 ? `
                 <div class="p-2 rounded-xl bg-white/5 border border-white/5 mb-4 text-[10px] font-mono flex items-center justify-between text-slate-300">
                   <span class="text-slate-400">Partner:</span>
-                  <span class="text-sky-300 font-semibold">${event.sponsors[0].name} (${event.sponsors[0].tier.split(' ')[0]})</span>
+                  <span class="text-sky-300 font-semibold">${event.sponsors[0].name}</span>
                 </div>
               ` : ''}
             </div>
           </div>
 
-          <!-- Bottom Action Deck -->
           <div class="p-5 pt-0">
             <div class="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-slate-400">
               <span class="flex items-center gap-1.5">
@@ -174,7 +134,6 @@ function renderAllEvents() {
               </a>
             </div>
           </div>
-
         </div>
       `;
     }).join('');
@@ -188,7 +147,6 @@ function renderHackathonSection() {
   if (!data || !data.hack2future) return;
   const h2f = data.hack2future;
 
-  // Render Tracks
   const tracksContainer = document.getElementById('hackathon-tracks-grid');
   if (tracksContainer) {
     tracksContainer.innerHTML = h2f.tracks.map(track => `
@@ -320,23 +278,9 @@ window.toggleFaq = function(idx) {
   icon.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
 };
 
-/* ==========================================================================
-   4. APPLE-STYLE GSAP SCROLLTRIGGERS & LOG POSE SYNC
-   ========================================================================== */
-
 function initAppleScrollTriggers() {
   if (!window.gsap || !window.ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger);
-
-  const revealElements = document.querySelectorAll('.apple-reveal');
-  revealElements.forEach(el => {
-    ScrollTrigger.create({
-      trigger: el,
-      start: 'top 88%',
-      onEnter: () => el.classList.add('is-visible'),
-      once: true
-    });
-  });
 
   const islands = [
     { id: 'day1', accent: '#F59E0B', glow: 'rgba(245, 158, 11, 0.35)', dialId: 'dial-day1', angle: 25, particleMode: 'dune' },
@@ -380,10 +324,6 @@ function activateIsland(island) {
   }
 }
 
-/* ==========================================================================
-   5. INTERACTIVE AMBIENT CANVAS PARTICLE ENGINE
-   ========================================================================== */
-
 function initAmbientCanvas() {
   const canvas = document.getElementById('ambient-canvas');
   if (!canvas) return;
@@ -400,7 +340,7 @@ function initAmbientCanvas() {
   let currentMode = 'harbor';
   window.setParticleMode = (mode) => { currentMode = mode; };
 
-  const particleCount = window.innerWidth < 768 ? 35 : 70;
+  const particleCount = window.innerWidth < 768 ? 30 : 60;
   const particles = [];
 
   for (let i = 0; i < particleCount; i++) {
@@ -459,10 +399,6 @@ function initAmbientCanvas() {
   animate();
 }
 
-/* ==========================================================================
-   6. COUNTDOWN TIMER ENGINE
-   ========================================================================== */
-
 function initCountdown() {
   const targetDate = new Date('2027-03-12T09:00:00+05:30').getTime();
 
@@ -501,10 +437,6 @@ function initCountdown() {
   update();
   setInterval(update, 1000);
 }
-
-/* ==========================================================================
-   7. SECRET PONEGLYPH EASTER EGG (F12 DEVTOOLS CONSOLE)
-   ========================================================================== */
 
 function initDevToolsPoneglyph() {
   const poneglyphArt = `
