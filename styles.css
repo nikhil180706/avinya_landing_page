@@ -10,9 +10,9 @@
 
   --current-accent: #F59E0B;
   --current-glow: rgba(245, 158, 11, 0.35);
-  --bg-deep: #06070B;
-  --card-bg: rgba(14, 16, 25, 0.82);
-  --card-border: rgba(255, 255, 255, 0.08);
+  --bg-deep: #05060A;
+  --card-bg: rgba(13, 16, 26, 0.85);
+  --card-border: rgba(255, 255, 255, 0.09);
 }
 
 * {
@@ -47,10 +47,10 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #090A0F;
+  background: #08090E;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.22);
   border-radius: 9999px;
   transition: background 0.3s ease;
 }
@@ -58,17 +58,15 @@ body {
   background: var(--current-accent);
 }
 
-/* ==========================================================================
-   APPLE CINEMA-WIPE TRANSITION CURTAIN
-   ========================================================================== */
+/* Apple Cinema-Wipe Page Transition Curtain */
 .page-curtain {
   position: fixed;
   inset: 0;
-  background: #06070B;
+  background: #05060A;
   z-index: 999;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .page-curtain.is-active {
@@ -76,12 +74,10 @@ body {
   pointer-events: auto;
 }
 
-/* ==========================================================================
-   TYPOGRAPHY
-   ========================================================================== */
+/* Typography Utility */
 .font-display {
   font-family: var(--font-display);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
 }
 
 .font-body {
@@ -92,15 +88,15 @@ body {
   font-family: var(--font-mono);
 }
 
-/* Text Shimmer Effect */
+/* Luxury Text Shimmer Effect */
 .text-shimmer {
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.8) 0%,
-    rgba(255, 255, 255, 1) 40%,
+    rgba(255, 255, 255, 0.85) 0%,
+    rgba(255, 255, 255, 1) 35%,
     var(--current-accent) 50%,
-    rgba(255, 255, 255, 1) 60%,
-    rgba(255, 255, 255, 0.8) 100%
+    rgba(255, 255, 255, 1) 65%,
+    rgba(255, 255, 255, 0.85) 100%
   );
   background-size: 200% auto;
   color: transparent;
@@ -118,11 +114,11 @@ body {
 /* Apple-style Blur-Up Text Reveal */
 .apple-reveal {
   opacity: 0;
-  transform: translateY(24px) scale(0.98);
-  filter: blur(10px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(28px) scale(0.98);
+  filter: blur(12px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .apple-reveal.is-visible {
@@ -131,9 +127,7 @@ body {
   filter: blur(0);
 }
 
-/* ==========================================================================
-   ATMOSPHERIC CANVASES & NOISE
-   ========================================================================== */
+/* Canvases & Subtle Noise Overlay */
 #ambient-canvas {
   position: fixed;
   top: 0;
@@ -142,7 +136,7 @@ body {
   height: 100vh;
   pointer-events: none;
   z-index: 1;
-  opacity: 0.7;
+  opacity: 0.75;
 }
 
 .noise-overlay {
@@ -157,55 +151,106 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
-/* ==========================================================================
-   GLASSMORPHISM & BORDERS
-   ========================================================================== */
+/* Glassmorphic Panels */
 .glass-panel {
   background: var(--card-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--card-border);
 }
 
 .glass-pill {
-  background: rgba(12, 14, 22, 0.85);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7),
-              0 0 30px -10px var(--current-glow);
-}
-
-/* Dynamic Border Beam Effect */
-.border-beam-card {
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.4s ease;
-}
-
-.border-beam-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 35px -10px var(--current-glow);
-  border-color: rgba(255, 255, 255, 0.22);
-}
-
-/* Uncharted Open Slot Card (Placeholders for upcoming club events) */
-.uncharted-slot-card {
-  border: 2px dashed rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.02);
-  transition: all 0.3s ease;
-}
-
-.uncharted-slot-card:hover {
-  border-color: var(--current-accent);
-  background: rgba(255, 255, 255, 0.04);
-  transform: translateY(-3px);
+  background: rgba(11, 14, 23, 0.88);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 24px 48px -15px rgba(0, 0, 0, 0.8),
+              0 0 32px -10px var(--current-glow);
 }
 
 /* ==========================================================================
-   LOG POSE GYRO HUD COMPONENT (ONE PIECE X APPLE)
+   ISLAND ATOLL / TOPOGRAPHICAL CONTOUR EVENT CARDS
+   ========================================================================== */
+.island-atoll-card {
+  position: relative;
+  background: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.05), rgba(13, 16, 26, 0.95));
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  overflow: hidden;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.45s ease;
+  box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.6);
+}
+
+.island-atoll-card:hover {
+  transform: translateY(-6px) scale(1.015);
+  border-color: var(--current-accent);
+  box-shadow: 0 25px 45px -12px var(--current-glow),
+              0 0 20px -5px var(--current-glow);
+}
+
+/* Subtle Topographical Elevation Rings */
+.island-atoll-card::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -20%;
+  width: 140%;
+  height: 140%;
+  border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+  border: 1px dashed rgba(255, 255, 255, 0.04);
+  pointer-events: none;
+  transition: transform 0.8s ease;
+}
+
+.island-atoll-card:hover::before {
+  transform: rotate(15deg);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ==========================================================================
+   INTERACTIVE ARCHIPELAGO VOYAGE MAP & SAILING SHIP
+   ========================================================================== */
+.archipelago-map-container {
+  position: relative;
+  width: 100%;
+  background: radial-gradient(ellipse at center, rgba(16, 24, 40, 0.6) 0%, rgba(5, 6, 10, 0.95) 80%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 36px;
+  overflow: hidden;
+  box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.9),
+              inset 0 0 50px rgba(0, 0, 0, 0.8);
+}
+
+/* Water Ripple Effect */
+.water-ripple {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--current-accent);
+  animation: rippleSpread 3s infinite linear;
+  pointer-events: none;
+  opacity: 0;
+}
+
+@keyframes rippleSpread {
+  0% { transform: scale(0.6); opacity: 0.8; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+/* Sailing Ship Pin */
+.voyager-ship {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  transform: translate(-50%, -50%);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), left 0.5s ease, top 0.5s ease;
+  z-index: 30;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.8));
+}
+
+/* ==========================================================================
+   LOG POSE GYRO HUD COMPONENT
    ========================================================================== */
 .logpose-dock {
   position: fixed;
@@ -262,9 +307,7 @@ body {
   100% { transform: rotate(calc(var(--angle, 0deg) + 3deg)); }
 }
 
-/* ==========================================================================
-   WANTED BOUNTY CARD & DETAILS
-   ========================================================================== */
+/* Bounty Tags */
 .bounty-tag {
   font-family: var(--font-mono);
   font-weight: 700;
@@ -276,80 +319,7 @@ body {
   border-radius: 6px;
 }
 
-/* ==========================================================================
-   EVENT DOSSIER MODAL / MOBILE BOTTOM SHEET
-   ========================================================================== */
-.event-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  z-index: 100;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-.event-modal-backdrop.is-open {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.event-modal-content {
-  position: fixed;
-  z-index: 101;
-  background: #0C0E16;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@media (min-width: 768px) {
-  .event-modal-content {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -46%) scale(0.96);
-    width: 90%;
-    max-width: 720px;
-    max-height: 88vh;
-    border-radius: 24px;
-    opacity: 0;
-    pointer-events: none;
-    overflow-y: auto;
-  }
-  .event-modal-backdrop.is-open + .event-modal-content {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-    pointer-events: auto;
-  }
-}
-
-@media (max-width: 767px) {
-  .event-modal-content {
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    max-height: 85vh;
-    border-radius: 28px 28px 0 0;
-    transform: translateY(100%);
-    overflow-y: auto;
-    pointer-events: none;
-  }
-  .event-modal-backdrop.is-open + .event-modal-content {
-    transform: translateY(0);
-    pointer-events: auto;
-  }
-  .logpose-dock {
-    bottom: 16px;
-    width: calc(100% - 24px);
-    max-width: 380px;
-  }
-}
-
-/* Button Shimmer */
+/* Apple Buttons */
 .btn-primary {
   position: relative;
   display: inline-flex;

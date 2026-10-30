@@ -1,8 +1,8 @@
 /**
- * AVINYA '27 - CORE APPLICATION CONTROLLER
+ * AVINYA '27 - CORE APPLICATION CONTROLLER (EXTENDED ARCHIPELAGO)
  * -------------------------------------------------------------
- * Apple-style GSAP scroll animations, Canvas particle ecosystem,
- * Dynamic Log Pose navigation, Page Cinema Transitions, and Event Dossiers.
+ * Apple-style GSAP scroll animations, Topographical Island Atolls,
+ * Interactive Sailing Ship Map, and Direct Event Dossier Routing.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (curtain) {
     setTimeout(() => {
       curtain.classList.remove('is-active');
-    }, 100);
+    }, 80);
   }
 
   // Lucide Icons initialization
@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initAmbientCanvas();
   initAppleScrollTriggers();
   initDevToolsPoneglyph();
+  initArchipelagoShip();
 });
 
 /* ==========================================================================
@@ -42,24 +43,62 @@ function initPageCinemaTransitions() {
   const curtain = document.getElementById('page-curtain');
   if (!curtain) return;
 
-  const links = document.querySelectorAll('a[href$=".html"], a[href^="/day"], a[href^="/hack"]');
+  const links = document.querySelectorAll('a[href$=".html"], a[href^="/day"], a[href^="/hack"], a[href^="event.html"]');
   links.forEach(link => {
     link.addEventListener('click', (e) => {
       const targetUrl = link.getAttribute('href');
-      // If same-page anchor, skip
       if (targetUrl.startsWith('#') || link.target === '_blank') return;
 
       e.preventDefault();
       curtain.classList.add('is-active');
       setTimeout(() => {
         window.location.href = targetUrl;
-      }, 250);
+      }, 220);
     });
   });
 }
 
 /* ==========================================================================
-   2. DYNAMIC RENDERING (DATA -> UI)
+   2. INTERACTIVE ARCHIPELAGO SAILING SHIP CONTROLLER
+   ========================================================================== */
+
+function initArchipelagoShip() {
+  const ship = document.getElementById('interactive-ship');
+  if (!ship) return;
+
+  // Ship Waypoints on Map
+  window.sailToIsland = function(dayNum) {
+    let topPos = '68%';
+    let leftPos = '16%';
+    let sectionId = 'day1';
+
+    if (dayNum === 1) {
+      topPos = '60%';
+      leftPos = '24%';
+      sectionId = 'day1';
+    } else if (dayNum === 2) {
+      topPos = '45%';
+      leftPos = '52%';
+      sectionId = 'day2';
+    } else if (dayNum === 3) {
+      topPos = '25%';
+      leftPos = '82%';
+      sectionId = 'day3';
+    }
+
+    ship.style.top = topPos;
+    ship.style.left = leftPos;
+
+    // Smooth scroll to that section
+    const targetSection = document.getElementById(sectionId);
+    if (targetSection) {
+      targetSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+}
+
+/* ==========================================================================
+   3. DYNAMIC RENDERING (DATA -> ISLAND ATOLL CARDS)
    ========================================================================== */
 
 function renderAllEvents() {
@@ -71,82 +110,68 @@ function renderAllEvents() {
     if (!container) return;
 
     container.innerHTML = island.events.map(event => {
-      // Check if this is an "Uncharted Open Slot"
-      if (event.isSlot) {
-        return `
-          <div class="apple-reveal rounded-2xl uncharted-slot-card p-6 flex flex-col justify-between group cursor-pointer" onclick="window.openEventModal('${event.id}')">
-            <div>
-              <div class="flex items-center justify-between mb-4">
-                <span class="text-[10px] font-mono font-bold tracking-wider px-2 py-0.5 rounded bg-white/10 text-amber-400 border border-white/10">
-                  RESERVED SLOT
-                </span>
-                <i data-lucide="plus-circle" class="w-4 h-4 text-slate-500 group-hover:text-amber-400 group-hover:rotate-90 transition-all"></i>
-              </div>
-              <h4 class="font-display font-bold text-lg text-white mb-1 group-hover:text-amber-400 transition-colors">
-                ${event.title}
-              </h4>
-              <p class="text-xs text-slate-400 font-mono mb-3">
-                ${event.club}
-              </p>
-              <p class="text-xs text-slate-300 font-body line-clamp-3 leading-relaxed">
-                ${event.summary}
-              </p>
-            </div>
+      // Direct Link to Dedicated Personal Event Page
+      const eventPageUrl = `event.html?id=${event.id}`;
 
-            <div class="pt-4 mt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono">
-              <span class="text-slate-400">${event.time}</span>
-              <span class="text-amber-400 font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                Claim Slot &rarr;
-              </span>
-            </div>
-          </div>
-        `;
-      }
-
-      // Standard Event Card
       return `
-        <div class="apple-reveal rounded-2xl glass-panel border border-white/10 overflow-hidden border-beam-card flex flex-col group cursor-pointer" onclick="window.openEventModal('${event.id}')">
+        <div class="apple-reveal island-atoll-card flex flex-col justify-between group">
           
-          <!-- Card Image Header -->
-          <div class="relative aspect-video overflow-hidden">
-            <img src="${event.image}" alt="${event.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-            <div class="absolute inset-0 bg-gradient-to-t from-[#0C0E16] via-transparent to-transparent"></div>
-            
-            <div class="absolute top-3 left-3">
-              <span class="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-black/70 border border-white/20 text-white backdrop-blur-md">
-                ${event.category}
-              </span>
-            </div>
-
-            <div class="absolute bottom-2 right-3">
-              <span class="bounty-tag text-[11px] shadow-lg">
-                ${event.bounty}
-              </span>
-            </div>
-          </div>
-
-          <!-- Card Content Body -->
-          <div class="p-5 flex-1 flex flex-col justify-between">
-            <div>
-              <div class="text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-1">
-                ${event.club || 'IIIT Dharwad'}
+          <div>
+            <!-- Card Image Header -->
+            <div class="relative aspect-video overflow-hidden rounded-t-[22px]">
+              <img src="${event.image}" alt="${event.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0D101A] via-transparent to-transparent"></div>
+              
+              <div class="absolute top-3 left-3">
+                <span class="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-black/75 border border-white/20 text-white backdrop-blur-md">
+                  ${event.category}
+                </span>
               </div>
+
+              <div class="absolute bottom-2 right-3">
+                <span class="bounty-tag text-[11px] shadow-lg">
+                  ${event.totalBounty || event.bounty}
+                </span>
+              </div>
+            </div>
+
+            <!-- Card Content Body -->
+            <div class="p-5">
+              <div class="text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1.5">
+                <i data-lucide="shield" class="w-3 h-3 text-amber-400"></i>
+                <span>${event.club || 'IIIT Dharwad'}</span>
+              </div>
+              
               <h4 class="font-display font-bold text-lg text-white mb-2 group-hover:text-amber-400 transition-colors">
                 ${event.title}
               </h4>
+              
               <p class="text-xs text-slate-300 font-body line-clamp-2 mb-4 leading-relaxed">
                 ${event.summary}
               </p>
-            </div>
 
+              <!-- Sponsors Strip Mini -->
+              ${event.sponsors && event.sponsors.length > 0 ? `
+                <div class="p-2 rounded-xl bg-white/5 border border-white/5 mb-4 text-[10px] font-mono flex items-center justify-between text-slate-300">
+                  <span class="text-slate-400">Partner:</span>
+                  <span class="text-sky-300 font-semibold">${event.sponsors[0].name} (${event.sponsors[0].tier.split(' ')[0]})</span>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+
+          <!-- Bottom Action Deck -->
+          <div class="p-5 pt-0">
             <div class="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-slate-400">
               <span class="flex items-center gap-1.5">
                 <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-400"></i>
                 ${event.time.split('-')[0].trim()}
               </span>
-              <span class="text-amber-400 font-semibold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
-                View Dossier &rarr;
-              </span>
+              
+              <a href="${eventPageUrl}" class="px-3 py-1.5 rounded-full bg-white/10 hover:bg-amber-500 hover:text-black text-amber-400 font-bold transition-all flex items-center gap-1">
+                <span>Dossier & QR</span>
+                <i data-lucide="arrow-right" class="w-3 h-3"></i>
+              </a>
             </div>
           </div>
 
@@ -167,7 +192,7 @@ function renderHackathonSection() {
   const tracksContainer = document.getElementById('hackathon-tracks-grid');
   if (tracksContainer) {
     tracksContainer.innerHTML = h2f.tracks.map(track => `
-      <div class="apple-reveal p-6 rounded-2xl glass-panel border border-sky-500/20 border-beam-card flex flex-col justify-between">
+      <div class="apple-reveal p-6 rounded-2xl glass-panel border border-sky-500/20 flex flex-col justify-between hover:border-sky-400 transition-all">
         <div>
           <div class="flex items-center justify-between gap-2 mb-3">
             <div class="w-8 h-8 rounded-lg bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400">
@@ -183,25 +208,6 @@ function renderHackathonSection() {
           <p class="text-xs text-slate-300 font-body leading-relaxed">
             ${track.description}
           </p>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  // Render Timeline
-  const timelineContainer = document.getElementById('hackathon-timeline-list');
-  if (timelineContainer) {
-    timelineContainer.innerHTML = h2f.timeline.map((step, idx) => `
-      <div class="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/5">
-        <div class="w-6 h-6 rounded-full bg-sky-500/20 border border-sky-500/40 flex items-center justify-center text-sky-300 font-mono text-xs font-bold shrink-0 mt-0.5">
-          ${idx + 1}
-        </div>
-        <div class="flex-1">
-          <div class="flex items-center justify-between">
-            <h5 class="text-sm font-semibold text-white font-display">${step.title}</h5>
-            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-500/10 text-sky-400 border border-sky-500/30">${step.status}</span>
-          </div>
-          <p class="text-xs text-slate-400 font-mono mt-0.5">${step.date}</p>
         </div>
       </div>
     `).join('');
@@ -234,7 +240,7 @@ function renderMasterSchedule(filter) {
     : allEvents.filter(e => e.dayId === filter);
 
   container.innerHTML = filtered.map(item => `
-    <div class="apple-reveal p-4 sm:p-5 rounded-2xl glass-panel border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-white/20 transition-all cursor-pointer" onclick="window.openEventModal('${item.id}')">
+    <div class="apple-reveal p-4 sm:p-5 rounded-2xl glass-panel border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-white/20 transition-all">
       <div class="flex items-start sm:items-center gap-4">
         <div class="px-3 py-1.5 rounded-xl font-mono text-xs font-bold text-black shrink-0" style="background-color: ${item.color};">
           ${item.dayLabel}
@@ -257,7 +263,9 @@ function renderMasterSchedule(filter) {
           <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-400"></i>
           ${item.time}
         </span>
-        <span class="bounty-tag text-xs">${item.bounty}</span>
+        <a href="event.html?id=${item.id}" class="bounty-tag text-xs hover:bg-amber-400 hover:text-black transition-colors">
+          ${item.totalBounty || item.bounty} &rarr;
+        </a>
       </div>
     </div>
   `).join('');
@@ -313,59 +321,6 @@ window.toggleFaq = function(idx) {
 };
 
 /* ==========================================================================
-   3. EVENT DOSSIER MODAL LOGIC (DEEP PROTOCOL SLOTS)
-   ========================================================================== */
-
-window.openEventModal = function(eventId) {
-  const data = window.AVINYA_DATA;
-  let targetEvent = null;
-
-  for (const island of data.islands) {
-    const found = island.events.find(e => e.id === eventId);
-    if (found) {
-      targetEvent = found;
-      break;
-    }
-  }
-
-  if (!targetEvent) return;
-
-  document.getElementById('modal-category').innerText = `${targetEvent.club || 'IIIT Dharwad'} // ${targetEvent.category}`;
-  document.getElementById('modal-title').innerText = targetEvent.title;
-  document.getElementById('modal-image').src = targetEvent.image;
-  document.getElementById('modal-time').innerText = targetEvent.time;
-  document.getElementById('modal-venue').innerText = targetEvent.venue;
-  document.getElementById('modal-bounty').innerText = `${targetEvent.bounty} (${targetEvent.berries})`;
-  document.getElementById('modal-summary').innerText = targetEvent.summary;
-
-  // Rounds
-  const roundsContainer = document.getElementById('modal-rounds');
-  if (roundsContainer && targetEvent.rounds) {
-    roundsContainer.innerHTML = targetEvent.rounds.map(rd => `<li>${rd}</li>`).join('');
-  }
-
-  // Rules
-  const rulesList = document.getElementById('modal-rules');
-  if (rulesList && targetEvent.rules) {
-    rulesList.innerHTML = targetEvent.rules.map(r => `<li>${r}</li>`).join('');
-  }
-
-  // Coordinator Contact
-  const coordEl = document.getElementById('modal-coordinator');
-  if (coordEl) {
-    coordEl.innerText = targetEvent.coordinator || "Avinya Core Secretariat (avinya@iiitdwd.ac.in)";
-  }
-
-  document.getElementById('event-modal-backdrop').classList.add('is-open');
-  document.body.style.overflow = 'hidden';
-};
-
-window.closeEventModal = function() {
-  document.getElementById('event-modal-backdrop').classList.remove('is-open');
-  document.body.style.overflow = '';
-};
-
-/* ==========================================================================
    4. APPLE-STYLE GSAP SCROLLTRIGGERS & LOG POSE SYNC
    ========================================================================== */
 
@@ -373,7 +328,6 @@ function initAppleScrollTriggers() {
   if (!window.gsap || !window.ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger);
 
-  // Reveal animations for all .apple-reveal elements
   const revealElements = document.querySelectorAll('.apple-reveal');
   revealElements.forEach(el => {
     ScrollTrigger.create({
@@ -384,11 +338,10 @@ function initAppleScrollTriggers() {
     });
   });
 
-  // Dynamic Theme & Log Pose Needle Transitions for each Island
   const islands = [
-    { id: 'day1', accent: '#F59E0B', glow: 'rgba(245, 158, 11, 0.35)', dialId: 'dial-day1', angle: 45, particleMode: 'dune' },
-    { id: 'day2', accent: '#EC4899', glow: 'rgba(236, 72, 153, 0.35)', dialId: 'dial-day2', angle: -60, particleMode: 'synthwave' },
-    { id: 'day3', accent: '#EAB308', glow: 'rgba(234, 179, 8, 0.35)', dialId: 'dial-day3', angle: 90, particleMode: 'carnival' },
+    { id: 'day1', accent: '#F59E0B', glow: 'rgba(245, 158, 11, 0.35)', dialId: 'dial-day1', angle: 25, particleMode: 'dune' },
+    { id: 'day2', accent: '#EC4899', glow: 'rgba(236, 72, 153, 0.35)', dialId: 'dial-day2', angle: -45, particleMode: 'synthwave' },
+    { id: 'day3', accent: '#EAB308', glow: 'rgba(234, 179, 8, 0.35)', dialId: 'dial-day3', angle: 70, particleMode: 'carnival' },
     { id: 'hack2future', accent: '#38BDF8', glow: 'rgba(56, 189, 248, 0.35)', dialId: null, angle: 0, particleMode: 'space' }
   ];
 
@@ -410,7 +363,6 @@ function activateIsland(island) {
   document.documentElement.style.setProperty('--current-accent', island.accent);
   document.documentElement.style.setProperty('--current-glow', island.glow);
 
-  // Update Log Pose Active State
   document.querySelectorAll('.dial-sphere').forEach(d => d.classList.remove('is-active'));
   if (island.dialId) {
     const activeDial = document.getElementById(island.dialId);
@@ -423,7 +375,6 @@ function activateIsland(island) {
     }
   }
 
-  // Switch particle canvas mode
   if (window.setParticleMode) {
     window.setParticleMode(island.particleMode);
   }

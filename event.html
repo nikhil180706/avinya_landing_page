@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Protocol Dossier | AVINYA '27 - IIIT Dharwad</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    :root {
+      --current-accent: #F59E0B;
+      --current-glow: rgba(245, 158, 11, 0.35);
+    }
+  </style>
+</head>
+<body class="bg-[#06070B] text-slate-100 antialiased selection:bg-amber-500 selection:text-black">
+
+  <div id="page-curtain" class="page-curtain is-active"></div>
+  <canvas id="ambient-canvas"></canvas>
+  <div class="noise-overlay"></div>
+
+  <!-- Shared Apple-Style Navigation -->
+  <header class="fixed top-0 left-0 right-0 z-40 px-4 sm:px-8 py-4 backdrop-blur-xl bg-[#06070B]/80 border-b border-white/10">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 p-0.5 flex items-center justify-center text-amber-400">
+          <i data-lucide="compass" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <div class="font-display font-black text-lg text-white">AVINYA '27</div>
+          <p class="text-[10px] font-mono tracking-widest text-slate-400 uppercase">Official Protocol Dossier</p>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-1 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full backdrop-blur-lg">
+        <a href="index.html" class="px-3 py-1.5 text-xs font-mono text-slate-400 hover:text-white transition-colors">&larr; GRAND HELM</a>
+        <span class="w-px h-3 bg-white/20 mx-1"></span>
+        <a href="day1.html" class="px-3 py-1.5 text-xs font-mono text-slate-300 hover:text-amber-400 transition-colors">01. OUTPOST</a>
+        <a href="day2.html" class="px-3 py-1.5 text-xs font-mono text-slate-300 hover:text-pink-400 transition-colors">02. PANDEMONIUM</a>
+        <a href="day3.html" class="px-3 py-1.5 text-xs font-mono text-slate-300 hover:text-yellow-400 transition-colors">03. CARNIVAL</a>
+        <a href="hack2future.html" class="px-3 py-1.5 text-xs font-mono text-sky-400 hover:text-sky-300 transition-colors">HACK2FUTURE</a>
+      </nav>
+
+      <a id="register-header-btn" href="https://forms.gle/avinya27-register" target="_blank" class="btn-primary text-xs !py-2.5 !px-5 inline-flex items-center gap-2">
+        <span>REGISTER NOW</span>
+        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+      </a>
+    </div>
+  </header>
+
+  <main class="relative z-10 pt-28 pb-24 px-4 sm:px-6 max-w-6xl mx-auto" id="event-page-container">
+    
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-xs font-mono text-slate-400 mb-8" id="event-breadcrumb">
+      <a href="index.html" class="hover:text-amber-400">Avinya '27</a>
+      <span>/</span>
+      <a id="island-crumb-link" href="day1.html" class="hover:text-amber-400">Sector</a>
+      <span>/</span>
+      <span id="event-crumb-name" class="text-amber-400">Event Dossier</span>
+    </div>
+
+    <!-- Hero Card with Background Texture -->
+    <div class="apple-reveal relative rounded-3xl overflow-hidden glass-panel border border-white/15 p-6 sm:p-12 mb-12">
+      <div class="absolute inset-0 bg-gradient-to-t from-[#06070B] via-[#06070B]/80 to-transparent z-10"></div>
+      <img id="event-hero-img" src="" alt="Event Hero" class="absolute inset-0 w-full h-full object-cover opacity-40">
+
+      <div class="relative z-20 max-w-3xl">
+        <div class="flex flex-wrap items-center gap-3 mb-4">
+          <span id="event-club-badge" class="px-3 py-1 rounded-full bg-white/10 text-white font-mono text-xs border border-white/20 backdrop-blur-md flex items-center gap-1.5">
+            <i data-lucide="shield" class="w-3.5 h-3.5 text-amber-400"></i>
+            <span>HOST CLUB</span>
+          </span>
+          <span id="event-category-badge" class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-mono text-xs border border-amber-500/30">
+            CATEGORY
+          </span>
+        </div>
+
+        <h1 id="event-title" class="font-display font-black text-4xl sm:text-6xl text-white uppercase tracking-tight mb-4">
+          Event Title
+        </h1>
+
+        <p id="event-summary" class="text-slate-300 font-body text-base sm:text-lg leading-relaxed mb-8">
+          Detailed briefing description of this event.
+        </p>
+
+        <!-- Meta Bar -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
+          <div class="p-3.5 rounded-2xl bg-black/60 border border-white/10 backdrop-blur-md">
+            <span class="text-slate-400 block mb-1">Time & Window</span>
+            <span id="event-time" class="text-white font-semibold">10:00 AM</span>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-black/60 border border-white/10 backdrop-blur-md">
+            <span class="text-slate-400 block mb-1">Campus Venue</span>
+            <span id="event-venue" class="text-white font-semibold">Main Arena</span>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-black/60 border border-white/10 backdrop-blur-md">
+            <span class="text-slate-400 block mb-1">Total Bounty</span>
+            <span id="event-total-bounty" class="text-amber-400 font-bold">₹35,000</span>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-black/60 border border-white/10 backdrop-blur-md">
+            <span class="text-slate-400 block mb-1">Crew Size</span>
+            <span id="event-teamsize" class="text-emerald-400 font-semibold">1-2 Pilots</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Main Content Grid: Left 2 Cols (Prizes, Rounds, Sponsors) | Right 1 Col (QR Code & Registration) -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Left 2 Cols -->
+      <div class="lg:col-span-2 space-y-8">
+        
+        <!-- 1. PODIUM CASH PRIZE LEDGER -->
+        <div class="apple-reveal p-8 rounded-3xl glass-panel border border-amber-500/20">
+          <div class="flex items-center justify-between mb-6 pb-3 border-b border-white/10">
+            <h3 class="font-display font-bold text-xl text-white flex items-center gap-2">
+              <i data-lucide="trophy" class="w-5 h-5 text-amber-400"></i>
+              <span>Prize Bounty Breakdown</span>
+            </h3>
+            <span id="event-berries-tag" class="bounty-tag text-xs font-mono">฿ 35,000,000</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="podium-grid">
+            <!-- Injected dynamically -->
+          </div>
+        </div>
+
+        <!-- 2. SPONSOR TRANSPARENCY & EXPENDITURE LEDGER -->
+        <div class="apple-reveal p-8 rounded-3xl glass-panel border border-white/10">
+          <div class="flex items-center justify-between mb-6 pb-3 border-b border-white/10">
+            <div>
+              <h3 class="font-display font-bold text-xl text-white flex items-center gap-2">
+                <i data-lucide="handshake" class="w-5 h-5 text-sky-400"></i>
+                <span>Corporate Sponsors & Category Backing</span>
+              </h3>
+              <p class="text-xs text-slate-400 font-mono mt-1">Official industry partners, tooling grants, and infrastructure spending.</p>
+            </div>
+          </div>
+
+          <div class="space-y-4" id="sponsors-ledger-list">
+            <!-- Injected dynamically -->
+          </div>
+        </div>
+
+        <!-- 3. ROUND STRUCTURE & EVALUATION GUIDELINES -->
+        <div class="apple-reveal p-8 rounded-3xl glass-panel border border-white/10">
+          <h3 class="font-display font-bold text-xl text-white mb-6 flex items-center gap-2">
+            <i data-lucide="git-branch" class="w-5 h-5 text-pink-400"></i>
+            <span>Stage & Round Architecture</span>
+          </h3>
+          <div class="space-y-3 font-body text-sm text-slate-300 mb-8" id="rounds-list"></div>
+
+          <h4 class="font-display font-bold text-lg text-white mb-4 flex items-center gap-2">
+            <i data-lucide="alert-circle" class="w-4 h-4 text-amber-400"></i>
+            <span>Expedition Rules & Evaluation Protocol</span>
+          </h4>
+          <ul class="space-y-2 text-xs font-body text-slate-300 list-disc list-inside" id="rules-list"></ul>
+        </div>
+
+      </div>
+
+      <!-- Right 1 Col: LIVE QR CODE & DIRECT PASS -->
+      <div class="lg:col-span-1 space-y-6">
+        
+        <!-- Live Scan-to-Register QR Code Box -->
+        <div class="apple-reveal p-6 rounded-3xl glass-panel border border-amber-500/30 text-center sticky top-28">
+          <div class="w-10 h-10 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mx-auto mb-3">
+            <i data-lucide="qr-code" class="w-5 h-5"></i>
+          </div>
+          <span class="text-[10px] font-mono uppercase tracking-widest text-slate-400 block mb-1">Instant Registration</span>
+          <h4 class="font-display font-bold text-lg text-white mb-4">Scan With Phone Camera</h4>
+
+          <!-- Dynamic Generated QR Code -->
+          <div class="p-4 rounded-2xl bg-white p-3 inline-block shadow-2xl shadow-amber-500/10 mb-4 border-4 border-amber-400/20">
+            <img id="dynamic-qr-image" src="" alt="Registration QR Code" class="w-48 h-48 mx-auto">
+          </div>
+
+          <p class="text-xs text-slate-400 font-body mb-6 leading-relaxed">
+            Scan to instantly open the Google Form / Unstop registration slot with this event pre-linked.
+          </p>
+
+          <a id="register-action-btn" href="https://forms.gle/avinya27-register" target="_blank" class="btn-primary w-full text-xs text-center !py-3">
+            DIRECT REGISTRATION LINK &rarr;
+          </a>
+
+          <!-- Host Credentials Card -->
+          <div class="mt-6 pt-6 border-t border-white/10 text-left font-mono text-xs">
+            <span class="text-slate-400 block mb-2 text-[10px] uppercase tracking-wider">Host & Faculty Leadership</span>
+            <div class="p-3 rounded-xl bg-black/40 border border-white/5 space-y-2">
+              <div>
+                <span class="text-slate-400 text-[10px] block">Student Lead:</span>
+                <span id="lead-name" class="text-white font-semibold block">Devansh Patel</span>
+                <span id="lead-contact" class="text-amber-400 text-[11px] block">+91 91234 56781</span>
+              </div>
+              <div class="pt-2 border-t border-white/5">
+                <span class="text-slate-400 text-[10px] block">Faculty In-Charge:</span>
+                <span id="faculty-name" class="text-slate-300 font-semibold block">Dr. K. Venkatesh</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <script src="events-data.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // Dynamic Event Page Controller
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const eventId = urlParams.get('id') || 'd1-e1';
+
+      const data = window.AVINYA_DATA;
+      if (!data) return;
+
+      let currentEvent = null;
+      let currentIsland = null;
+
+      for (const island of data.islands) {
+        const found = island.events.find(e => e.id === eventId);
+        if (found) {
+          currentEvent = found;
+          currentIsland = island;
+          break;
+        }
+      }
+
+      if (!currentEvent) {
+        document.getElementById('event-page-container').innerHTML = `
+          <div class="p-12 text-center glass-panel rounded-3xl">
+            <h2 class="font-display font-bold text-2xl text-white mb-2">Event Protocol Not Found</h2>
+            <p class="text-slate-400 text-sm mb-6">The requested event ID could not be located in the Avinya archives.</p>
+            <a href="index.html" class="btn-primary text-xs">RETURN TO GRAND HELM</a>
+          </div>
+        `;
+        return;
+      }
+
+      document.documentElement.style.setProperty('--current-accent', currentIsland.accentColor);
+      document.title = `${currentEvent.title} | AVINYA '27 - IIIT Dharwad`;
+
+      document.getElementById('island-crumb-link').innerText = currentIsland.name;
+      document.getElementById('island-crumb-link').href = `${currentIsland.id}.html`;
+      document.getElementById('event-crumb-name').innerText = currentEvent.title;
+      document.getElementById('event-crumb-name').style.color = currentIsland.accentColor;
+
+      document.getElementById('event-hero-img').src = currentEvent.image;
+      document.getElementById('event-club-badge').innerHTML = `<span>🏛️ ${currentEvent.club || 'IIIT Dharwad'}</span>`;
+      document.getElementById('event-category-badge').innerText = currentEvent.category;
+      document.getElementById('event-title').innerText = currentEvent.title;
+      document.getElementById('event-summary').innerText = currentEvent.summary;
+      document.getElementById('event-time').innerText = currentEvent.time;
+      document.getElementById('event-venue').innerText = currentEvent.venue;
+      document.getElementById('event-total-bounty').innerText = currentEvent.totalBounty || currentEvent.bounty;
+      document.getElementById('event-total-bounty').style.color = currentIsland.accentColor;
+      document.getElementById('event-teamsize').innerText = currentEvent.teamSize;
+
+      const podiumGrid = document.getElementById('podium-grid');
+      if (currentEvent.podium) {
+        podiumGrid.innerHTML = `
+          <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-center">
+            <span class="text-2xl block mb-1">🥇</span>
+            <span class="text-[10px] font-mono uppercase text-slate-400 block mb-1">1st Place Champion</span>
+            <span class="font-display font-bold text-base text-amber-400">${currentEvent.podium.first}</span>
+          </div>
+          <div class="p-4 rounded-2xl bg-slate-500/10 border border-slate-400/20 text-center">
+            <span class="text-2xl block mb-1">🥈</span>
+            <span class="text-[10px] font-mono uppercase text-slate-400 block mb-1">2nd Place Runner Up</span>
+            <span class="font-display font-bold text-base text-slate-200">${currentEvent.podium.second}</span>
+          </div>
+          <div class="p-4 rounded-2xl bg-amber-900/10 border border-amber-700/20 text-center">
+            <span class="text-2xl block mb-1">🥉</span>
+            <span class="text-[10px] font-mono uppercase text-slate-400 block mb-1">3rd Place Finalist</span>
+            <span class="font-display font-bold text-base text-amber-300">${currentEvent.podium.third}</span>
+          </div>
+        `;
+      } else {
+        podiumGrid.innerHTML = `<div class="p-4 rounded-2xl bg-white/5 text-slate-400 font-mono text-xs col-span-3">Direct Cash Bounty: ${currentEvent.totalBounty || currentEvent.bounty}</div>`;
+      }
+
+      document.getElementById('event-berries-tag').innerText = currentEvent.totalBerries || currentEvent.berries;
+
+      const sponsorsContainer = document.getElementById('sponsors-ledger-list');
+      if (currentEvent.sponsors && currentEvent.sponsors.length > 0) {
+        sponsorsContainer.innerHTML = currentEvent.sponsors.map(sp => `
+          <div class="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-white/20 transition-all">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 font-bold font-mono text-sm">
+                ★
+              </div>
+              <div>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-500/10 text-sky-400 border border-sky-500/20">${sp.tier}</span>
+                <h4 class="font-display font-bold text-base text-white mt-1">${sp.name}</h4>
+                <p class="text-xs text-slate-400 font-mono">${sp.category}</p>
+              </div>
+            </div>
+            <div class="text-right sm:text-right self-start sm:self-auto font-mono text-xs">
+              <span class="text-slate-400 text-[10px] block">Declared Financial Support</span>
+              <span class="text-emerald-400 font-bold">${sp.spending}</span>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        sponsorsContainer.innerHTML = `
+          <div class="p-4 rounded-2xl bg-white/5 border border-white/5 text-slate-400 font-mono text-xs">
+            Backed by IIIT Dharwad Academic Innovation Grant & Student Board.
+          </div>
+        `;
+      }
+
+      const roundsList = document.getElementById('rounds-list');
+      if (currentEvent.rounds) {
+        roundsList.innerHTML = currentEvent.rounds.map((rd, idx) => `
+          <div class="p-3 rounded-xl bg-white/5 border border-white/5 flex items-start gap-3">
+            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-300 font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+              ${idx + 1}
+            </span>
+            <span class="text-xs sm:text-sm text-slate-200">${rd}</span>
+          </div>
+        `).join('');
+      }
+
+      const rulesList = document.getElementById('rules-list');
+      if (currentEvent.rules) {
+        rulesList.innerHTML = currentEvent.rules.map(r => `<li>${r}</li>`).join('');
+      }
+
+      const qrPayload = encodeURIComponent(`https://forms.gle/avinya27-register?event=${currentEvent.id}&title=${encodeURIComponent(currentEvent.title)}`);
+      document.getElementById('dynamic-qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${qrPayload}&color=000000&bgcolor=ffffff`;
+
+      if (typeof currentEvent.coordinator === 'object') {
+        document.getElementById('lead-name').innerText = currentEvent.coordinator.name;
+        document.getElementById('lead-contact').innerText = `${currentEvent.coordinator.contact} | ${currentEvent.coordinator.email}`;
+      } else {
+        document.getElementById('lead-name').innerText = currentEvent.coordinator || "Student Council Lead";
+        document.getElementById('lead-contact').innerText = "+91 836 225 7000";
+      }
+
+      document.getElementById('faculty-name').innerText = currentEvent.facultyLead || "Faculty Advisor (IIIT Dharwad)";
+
+      if (window.lucide) lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
