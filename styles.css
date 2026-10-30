@@ -8,11 +8,10 @@
   --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Theme Dynamic Tokens (Dynamically shifted by Island ScrollTriggers) */
   --current-accent: #F59E0B;
   --current-glow: rgba(245, 158, 11, 0.35);
   --bg-deep: #06070B;
-  --card-bg: rgba(16, 18, 27, 0.75);
+  --card-bg: rgba(14, 16, 25, 0.82);
   --card-border: rgba(255, 255, 255, 0.08);
 }
 
@@ -57,6 +56,24 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--current-accent);
+}
+
+/* ==========================================================================
+   APPLE CINEMA-WIPE TRANSITION CURTAIN
+   ========================================================================== */
+.page-curtain {
+  position: fixed;
+  inset: 0;
+  background: #06070B;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.page-curtain.is-active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* ==========================================================================
@@ -151,7 +168,7 @@ body {
 }
 
 .glass-pill {
-  background: rgba(12, 14, 22, 0.82);
+  background: rgba(12, 14, 22, 0.85);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -164,13 +181,27 @@ body {
   position: relative;
   overflow: hidden;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s ease;
 }
 
 .border-beam-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 20px 35px -10px var(--current-glow);
   border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* Uncharted Open Slot Card (Placeholders for upcoming club events) */
+.uncharted-slot-card {
+  border: 2px dashed rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.02);
+  transition: all 0.3s ease;
+}
+
+.uncharted-slot-card:hover {
+  border-color: var(--current-accent);
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateY(-3px);
 }
 
 /* ==========================================================================
@@ -222,7 +253,6 @@ body {
   transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Vibrate effect on active needle (One Piece magnetic distortion) */
 .dial-sphere.is-active .dial-needle {
   animation: needleTremble 0.25s infinite ease-in-out alternate;
 }
@@ -247,7 +277,7 @@ body {
 }
 
 /* ==========================================================================
-   EVENT MODAL / MOBILE BOTTOM SHEET
+   EVENT DOSSIER MODAL / MOBILE BOTTOM SHEET
    ========================================================================== */
 .event-modal-backdrop {
   position: fixed;
@@ -276,14 +306,13 @@ body {
               opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Desktop Modal */
 @media (min-width: 768px) {
   .event-modal-content {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -46%) scale(0.96);
     width: 90%;
-    max-width: 680px;
+    max-width: 720px;
     max-height: 88vh;
     border-radius: 24px;
     opacity: 0;
@@ -297,7 +326,6 @@ body {
   }
 }
 
-/* Mobile Slide-Up Drawer */
 @media (max-width: 767px) {
   .event-modal-content {
     bottom: 0;

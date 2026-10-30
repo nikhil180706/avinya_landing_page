@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hack2Future '27 | Flagship National Hackathon - IIIT Dharwad</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <style>:root { --current-accent: #38BDF8; --current-glow: rgba(56, 189, 248, 0.35); }</style>
+</head>
+<body class="bg-[#06070B] text-slate-100 antialiased selection:bg-sky-400 selection:text-black">
+
+  <div id="page-curtain" class="page-curtain is-active"></div>
+  <canvas id="ambient-canvas"></canvas>
+  <div class="noise-overlay"></div>
+
+  <!-- Shared Apple-Style Header -->
+  <header class="fixed top-0 left-0 right-0 z-40 px-4 sm:px-8 py-4 backdrop-blur-xl bg-[#06070B]/75 border-b border-white/10">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-sky-500/20 border border-sky-500/40 p-0.5 flex items-center justify-center text-sky-400">
+          <i data-lucide="rocket" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <div class="font-display font-black text-lg text-white">HACK2FUTURE</div>
+          <p class="text-[10px] font-mono tracking-widest text-sky-400 uppercase">Avinya '27 Flagship</p>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-1 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full backdrop-blur-lg">
+        <a href="index.html" class="px-3 py-1.5 text-xs font-mono text-slate-400 hover:text-white transition-colors">&larr; GRAND HELM</a>
+        <span class="w-px h-3 bg-white/20 mx-1"></span>
+        <a href="day1.html" class="px-3 py-1.5 text-xs font-mono text-slate-300 hover:text-amber-400 transition-colors">01. OUTPOST</a>
+        <a href="day2.html" class="px-3 py-1.5 text-xs font-mono text-slate-300 hover:text-pink-400 transition-colors">02. PANDEMONIUM</a>
+        <a href="day3.html" class="px-3 py-1.5 text-xs font-mono text-slate-300 hover:text-yellow-400 transition-colors">03. CARNIVAL</a>
+        <a href="hack2future.html" class="px-3 py-1.5 text-xs font-mono font-bold text-sky-400 bg-white/10 rounded-full">HACK2FUTURE</a>
+      </nav>
+
+      <a href="https://hack2future.iiitdwd.ac.in/" target="_blank" class="btn-primary !bg-sky-400 text-xs !py-2.5 !px-5 inline-flex items-center gap-2">
+        <span>APPLY ON DEVFOLIO</span>
+        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+      </a>
+    </div>
+  </header>
+
+  <main class="relative z-10 pt-28 pb-24 px-4 sm:px-6 max-w-7xl mx-auto">
+    
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-xs font-mono text-slate-400 mb-8">
+      <a href="index.html" class="hover:text-sky-400">Avinya '27</a>
+      <span>/</span>
+      <a href="index.html#hack2future" class="hover:text-sky-400">Deep Space Apex</a>
+      <span>/</span>
+      <span class="text-sky-400">Hack2Future National Hackathon</span>
+    </div>
+
+    <!-- Astronaut Hero Header -->
+    <div class="apple-reveal mb-16">
+      <span class="px-3 py-1 rounded bg-sky-500/10 text-sky-400 border border-sky-500/30 text-xs font-mono font-bold inline-block mb-3">
+        OFFICIAL NATIONAL HACKATHON // IIIT DHARWAD RESEARCH PARK
+      </span>
+      <h1 class="font-display font-black text-5xl sm:text-7xl md:text-8xl text-white uppercase tracking-tight mb-4">
+        HACK2<span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-indigo-400 to-sky-300">FUTURE '27</span>
+      </h1>
+      <p class="text-slate-300 font-body text-lg sm:text-xl max-w-3xl leading-relaxed mb-8">
+        Breach through planetary atmosphere into zero-gravity engineering. A 36-hour continuous hackathon gathering the country's most audacious builders to prototype deep-tech systems for global challenges.
+      </p>
+
+      <!-- Bounty Statistics Strip -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 rounded-3xl glass-panel border border-sky-500/30 mb-10">
+        <div>
+          <span class="text-[11px] font-mono uppercase text-slate-400 block mb-1">Total Cash Bounty</span>
+          <span class="font-display font-black text-3xl sm:text-4xl text-sky-400">₹1,50,000+</span>
+        </div>
+        <div>
+          <span class="text-[11px] font-mono uppercase text-slate-400 block mb-1">Nautical Currency</span>
+          <span class="font-mono font-bold text-2xl sm:text-3xl text-amber-400">฿ 150M</span>
+        </div>
+        <div>
+          <span class="text-[11px] font-mono uppercase text-slate-400 block mb-1">Hacking Window</span>
+          <span class="font-mono font-bold text-2xl sm:text-3xl text-white">36 Hours</span>
+        </div>
+        <div>
+          <span class="text-[11px] font-mono uppercase text-slate-400 block mb-1">Crew Size</span>
+          <span class="font-mono font-bold text-2xl sm:text-3xl text-emerald-400">2-4 Pilots</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap items-center gap-4">
+        <a href="https://hack2future.iiitdwd.ac.in/" target="_blank" class="btn-primary !bg-sky-400 text-sm flex items-center gap-2">
+          <span>SUBMIT MISSION BLUEPRINT</span>
+          <i data-lucide="rocket" class="w-4 h-4"></i>
+        </a>
+        <a href="https://hack2future.iiitdwd.ac.in/" target="_blank" class="btn-secondary text-sm flex items-center gap-2">
+          <span>OFFICIAL HACK2FUTURE PORTAL &rarr;</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 4 Problem Tracks Bento -->
+    <div class="mb-20">
+      <div class="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
+        <div>
+          <h2 class="font-display font-bold text-2xl sm:text-3xl text-white">4 National Mission Tracks</h2>
+          <p class="text-xs font-mono text-slate-400">Each track carries ₹35,000 to ₹40,000 in dedicated cash bounties.</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="hackathon-tracks-grid"></div>
+    </div>
+
+    <!-- 36-Hour Mission Flight Stages (Timeline) -->
+    <div class="apple-reveal p-8 rounded-3xl glass-panel border border-sky-500/20 mb-20">
+      <h3 class="font-display font-bold text-2xl text-white mb-6 flex items-center gap-2">
+        <i data-lucide="git-pull-request" class="w-6 h-6 text-sky-400"></i>
+        <span>36-Hour Flight Trajectory (Stages & Milestones)</span>
+      </h3>
+      <div class="space-y-4" id="hackathon-timeline-list"></div>
+    </div>
+
+    <!-- Evaluation Matrix & Submission Rules -->
+    <div class="apple-reveal grid grid-cols-1 md:grid-cols-2 gap-6 p-8 rounded-3xl glass-panel border border-white/10 mb-20">
+      <div>
+        <h3 class="font-display font-bold text-xl text-white mb-4 flex items-center gap-2">
+          <i data-lucide="award" class="w-5 h-5 text-amber-400"></i>
+          <span>Official Judging Rubric (100 Points)</span>
+        </h3>
+        <div class="space-y-3 text-sm text-slate-300 font-body">
+          <div class="p-3 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between">
+            <span><strong>Design Thinking & Originality</strong></span>
+            <span class="font-mono text-amber-400 font-bold">50% Points</span>
+          </div>
+          <div class="p-3 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between">
+            <span><strong>Layout Adaptability (Desktop & Mobile)</strong></span>
+            <span class="font-mono text-sky-400 font-bold">20% Points</span>
+          </div>
+          <div class="p-3 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between">
+            <span><strong>Useful Information Conveyed</strong></span>
+            <span class="font-mono text-emerald-400 font-bold">20% Points</span>
+          </div>
+          <div class="p-3 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between">
+            <span><strong>Animation & Micro-Interactions</strong></span>
+            <span class="font-mono text-pink-400 font-bold">10% Points</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="font-display font-bold text-xl text-white mb-4 flex items-center gap-2">
+          <i data-lucide="alert-octagon" class="w-5 h-5 text-red-400"></i>
+          <span>Instant Disqualification Protocols</span>
+        </h3>
+        <ul class="space-y-3 text-sm text-slate-300 font-body">
+          <li class="flex items-start gap-3 p-3 rounded-xl bg-red-950/20 border border-red-500/30 text-red-300">
+            <i data-lucide="x-circle" class="w-4 h-4 text-red-400 shrink-0 mt-0.5"></i>
+            <span><strong>Strict Commit Cutoff:</strong> If the submitted GitHub repository has commits pushed after 10:00 PM on October 30th, the submission is instantly disqualified.</span>
+          </li>
+          <li class="flex items-start gap-3 p-3 rounded-xl bg-red-950/20 border border-red-500/30 text-red-300">
+            <i data-lucide="x-circle" class="w-4 h-4 text-red-400 shrink-0 mt-0.5"></i>
+            <span><strong>Live Deployment Requirement:</strong> The project must be deployed live on Vercel or similar production hosting. Non-deployed repositories will not be judged.</span>
+          </li>
+          <li class="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/5">
+            <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+            <span><strong>Submission Form:</strong> Must submit public GitHub repo link and live deployed URL via the official portal.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Hackathon Secretariat & Mentors -->
+    <div class="apple-reveal p-8 rounded-3xl glass-panel border border-sky-500/20">
+      <h3 class="font-display font-bold text-xl text-white mb-6 flex items-center gap-2">
+        <i data-lucide="headphones" class="w-5 h-5 text-sky-400"></i>
+        <span>Hack2Future Mission Control & Mentors</span>
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
+        <div class="p-4 rounded-xl bg-black/40 border border-white/5">
+          <span class="text-sky-400 font-bold block mb-1">Hack2Future Operations Desk</span>
+          <span class="text-slate-400 block mb-2">IIIT Dharwad Research & Innovation Park</span>
+          <div class="text-slate-300 flex items-center gap-4">
+            <span>🌐 hack2future.iiitdwd.ac.in</span>
+            <span>✉️ hack2future@iiitdwd.ac.in</span>
+          </div>
+        </div>
+        <div class="p-4 rounded-xl bg-black/40 border border-white/5">
+          <span class="text-sky-400 font-bold block mb-1">Avinya Fest Secretariat</span>
+          <span class="text-slate-400 block mb-2">Student Technical Council, IIIT Dharwad</span>
+          <div class="text-slate-300 flex items-center gap-4">
+            <span>🏛️ Ittigatti Road Campus</span>
+            <span>📞 +91 836 225 7000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="events-data.js"></script>
+  <script src="app.js"></script>
+  <script>
+    window.addEventListener('load', () => {
+      if (window.setParticleMode) window.setParticleMode('space');
+    });
+  </script>
+</body>
+</html>

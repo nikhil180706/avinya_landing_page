@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 2: The Pandemonium | AVINYA '27 - IIIT Dharwad</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <style>:root { --current-accent: #EC4899; --current-glow: rgba(236, 72, 153, 0.35); }</style>
+</head>
+<body class="bg-[#06070B] text-slate-100 antialiased selection:bg-pink-500 selection:text-white">
+
+  <div id="page-curtain" class="page-curtain is-active"></div>
+  <canvas id="ambient-canvas"></canvas>
+  <div class="noise-overlay"></div>
+
+  <!-- Shared Apple-Style Header -->
+  <header class="fixed top-0 left-0 right-0 z-40 px-4 sm:px-8 py-4 backdrop-blur-xl bg-[#06070B]/75 border-b border-white/10">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-pink-500/20 border border-pink-500/40 p-0.5 flex items-center justify-center text-pink-400">
+          <i data-lucide="zap" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <div class="font-display font-black text-lg text-white">AVINYA '27</div>
+          <p class="text-[10px] font-mono tracking-widest text-pink-400 uppercase">Sector 02 Archive</p>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-1 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full backdrop-blur-lg">
+        <a href="index.html" class="px-3 py-1.5 text-xs font-mono text-slate-400 hover:text-white transition-colors">&larr; GRAND HELM</a>
+        <span class="w-px h-3 bg-white/20 mx-1"></span>
+        <a href="day1.html" class="px-3 py-1.5 text-xs font-mono text-slate-300 hover:text-amber-400 transition-colors">01. OUTPOST</a>
+        <a href="day2.html" class="px-3 py-1.5 text-xs font-mono font-bold text-pink-400 bg-white/10 rounded-full">02. PANDEMONIUM</a>
+        <a href="day3.html" class="px-3 py-1.5 text-xs font-mono text-slate-300 hover:text-yellow-400 transition-colors">03. CARNIVAL</a>
+        <a href="hack2future.html" class="px-3 py-1.5 text-xs font-mono text-sky-400 hover:text-sky-300 transition-colors">HACK2FUTURE</a>
+      </nav>
+
+      <a href="https://forms.gle/avinya27-register" target="_blank" class="btn-primary !bg-pink-500 !shadow-pink-500/30 text-xs !py-2.5 !px-5 inline-flex items-center gap-2">
+        <span>REGISTER CREW</span>
+        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+      </a>
+    </div>
+  </header>
+
+  <main class="relative z-10 pt-28 pb-24 px-4 sm:px-6 max-w-7xl mx-auto">
+    
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-xs font-mono text-slate-400 mb-8">
+      <a href="index.html" class="hover:text-pink-400">Avinya '27</a>
+      <span>/</span>
+      <a href="index.html#day2" class="hover:text-pink-400">Archipelago</a>
+      <span>/</span>
+      <span class="text-pink-400">Sector 02: The Pandemonium</span>
+    </div>
+
+    <!-- Hero Header -->
+    <div class="apple-reveal mb-16">
+      <span class="px-3 py-1 rounded bg-pink-500/10 text-pink-400 border border-pink-500/30 text-xs font-mono font-bold inline-block mb-3">
+        DAY 02 ARCHIVE // SATURDAY, MARCH 13, 2027
+      </span>
+      <h1 class="font-display font-black text-5xl sm:text-7xl text-white uppercase tracking-tight mb-4">
+        THE <span class="text-pink-500">PANDEMONIUM</span>
+      </h1>
+      <p class="text-slate-300 font-body text-lg max-w-3xl leading-relaxed mb-6">
+        An overclocked synthwave metropolis. Heavy combat robotics inside the Steel Pit, national LAN e-sports championships, spatial UI/UX sprints, and underground electronic beat clashes. Hosted by Quantum Robotics, Mosaic Design, and 440 Hz.
+      </p>
+
+      <div class="flex flex-wrap items-center gap-4 text-xs font-mono">
+        <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-300">
+          📍 The Steel Pit & LAN Arena Complex
+        </span>
+        <span class="px-3 py-1.5 rounded-xl bg-pink-500/10 border border-pink-500/30 text-pink-400 font-bold">
+          Total Day Bounty: ₹2,10,000+
+        </span>
+        <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-cyan-400">
+          8 Active Combat & Cyber Protocols
+        </span>
+      </div>
+    </div>
+
+    <!-- Event Grid -->
+    <div class="mb-20">
+      <div class="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
+        <div>
+          <h2 class="font-display font-bold text-2xl text-white">Full Event Directory & Open Slots</h2>
+          <p class="text-xs font-mono text-slate-400">Click any combat or gaming tile to inspect safety standards & bracket rules.</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="day2-events-grid"></div>
+    </div>
+
+    <!-- Coordinator & Safety Marshals -->
+    <div class="apple-reveal p-8 rounded-3xl glass-panel border border-pink-500/20 mb-16">
+      <h3 class="font-display font-bold text-xl text-white mb-6 flex items-center gap-2">
+        <i data-lucide="shield" class="w-5 h-5 text-pink-400"></i>
+        <span>Sector 02 Command & Safety Marshals</span>
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
+        <div class="p-4 rounded-xl bg-black/40 border border-white/5">
+          <span class="text-pink-400 font-bold block mb-1">Karthik Menon</span>
+          <span class="text-slate-400 block mb-2">Overall Student Lead (Quantum Robotics)</span>
+          <div class="text-slate-300 flex items-center gap-4">
+            <span>📞 +91 97890 12345</span>
+            <span>✉️ karthik.robotics@iiitdwd.ac.in</span>
+          </div>
+        </div>
+        <div class="p-4 rounded-xl bg-black/40 border border-white/5">
+          <span class="text-pink-400 font-bold block mb-1">Dr. Ananya Roy</span>
+          <span class="text-slate-400 block mb-2">Faculty Advisor (Student Affairs & Labs)</span>
+          <div class="text-slate-300 flex items-center gap-4">
+            <span>🏛️ Central Academic Block</span>
+            <span>✉️ ananya.roy@iiitdwd.ac.in</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Next Island Navigation Banner -->
+    <div class="apple-reveal p-6 rounded-2xl bg-gradient-to-r from-yellow-950/40 via-amber-950/20 to-transparent border border-yellow-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div>
+        <span class="text-[10px] font-mono text-yellow-400 uppercase tracking-widest block">Next Destination</span>
+        <h4 class="font-display font-bold text-xl text-white">Sail to Day 03: The Carnival Island &rarr;</h4>
+      </div>
+      <a href="day3.html" class="btn-primary !bg-yellow-400 !text-black text-xs">
+        ENTER SECTOR 03
+      </a>
+    </div>
+
+  </main>
+
+  <!-- Modal -->
+  <div id="event-modal-backdrop" class="event-modal-backdrop" onclick="window.closeEventModal()"></div>
+  <div id="event-modal-content" class="event-modal-content p-6 sm:p-8">
+    <div class="flex items-start justify-between gap-4 mb-4">
+      <div>
+        <span id="modal-category" class="px-2.5 py-1 rounded bg-pink-500/20 text-pink-300 font-mono text-xs border border-pink-500/30 mb-2 inline-block">CATEGORY</span>
+        <h3 id="modal-title" class="font-display font-black text-2xl sm:text-3xl text-white">Event Title</h3>
+      </div>
+      <button onclick="window.closeEventModal()" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-slate-300">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+    <div class="rounded-2xl overflow-hidden mb-6 aspect-video max-h-[220px] border border-white/10">
+      <img id="modal-image" src="" alt="Event Banner" class="w-full h-full object-cover">
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6 font-mono text-xs">
+      <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+        <span class="text-slate-400 block mb-1">Time</span>
+        <span id="modal-time" class="text-white font-semibold">11:00 AM</span>
+      </div>
+      <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+        <span class="text-slate-400 block mb-1">Venue</span>
+        <span id="modal-venue" class="text-white font-semibold">The Steel Pit</span>
+      </div>
+      <div class="p-3 rounded-xl bg-white/5 border border-white/10 col-span-2 sm:col-span-1">
+        <span class="text-slate-400 block mb-1">Cash Bounty</span>
+        <span id="modal-bounty" class="text-pink-400 font-bold">₹60,000</span>
+      </div>
+    </div>
+    <div class="mb-5">
+      <h4 class="text-xs font-mono uppercase text-slate-400 mb-2">Event Brief</h4>
+      <p id="modal-summary" class="text-sm text-slate-300 font-body leading-relaxed"></p>
+    </div>
+    <div class="mb-5">
+      <h4 class="text-xs font-mono uppercase text-slate-400 mb-2">Rounds & Guidelines</h4>
+      <ul id="modal-rounds" class="space-y-1.5 text-xs text-slate-300 font-body list-disc list-inside"></ul>
+    </div>
+    <div class="mb-6 p-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between text-xs font-mono">
+      <span class="text-slate-400">Coordinator:</span>
+      <span id="modal-coordinator" class="text-pink-400 font-semibold">Vikram Singhal</span>
+    </div>
+    <div class="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
+      <button onclick="window.closeEventModal()" class="px-5 py-2.5 rounded-full text-xs font-mono text-slate-400 hover:text-white">DISMISS</button>
+      <a href="https://forms.gle/avinya27-register" target="_blank" class="btn-primary !bg-pink-500 !shadow-pink-500/30 text-xs !py-2.5 !px-6">REGISTER CREW</a>
+    </div>
+  </div>
+
+  <script src="events-data.js"></script>
+  <script src="app.js"></script>
+  <script>
+    window.addEventListener('load', () => {
+      if (window.setParticleMode) window.setParticleMode('synthwave');
+    });
+  </script>
+</body>
+</html>

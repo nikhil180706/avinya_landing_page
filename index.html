@@ -8,7 +8,7 @@
 
   <!-- Open Graph / Meta -->
   <meta property="og:title" content="AVINYA '27 — The Techno-Cultural Odyssey">
-  <meta property="og:description" content="Set sail across 3 mystical islands: The Last Outpost, The Pandemonium, and The Carnival Island.">
+  <meta property="og:description" content="Set sail across 3 mythical islands: The Last Outpost, The Pandemonium, and The Carnival Island.">
   <meta property="og:type" content="website">
 
   <!-- Tailwind CSS CDN -->
@@ -18,29 +18,10 @@
       theme: {
         extend: {
           colors: {
-            dune: {
-              400: '#FBBF24',
-              500: '#F59E0B',
-              600: '#D97706',
-              800: '#78350F'
-            },
-            synth: {
-              400: '#F472B6',
-              500: '#EC4899',
-              600: '#DB2777',
-              cyan: '#06B6D4'
-            },
-            carnival: {
-              400: '#FDE047',
-              500: '#EAB308',
-              600: '#CA8A04',
-              crimson: '#EF4444'
-            },
-            space: {
-              cyan: '#38BDF8',
-              violet: '#818CF8',
-              navy: '#0B0F19'
-            }
+            dune: { 400: '#FBBF24', 500: '#F59E0B', 600: '#D97706', 800: '#78350F' },
+            synth: { 400: '#F472B6', 500: '#EC4899', 600: '#DB2777', cyan: '#06B6D4' },
+            carnival: { 400: '#FDE047', 500: '#EAB308', 600: '#CA8A04', crimson: '#EF4444' },
+            space: { cyan: '#38BDF8', violet: '#818CF8', navy: '#0B0F19' }
           }
         }
       }
@@ -59,18 +40,21 @@
 </head>
 <body class="bg-[#06070B] text-slate-100 antialiased selection:bg-amber-500 selection:text-black">
 
+  <!-- Cinema-Wipe Page Transition Curtain -->
+  <div id="page-curtain" class="page-curtain is-active"></div>
+
   <!-- Particle Canvas -->
   <canvas id="ambient-canvas"></canvas>
   <div class="noise-overlay"></div>
 
   <!-- ========================================================================
-       TOP NAVIGATION BAR
+       TOP NAVIGATION BAR (SHARED APPLE-STYLE)
        ======================================================================== -->
-  <header class="fixed top-0 left-0 right-0 z-40 px-4 sm:px-8 py-4 transition-all duration-300 backdrop-blur-xl bg-[#06070B]/70 border-b border-white/10">
+  <header class="fixed top-0 left-0 right-0 z-40 px-4 sm:px-8 py-4 transition-all duration-300 backdrop-blur-xl bg-[#06070B]/75 border-b border-white/10">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
       
       <!-- Brand Logo / IIIT Dharwad Crest -->
-      <a href="#hero" class="flex items-center gap-3 group">
+      <a href="index.html" class="flex items-center gap-3 group">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-pink-500 p-0.5 shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
           <div class="w-full h-full bg-[#08090D] rounded-[10px] flex items-center justify-center">
             <i data-lucide="compass" class="w-5 h-5 text-amber-400 group-hover:rotate-45 transition-transform duration-500"></i>
@@ -84,27 +68,21 @@
         </div>
       </a>
 
-      <!-- Desktop Links -->
+      <!-- Desktop Links: Direct to Dedicated Pages -->
       <nav class="hidden md:flex items-center gap-1 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full backdrop-blur-lg">
-        <a href="#day1" class="px-3 py-1.5 text-xs font-mono tracking-wide text-slate-300 hover:text-amber-400 transition-colors">01. OUTPOST</a>
-        <a href="#day2" class="px-3 py-1.5 text-xs font-mono tracking-wide text-slate-300 hover:text-pink-400 transition-colors">02. PANDEMONIUM</a>
-        <a href="#day3" class="px-3 py-1.5 text-xs font-mono tracking-wide text-slate-300 hover:text-yellow-400 transition-colors">03. CARNIVAL</a>
+        <a href="day1.html" class="px-3 py-1.5 text-xs font-mono tracking-wide text-slate-300 hover:text-amber-400 transition-colors">01. OUTPOST</a>
+        <a href="day2.html" class="px-3 py-1.5 text-xs font-mono tracking-wide text-slate-300 hover:text-pink-400 transition-colors">02. PANDEMONIUM</a>
+        <a href="day3.html" class="px-3 py-1.5 text-xs font-mono tracking-wide text-slate-300 hover:text-yellow-400 transition-colors">03. CARNIVAL</a>
         <span class="w-px h-3 bg-white/20 mx-1"></span>
-        <a href="#hack2future" class="px-3 py-1.5 text-xs font-mono font-bold text-sky-400 hover:text-sky-300 flex items-center gap-1.5 transition-colors">
+        <a href="hack2future.html" class="px-3 py-1.5 text-xs font-mono font-bold text-sky-400 hover:text-sky-300 flex items-center gap-1.5 transition-colors">
           <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> HACK2FUTURE
         </a>
         <a href="#schedule" class="px-3 py-1.5 text-xs font-mono tracking-wide text-slate-300 hover:text-white transition-colors">SCHEDULE</a>
       </nav>
 
-      <!-- Action Controls -->
+      <!-- Action Controls (Silent Luxury - Audio Removed) -->
       <div class="flex items-center gap-3">
-        <!-- Audio Ambience Toggle (Easter Egg) -->
-        <button id="audio-toggle" class="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-amber-400 hover:border-amber-400/40 transition-all" title="Toggle Ship Ambience">
-          <i data-lucide="volume-x" id="audio-icon" class="w-4 h-4"></i>
-        </button>
-
-        <!-- Primary Register CTA -->
-        <a href="#hack2future" class="btn-primary text-xs !py-2.5 !px-5 hidden sm:inline-flex items-center gap-2">
+        <a href="hack2future.html" class="btn-primary text-xs !py-2.5 !px-5 inline-flex items-center gap-2">
           <span>BOARD VOYAGE</span>
           <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
         </a>
@@ -120,7 +98,7 @@
          ======================================================================== -->
     <section id="hero" class="relative min-h-screen flex flex-col justify-center items-center px-4 sm:px-6 pt-24 pb-20 overflow-hidden">
       
-      <!-- Subtle Horizon Vignette & Glow -->
+      <!-- Subtle Horizon Glow -->
       <div class="absolute inset-0 bg-radial from-amber-500/10 via-transparent to-transparent pointer-events-none"></div>
       
       <!-- Telemetry Coordinates Header -->
@@ -161,7 +139,7 @@
             <span>SET SAIL FOR ISLANDS</span>
             <i data-lucide="anchor" class="w-4 h-4 group-hover:rotate-45 transition-transform"></i>
           </a>
-          <a href="#hack2future" class="btn-secondary text-sm sm:text-base flex items-center gap-3">
+          <a href="hack2future.html" class="btn-secondary text-sm sm:text-base flex items-center gap-3">
             <i data-lucide="rocket" class="w-4 h-4 text-sky-400"></i>
             <span>HACK2FUTURE PORTAL</span>
           </a>
@@ -206,40 +184,43 @@
     </section>
 
     <!-- ========================================================================
-         THE METAPHOR: ARCHIPELAGO INTRO
+         THE METAPHOR: ARCHIPELAGO OVERVIEW CARDS
          ======================================================================== -->
-    <section class="py-20 px-4 sm:px-6 max-w-5xl mx-auto border-t border-white/10">
+    <section class="py-20 px-4 sm:px-6 max-w-6xl mx-auto border-t border-white/10">
       <div class="apple-reveal grid grid-cols-1 md:grid-cols-3 gap-6">
         
-        <div class="p-6 rounded-2xl glass-panel border-beam-card">
-          <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
+        <a href="day1.html" class="p-6 rounded-2xl glass-panel border-beam-card group">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4 group-hover:scale-110 transition-transform">
             <i data-lucide="compass" class="w-5 h-5"></i>
           </div>
-          <h3 class="font-display font-bold text-lg text-white mb-2">The Voyage Metaphor</h3>
+          <span class="text-[10px] font-mono font-bold text-amber-400 block mb-1">DAY 01 ARCHIVE &rarr;</span>
+          <h3 class="font-display font-bold text-xl text-white mb-2">The Last Outpost</h3>
           <p class="text-sm text-slate-400 leading-relaxed font-body">
-            You are aboard the Avinya flagship. Every single day marks landfall on a vastly different island with its own ecosystem, culture, and battles.
+            Dune Sci-Fi Desert. Algorithmic coding with Velocity Club, Sand-Cipher CTF, YUKTI VLSI chip design, and ancient monolith keynotes.
           </p>
-        </div>
+        </a>
 
-        <div class="p-6 rounded-2xl glass-panel border-beam-card">
-          <div class="w-10 h-10 rounded-xl bg-pink-500/10 border border-pink-500/30 flex items-center justify-center text-pink-400 mb-4">
-            <i data-lucide="navigation" class="w-5 h-5"></i>
+        <a href="day2.html" class="p-6 rounded-2xl glass-panel border-beam-card group">
+          <div class="w-10 h-10 rounded-xl bg-pink-500/10 border border-pink-500/30 flex items-center justify-center text-pink-400 mb-4 group-hover:scale-110 transition-transform">
+            <i data-lucide="zap" class="w-5 h-5"></i>
           </div>
-          <h3 class="font-display font-bold text-lg text-white mb-2">Triple-Dial Log Pose</h3>
+          <span class="text-[10px] font-mono font-bold text-pink-400 block mb-1">DAY 02 ARCHIVE &rarr;</span>
+          <h3 class="font-display font-bold text-xl text-white mb-2">The Pandemonium</h3>
           <p class="text-sm text-slate-400 leading-relaxed font-body">
-            Forget ordinary compasses. Track your journey through the floating Log Pose HUD. Watch the magnetic needles oscillate as you sail into higher distortion.
+            Synthwave Cyberpunk Basin. Heavyweight bot combat at the Steel Pit, RetroWave E-Sports tournaments, and Spatial UI/UX sprints.
           </p>
-        </div>
+        </a>
 
-        <div class="p-6 rounded-2xl glass-panel border-beam-card">
-          <div class="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 mb-4">
-            <i data-lucide="award" class="w-5 h-5"></i>
+        <a href="day3.html" class="p-6 rounded-2xl glass-panel border-beam-card group">
+          <div class="w-10 h-10 rounded-xl bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center text-yellow-400 mb-4 group-hover:scale-110 transition-transform">
+            <i data-lucide="music" class="w-5 h-5"></i>
           </div>
-          <h3 class="font-display font-bold text-lg text-white mb-2">Bounties & Glory</h3>
+          <span class="text-[10px] font-mono font-bold text-yellow-400 block mb-1">DAY 03 ARCHIVE &rarr;</span>
+          <h3 class="font-display font-bold text-xl text-white mb-2">The Carnival Island</h3>
           <p class="text-sm text-slate-400 leading-relaxed font-body">
-            Compete across technical arenas, combat robotics, musical face-offs, and Hack2Future to claim national prestige and cash bounty pools.
+            Midnight Waterfront Fair. Mega choreography by Dynamight, Battle of the Bands with 440 Hz, and the massive Star-Nite Pro Concert.
           </p>
-        </div>
+        </a>
 
       </div>
     </section>
@@ -248,58 +229,27 @@
          ISLAND 01: THE LAST OUTPOST (DAY 1)
          ======================================================================== -->
     <section id="day1" class="island-section py-24 px-4 sm:px-6 relative overflow-hidden" data-accent="#F59E0B">
-      
-      <!-- Atmosphere Background Gradient -->
       <div class="absolute inset-0 bg-gradient-to-b from-amber-950/20 via-transparent to-transparent pointer-events-none"></div>
 
       <div class="max-w-7xl mx-auto relative">
-        
-        <!-- Section Header -->
-        <div class="apple-reveal mb-14">
-          <div class="flex items-center gap-3 font-mono text-xs text-amber-400 font-semibold mb-3">
-            <span class="px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/30">DAY 01 // MARCH 12, 2027</span>
-            <span>LANDFALL AT SECTOR 01</span>
-          </div>
-          
-          <h2 class="font-display font-black text-4xl sm:text-6xl text-white uppercase tracking-tight mb-4">
-            THE LAST <span class="text-amber-400">OUTPOST</span>
-          </h2>
-
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-2 border-amber-500 pl-4 py-1">
-            <p class="text-slate-300 font-body text-base sm:text-lg max-w-2xl">
-              <strong class="text-white">Dune-Themed Sci-Fi Desert.</strong> An ancient planetary frontier where shifting amber dunes conceal forgotten ciphers and technological monoliths.
-            </p>
-            <div class="font-mono text-xs text-amber-300/80 bg-amber-950/40 px-3.5 py-2 rounded-xl border border-amber-500/20 self-start md:self-auto">
-              CLIMATE: ARID // COMPASS: LOCKED
+        <div class="apple-reveal mb-14 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <div class="flex items-center gap-3 font-mono text-xs text-amber-400 font-semibold mb-3">
+              <span class="px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/30">DAY 01 // MARCH 12, 2027</span>
+              <span>LANDFALL AT SECTOR 01</span>
             </div>
+            <h2 class="font-display font-black text-4xl sm:text-6xl text-white uppercase tracking-tight">
+              THE LAST <span class="text-amber-400">OUTPOST</span>
+            </h2>
           </div>
-        </div>
-
-        <!-- Island Hero Image Banner -->
-        <div class="apple-reveal relative rounded-3xl overflow-hidden border border-amber-500/30 mb-14 aspect-[21/9] max-h-[460px] group">
-          <img src="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1600&q=80" 
-               alt="The Last Outpost - Dune Desert" 
-               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-          <div class="absolute inset-0 bg-gradient-to-t from-[#06070B] via-[#06070B]/40 to-transparent"></div>
-          
-          <div class="absolute bottom-6 left-6 right-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div>
-              <span class="text-xs font-mono uppercase tracking-widest text-amber-400 mb-1 block">Sector Monolith</span>
-              <h3 class="font-display font-bold text-2xl sm:text-3xl text-white">The Sands of Decryption</h3>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="px-3 py-1.5 rounded-full bg-black/60 border border-amber-500/30 text-amber-300 font-mono text-xs">
-                4 Active Challenges
-              </span>
-            </div>
-          </div>
+          <a href="day1.html" class="btn-secondary text-xs flex items-center gap-2 self-start md:self-auto">
+            <span>EXPLORE FULL DAY 1 CITADEL (8+ EVENTS)</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </a>
         </div>
 
         <!-- Events Grid (Day 1) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="day1-events-grid">
-          <!-- Injected dynamically from events-data.js -->
-        </div>
-
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="day1-events-grid"></div>
       </div>
     </section>
 
@@ -307,58 +257,27 @@
          ISLAND 02: THE PANDEMONIUM (DAY 2)
          ======================================================================== -->
     <section id="day2" class="island-section py-24 px-4 sm:px-6 relative overflow-hidden" data-accent="#EC4899">
-      
-      <!-- Atmosphere Background Gradient -->
       <div class="absolute inset-0 bg-gradient-to-b from-pink-950/20 via-transparent to-transparent pointer-events-none"></div>
 
       <div class="max-w-7xl mx-auto relative">
-        
-        <!-- Section Header -->
-        <div class="apple-reveal mb-14">
-          <div class="flex items-center gap-3 font-mono text-xs text-pink-400 font-semibold mb-3">
-            <span class="px-2.5 py-1 rounded bg-pink-500/10 border border-pink-500/30">DAY 02 // MARCH 13, 2027</span>
-            <span>LANDFALL AT SECTOR 02</span>
-          </div>
-          
-          <h2 class="font-display font-black text-4xl sm:text-6xl text-white uppercase tracking-tight mb-4">
-            THE <span class="text-pink-500">PANDEMONIUM</span>
-          </h2>
-
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-2 border-pink-500 pl-4 py-1">
-            <p class="text-slate-300 font-body text-base sm:text-lg max-w-2xl">
-              <strong class="text-white">Synthwave Cyberpunk Metropolis.</strong> Neon water reflections, heavy combat robotics, and electronic frequency overload. The apex of digital adrenaline.
-            </p>
-            <div class="font-mono text-xs text-pink-300/80 bg-pink-950/40 px-3.5 py-2 rounded-xl border border-pink-500/20 self-start md:self-auto">
-              FREQUENCY: OVERCLOCKED // DISTORTION: HIGH
+        <div class="apple-reveal mb-14 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <div class="flex items-center gap-3 font-mono text-xs text-pink-400 font-semibold mb-3">
+              <span class="px-2.5 py-1 rounded bg-pink-500/10 border border-pink-500/30">DAY 02 // MARCH 13, 2027</span>
+              <span>LANDFALL AT SECTOR 02</span>
             </div>
+            <h2 class="font-display font-black text-4xl sm:text-6xl text-white uppercase tracking-tight">
+              THE <span class="text-pink-500">PANDEMONIUM</span>
+            </h2>
           </div>
-        </div>
-
-        <!-- Island Hero Image Banner -->
-        <div class="apple-reveal relative rounded-3xl overflow-hidden border border-pink-500/30 mb-14 aspect-[21/9] max-h-[460px] group">
-          <img src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=1600&q=80" 
-               alt="The Pandemonium - Synthwave Cyberpunk" 
-               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-          <div class="absolute inset-0 bg-gradient-to-t from-[#06070B] via-[#06070B]/40 to-transparent"></div>
-          
-          <div class="absolute bottom-6 left-6 right-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div>
-              <span class="text-xs font-mono uppercase tracking-widest text-pink-400 mb-1 block">Sector Grid</span>
-              <h3 class="font-display font-bold text-2xl sm:text-3xl text-white">The Neon Cyber Basin</h3>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="px-3 py-1.5 rounded-full bg-black/60 border border-pink-500/30 text-pink-300 font-mono text-xs">
-                RoboWars & E-Sports Prime
-              </span>
-            </div>
-          </div>
+          <a href="day2.html" class="btn-secondary text-xs flex items-center gap-2 self-start md:self-auto">
+            <span>EXPLORE FULL DAY 2 CYBER-GRID (8+ EVENTS)</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </a>
         </div>
 
         <!-- Events Grid (Day 2) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="day2-events-grid">
-          <!-- Injected dynamically from events-data.js -->
-        </div>
-
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="day2-events-grid"></div>
       </div>
     </section>
 
@@ -366,58 +285,27 @@
          ISLAND 03: THE CARNIVAL ISLAND (DAY 3)
          ======================================================================== -->
     <section id="day3" class="island-section py-24 px-4 sm:px-6 relative overflow-hidden" data-accent="#EAB308">
-      
-      <!-- Atmosphere Background Gradient -->
       <div class="absolute inset-0 bg-gradient-to-b from-yellow-950/20 via-transparent to-transparent pointer-events-none"></div>
 
       <div class="max-w-7xl mx-auto relative">
-        
-        <!-- Section Header -->
-        <div class="apple-reveal mb-14">
-          <div class="flex items-center gap-3 font-mono text-xs text-yellow-400 font-semibold mb-3">
-            <span class="px-2.5 py-1 rounded bg-yellow-500/10 border border-yellow-500/30">DAY 03 // MARCH 14, 2027</span>
-            <span>LANDFALL AT SECTOR 03</span>
-          </div>
-          
-          <h2 class="font-display font-black text-4xl sm:text-6xl text-white uppercase tracking-tight mb-4">
-            THE CARNIVAL <span class="text-yellow-400">ISLAND</span>
-          </h2>
-
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-2 border-yellow-500 pl-4 py-1">
-            <p class="text-slate-300 font-body text-base sm:text-lg max-w-2xl">
-              <strong class="text-white">The Day of the Grand Festival.</strong> Glowing Ferris wheels, illuminated night shoreline, choreography face-offs, and the monumental Star-Nite concert.
-            </p>
-            <div class="font-mono text-xs text-yellow-300/80 bg-yellow-950/40 px-3.5 py-2 rounded-xl border border-yellow-500/20 self-start md:self-auto">
-              STATUS: GRAND CELEBRATION // HARBOR LIT
+        <div class="apple-reveal mb-14 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <div class="flex items-center gap-3 font-mono text-xs text-yellow-400 font-semibold mb-3">
+              <span class="px-2.5 py-1 rounded bg-yellow-500/10 border border-yellow-500/30">DAY 03 // MARCH 14, 2027</span>
+              <span>LANDFALL AT SECTOR 03</span>
             </div>
+            <h2 class="font-display font-black text-4xl sm:text-6xl text-white uppercase tracking-tight">
+              THE CARNIVAL <span class="text-yellow-400">ISLAND</span>
+            </h2>
           </div>
-        </div>
-
-        <!-- Island Hero Image Banner -->
-        <div class="apple-reveal relative rounded-3xl overflow-hidden border border-yellow-500/30 mb-14 aspect-[21/9] max-h-[460px] group">
-          <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1600&q=80" 
-               alt="The Carnival Island - Festival Night" 
-               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-          <div class="absolute inset-0 bg-gradient-to-t from-[#06070B] via-[#06070B]/40 to-transparent"></div>
-          
-          <div class="absolute bottom-6 left-6 right-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div>
-              <span class="text-xs font-mono uppercase tracking-widest text-yellow-400 mb-1 block">Grand Bay</span>
-              <h3 class="font-display font-bold text-2xl sm:text-3xl text-white">The Midnight Lantern Coast</h3>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="px-3 py-1.5 rounded-full bg-black/60 border border-yellow-500/30 text-yellow-300 font-mono text-xs">
-                Star-Nite & Pro Shows
-              </span>
-            </div>
-          </div>
+          <a href="day3.html" class="btn-secondary text-xs flex items-center gap-2 self-start md:self-auto">
+            <span>EXPLORE FULL DAY 3 FESTIVAL (8+ EVENTS)</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </a>
         </div>
 
         <!-- Events Grid (Day 3) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="day3-events-grid">
-          <!-- Injected dynamically from events-data.js -->
-        </div>
-
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="day3-events-grid"></div>
       </div>
     </section>
 
@@ -425,28 +313,21 @@
          DEDICATED SECTION: HACK2FUTURE (ASTRONAUT / SPACE THEME)
          ======================================================================== -->
     <section id="hack2future" class="py-28 px-4 sm:px-6 relative overflow-hidden bg-gradient-to-b from-[#06070B] via-[#090D1A] to-[#06070B]" data-accent="#38BDF8">
-      
-      <!-- Cosmic Starlight Glow -->
       <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-sky-500/10 blur-[140px] pointer-events-none rounded-full"></div>
 
       <div class="max-w-7xl mx-auto relative">
-        
-        <!-- Header Badge -->
         <div class="apple-reveal text-center max-w-3xl mx-auto mb-16">
           <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs font-mono mb-4">
             <i data-lucide="rocket" class="w-3.5 h-3.5"></i>
             <span>ASCENT VECTOR: STRATOSPHERE // NATIONAL HACKATHON</span>
           </div>
-          
           <h2 class="font-display font-black text-5xl sm:text-7xl text-white uppercase tracking-tight mb-4">
             HACK2<span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-400">FUTURE</span>
           </h2>
-          
           <p class="text-slate-300 font-body text-lg sm:text-xl">
             IIIT Dharwad's Flagship 36-Hour National Hackathon. Break through earthly gravity and build the autonomous future.
           </p>
 
-          <!-- Grand Bounty Callout -->
           <div class="mt-8 inline-flex flex-wrap items-center justify-center gap-6 p-4 px-8 rounded-2xl glass-panel border border-sky-500/30">
             <div>
               <span class="text-[11px] font-mono uppercase text-slate-400 block">Total Prize Bounty</span>
@@ -467,8 +348,6 @@
 
         <!-- Astronaut Showcase & Bento Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-16">
-          
-          <!-- Astronaut Visual Feature Card -->
           <div class="apple-reveal lg:col-span-1 rounded-3xl overflow-hidden glass-panel border border-sky-500/20 relative group min-h-[380px] flex flex-col justify-end p-8">
             <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" 
                  alt="Astronaut Deep Space" 
@@ -481,67 +360,16 @@
               </span>
               <h3 class="font-display font-bold text-2xl text-white mb-2">Zero-Gravity Innovation</h3>
               <p class="text-sm text-slate-300 font-body mb-6">
-                Directly referenced from <a href="https://hack2future.iiitdwd.ac.in/" target="_blank" class="text-sky-400 underline underline-offset-4 hover:text-sky-300">hack2future.iiitdwd.ac.in</a>. Hosted in collaboration with IIIT Dharwad Research Park.
+                Directly referenced from <a href="https://hack2future.iiitdwd.ac.in/" target="_blank" class="text-sky-400 underline underline-offset-4 hover:text-sky-300">hack2future.iiitdwd.ac.in</a>. Co-hosted with IIIT Dharwad Research Park.
               </p>
-              <a href="https://hack2future.iiitdwd.ac.in/" target="_blank" class="btn-primary !bg-sky-400 !shadow-sky-400/30 text-xs w-full text-center">
-                VISIT OFFICIAL PORTAL
+              <a href="hack2future.html" class="btn-primary !bg-sky-400 !shadow-sky-400/30 text-xs w-full text-center">
+                ENTER FULL HACKATHON PORTAL
               </a>
             </div>
           </div>
 
-          <!-- Problem Statement Tracks (2x2 Grid) -->
-          <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4" id="hackathon-tracks-grid">
-            <!-- Dynamically populated from events-data.js -->
-          </div>
-
+          <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4" id="hackathon-tracks-grid"></div>
         </div>
-
-        <!-- Hackathon Timeline & Rules Grid -->
-        <div class="apple-reveal grid grid-cols-1 md:grid-cols-2 gap-6 p-8 rounded-3xl glass-panel border border-white/10">
-          
-          <!-- Flight Schedule -->
-          <div>
-            <h3 class="font-display font-bold text-xl text-white mb-6 flex items-center gap-2">
-              <i data-lucide="git-commit" class="w-5 h-5 text-sky-400"></i>
-              <span>Mission Flight Stages</span>
-            </h3>
-            <div class="space-y-4 font-body" id="hackathon-timeline-list">
-              <!-- Dynamically populated -->
-            </div>
-          </div>
-
-          <!-- Perks & Gear -->
-          <div>
-            <h3 class="font-display font-bold text-xl text-white mb-6 flex items-center gap-2">
-              <i data-lucide="shield-check" class="w-5 h-5 text-emerald-400"></i>
-              <span>Crew Perks & Evaluation Rules</span>
-            </h3>
-            <ul class="space-y-3 text-sm text-slate-300 font-body">
-              <li class="flex items-start gap-3">
-                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
-                <span><strong>Design Thinking (50%):</strong> Clean UX, original storytelling, zero generic AI boilerplate.</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
-                <span><strong>Layout Adaptability (20%):</strong> Flawless rendering on both Desktop and Mobile viewports.</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
-                <span><strong>Useful Information (20%):</strong> Complete event guidelines, schedules, venues, and contact info.</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
-                <span><strong>Animation Fidelity (10%):</strong> 60fps smooth kinetic scroll transitions and Log Pose dials.</span>
-              </li>
-              <li class="flex items-start gap-3 text-amber-300/90 bg-amber-500/10 p-2.5 rounded-xl border border-amber-500/20">
-                <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
-                <span><strong>Mandatory Rule:</strong> Must submit public GitHub repo & live deployed URL before deadline.</span>
-              </li>
-            </ul>
-          </div>
-
-        </div>
-
       </div>
     </section>
 
@@ -549,7 +377,6 @@
          MASTER ITINERARY / SCHEDULE SECTION
          ======================================================================== -->
     <section id="schedule" class="py-24 px-4 sm:px-6 max-w-7xl mx-auto border-t border-white/10">
-      
       <div class="apple-reveal text-center max-w-2xl mx-auto mb-12">
         <span class="text-xs font-mono uppercase tracking-widest text-amber-400 mb-2 block">Captain's Logbook</span>
         <h2 class="font-display font-black text-4xl sm:text-5xl text-white uppercase tracking-tight mb-4">
@@ -576,11 +403,7 @@
         </div>
       </div>
 
-      <!-- Schedule Timeline Container -->
-      <div class="space-y-4 max-w-4xl mx-auto" id="master-schedule-list">
-        <!-- Rendered dynamically -->
-      </div>
-
+      <div class="space-y-4 max-w-4xl mx-auto" id="master-schedule-list"></div>
     </section>
 
     <!-- ========================================================================
@@ -594,9 +417,7 @@
         </h2>
       </div>
 
-      <div class="space-y-4 font-body" id="faqs-accordion">
-        <!-- Injected dynamically from events-data.js -->
-      </div>
+      <div class="space-y-4 font-body" id="faqs-accordion"></div>
     </section>
 
     <!-- ========================================================================
@@ -604,7 +425,6 @@
          ======================================================================== -->
     <footer class="py-16 px-4 sm:px-6 border-t border-white/10 bg-[#040508] relative z-20">
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-12">
-        
         <div>
           <div class="font-display font-black text-2xl text-white flex items-center gap-2 mb-2">
             AVINYA '27 <span class="text-xs font-mono text-amber-400 px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/30">OFFICIAL</span>
@@ -614,7 +434,6 @@
           </p>
         </div>
 
-        <!-- One Piece Subtle Nautical Disclaimer -->
         <div class="p-4 rounded-2xl bg-white/5 border border-white/10 max-w-md">
           <div class="flex items-center gap-2 text-xs font-mono text-amber-400 font-semibold mb-1">
             <i data-lucide="compass" class="w-3.5 h-3.5"></i>
@@ -624,7 +443,6 @@
             "Caution: Standard magnetic compasses will fail across the 3 islands of Avinya. Rely strictly on your Log Pose. The climate changes without warning."
           </p>
         </div>
-
       </div>
 
       <div class="max-w-7xl mx-auto pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-500">
@@ -641,35 +459,30 @@
   </main>
 
   <!-- ========================================================================
-       FLOATING LOG POSE HUD (ONE PIECE 3-DIAL GYRO NAVIGATOR)
+       FLOATING LOG POSE HUD
        ======================================================================== -->
   <aside class="logpose-dock">
     <div class="glass-pill px-4 sm:px-6 py-2.5 rounded-full flex items-center gap-3 sm:gap-5">
-      
-      <!-- Ship Helm Icon / Label -->
       <div class="hidden sm:flex items-center gap-2 border-r border-white/15 pr-3 text-slate-400">
         <i data-lucide="compass" class="w-4 h-4 text-amber-400"></i>
         <span class="text-[10px] font-mono font-bold tracking-wider uppercase text-slate-300">LOG POSE</span>
       </div>
 
-      <!-- Dial 01: Day 1 (The Last Outpost) -->
-      <a href="#day1" class="dial-sphere group" id="dial-day1" title="Day 1: The Last Outpost">
+      <a href="day1.html" class="dial-sphere group" id="dial-day1" title="Day 1: The Last Outpost">
         <div class="dial-needle" style="--angle: 25deg;"></div>
         <span class="absolute -top-7 left-1/2 -translate-x-1/2 text-[9px] font-mono text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap bg-black/80 px-1.5 py-0.5 rounded border border-amber-500/30">
           DAY 1
         </span>
       </a>
 
-      <!-- Dial 02: Day 2 (The Pandemonium) -->
-      <a href="#day2" class="dial-sphere group" id="dial-day2" title="Day 2: The Pandemonium">
+      <a href="day2.html" class="dial-sphere group" id="dial-day2" title="Day 2: The Pandemonium">
         <div class="dial-needle" style="--angle: -45deg;"></div>
         <span class="absolute -top-7 left-1/2 -translate-x-1/2 text-[9px] font-mono text-pink-400 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap bg-black/80 px-1.5 py-0.5 rounded border border-pink-500/30">
           DAY 2
         </span>
       </a>
 
-      <!-- Dial 03: Day 3 (The Carnival Island) -->
-      <a href="#day3" class="dial-sphere group" id="dial-day3" title="Day 3: The Carnival Island">
+      <a href="day3.html" class="dial-sphere group" id="dial-day3" title="Day 3: The Carnival Island">
         <div class="dial-needle" style="--angle: 70deg;"></div>
         <span class="absolute -top-7 left-1/2 -translate-x-1/2 text-[9px] font-mono text-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap bg-black/80 px-1.5 py-0.5 rounded border border-yellow-500/30">
           DAY 3
@@ -678,26 +491,23 @@
 
       <span class="w-px h-5 bg-white/15"></span>
 
-      <!-- Celestial Needle: Hack2Future Space Launch -->
-      <a href="#hack2future" class="px-2.5 py-1 rounded-full bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 flex items-center gap-1.5 text-sky-400 text-xs font-mono font-bold transition-all" title="Ascend to Hack2Future">
+      <a href="hack2future.html" class="px-2.5 py-1 rounded-full bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 flex items-center gap-1.5 text-sky-400 text-xs font-mono font-bold transition-all" title="Ascend to Hack2Future">
         <i data-lucide="rocket" class="w-3.5 h-3.5 animate-pulse"></i>
         <span class="hidden md:inline">H2F</span>
       </a>
 
-      <!-- Quick Schedule Drawer Button -->
       <a href="#schedule" class="p-1.5 rounded-full hover:bg-white/10 text-slate-400 hover:text-white transition-colors" title="View Full Itinerary">
         <i data-lucide="calendar" class="w-4 h-4"></i>
       </a>
-
     </div>
   </aside>
 
   <!-- ========================================================================
-       MODAL / MOBILE BOTTOM SHEET FOR EVENT DETAILS
+       MODAL / MOBILE BOTTOM SHEET FOR EVENT DOSSIER
        ======================================================================== -->
   <div id="event-modal-backdrop" class="event-modal-backdrop" onclick="window.closeEventModal()"></div>
   <div id="event-modal-content" class="event-modal-content p-6 sm:p-8">
-    <div class="flex items-start justify-between gap-4 mb-6">
+    <div class="flex items-start justify-between gap-4 mb-4">
       <div>
         <span id="modal-category" class="px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 font-mono text-xs border border-amber-500/30 mb-2 inline-block">
           CATEGORY
@@ -733,15 +543,27 @@
     </div>
 
     <!-- Summary -->
-    <div class="mb-6">
+    <div class="mb-5">
       <h4 class="text-xs font-mono uppercase text-slate-400 mb-2">Event Brief</h4>
       <p id="modal-summary" class="text-sm text-slate-300 font-body leading-relaxed"></p>
     </div>
 
+    <!-- Competition Rounds -->
+    <div class="mb-5">
+      <h4 class="text-xs font-mono uppercase text-slate-400 mb-2">Stage & Round Architecture</h4>
+      <ul id="modal-rounds" class="space-y-1.5 text-xs text-slate-300 font-body list-disc list-inside"></ul>
+    </div>
+
     <!-- Rules List -->
-    <div class="mb-8">
+    <div class="mb-5">
       <h4 class="text-xs font-mono uppercase text-slate-400 mb-2">Expedition Protocol (Rules)</h4>
       <ul id="modal-rules" class="space-y-1.5 text-xs text-slate-300 font-body list-disc list-inside"></ul>
+    </div>
+
+    <!-- Coordinator Contact Slot -->
+    <div class="mb-6 p-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between text-xs font-mono">
+      <span class="text-slate-400">Lead Coordinator:</span>
+      <span id="modal-coordinator" class="text-amber-400 font-semibold">Devansh Patel</span>
     </div>
 
     <!-- Actions -->
@@ -755,7 +577,6 @@
     </div>
   </div>
 
-  <!-- App Script -->
   <script src="events-data.js"></script>
   <script src="app.js"></script>
 </body>

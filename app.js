@@ -2,14 +2,25 @@
  * AVINYA '27 - CORE APPLICATION CONTROLLER
  * -------------------------------------------------------------
  * Apple-style GSAP scroll animations, Canvas particle ecosystem,
- * Dynamic Log Pose navigation, and Event interaction modals.
+ * Dynamic Log Pose navigation, Page Cinema Transitions, and Event Dossiers.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Page Entry Curtain Fade-In
+  const curtain = document.getElementById('page-curtain');
+  if (curtain) {
+    setTimeout(() => {
+      curtain.classList.remove('is-active');
+    }, 100);
+  }
+
   // Lucide Icons initialization
   if (window.lucide) {
     lucide.createIcons();
   }
+
+  // Initialize Page Cinema Transitions for smooth Apple routing
+  initPageCinemaTransitions();
 
   // Initialize Components
   initCountdown();
@@ -21,11 +32,34 @@ document.addEventListener('DOMContentLoaded', () => {
   initAmbientCanvas();
   initAppleScrollTriggers();
   initDevToolsPoneglyph();
-  initAudioAmbience();
 });
 
 /* ==========================================================================
-   1. DYNAMIC RENDERING (DATA -> UI)
+   1. CINEMA WIPE PAGE TRANSITION (APPLE-STYLE NAVIGATION)
+   ========================================================================== */
+
+function initPageCinemaTransitions() {
+  const curtain = document.getElementById('page-curtain');
+  if (!curtain) return;
+
+  const links = document.querySelectorAll('a[href$=".html"], a[href^="/day"], a[href^="/hack"]');
+  links.forEach(link => {
+    link.addEventListener('click', (e) => {
+      const targetUrl = link.getAttribute('href');
+      // If same-page anchor, skip
+      if (targetUrl.startsWith('#') || link.target === '_blank') return;
+
+      e.preventDefault();
+      curtain.classList.add('is-active');
+      setTimeout(() => {
+        window.location.href = targetUrl;
+      }, 250);
+    });
+  });
+}
+
+/* ==========================================================================
+   2. DYNAMIC RENDERING (DATA -> UI)
    ========================================================================== */
 
 function renderAllEvents() {
@@ -36,51 +70,89 @@ function renderAllEvents() {
     const container = document.getElementById(`${island.id}-events-grid`);
     if (!container) return;
 
-    container.innerHTML = island.events.map(event => `
-      <div class="apple-reveal rounded-2xl glass-panel border border-white/10 overflow-hidden border-beam-card flex flex-col group cursor-pointer" onclick="window.openEventModal('${event.id}')">
-        
-        <!-- Card Image Header -->
-        <div class="relative aspect-video overflow-hidden">
-          <img src="${event.image}" alt="${event.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-          <div class="absolute inset-0 bg-gradient-to-t from-[#0C0E16] via-transparent to-transparent"></div>
+    container.innerHTML = island.events.map(event => {
+      // Check if this is an "Uncharted Open Slot"
+      if (event.isSlot) {
+        return `
+          <div class="apple-reveal rounded-2xl uncharted-slot-card p-6 flex flex-col justify-between group cursor-pointer" onclick="window.openEventModal('${event.id}')">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-[10px] font-mono font-bold tracking-wider px-2 py-0.5 rounded bg-white/10 text-amber-400 border border-white/10">
+                  RESERVED SLOT
+                </span>
+                <i data-lucide="plus-circle" class="w-4 h-4 text-slate-500 group-hover:text-amber-400 group-hover:rotate-90 transition-all"></i>
+              </div>
+              <h4 class="font-display font-bold text-lg text-white mb-1 group-hover:text-amber-400 transition-colors">
+                ${event.title}
+              </h4>
+              <p class="text-xs text-slate-400 font-mono mb-3">
+                ${event.club}
+              </p>
+              <p class="text-xs text-slate-300 font-body line-clamp-3 leading-relaxed">
+                ${event.summary}
+              </p>
+            </div>
+
+            <div class="pt-4 mt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono">
+              <span class="text-slate-400">${event.time}</span>
+              <span class="text-amber-400 font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                Claim Slot &rarr;
+              </span>
+            </div>
+          </div>
+        `;
+      }
+
+      // Standard Event Card
+      return `
+        <div class="apple-reveal rounded-2xl glass-panel border border-white/10 overflow-hidden border-beam-card flex flex-col group cursor-pointer" onclick="window.openEventModal('${event.id}')">
           
-          <div class="absolute top-3 left-3">
-            <span class="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-black/60 border border-white/20 text-white">
-              ${event.category}
-            </span>
+          <!-- Card Image Header -->
+          <div class="relative aspect-video overflow-hidden">
+            <img src="${event.image}" alt="${event.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0C0E16] via-transparent to-transparent"></div>
+            
+            <div class="absolute top-3 left-3">
+              <span class="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-black/70 border border-white/20 text-white backdrop-blur-md">
+                ${event.category}
+              </span>
+            </div>
+
+            <div class="absolute bottom-2 right-3">
+              <span class="bounty-tag text-[11px] shadow-lg">
+                ${event.bounty}
+              </span>
+            </div>
           </div>
 
-          <div class="absolute bottom-2 right-3">
-            <span class="bounty-tag text-[11px] shadow-lg">
-              ${event.bounty}
-            </span>
+          <!-- Card Content Body -->
+          <div class="p-5 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-1">
+                ${event.club || 'IIIT Dharwad'}
+              </div>
+              <h4 class="font-display font-bold text-lg text-white mb-2 group-hover:text-amber-400 transition-colors">
+                ${event.title}
+              </h4>
+              <p class="text-xs text-slate-300 font-body line-clamp-2 mb-4 leading-relaxed">
+                ${event.summary}
+              </p>
+            </div>
+
+            <div class="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-slate-400">
+              <span class="flex items-center gap-1.5">
+                <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-400"></i>
+                ${event.time.split('-')[0].trim()}
+              </span>
+              <span class="text-amber-400 font-semibold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                View Dossier &rarr;
+              </span>
+            </div>
           </div>
+
         </div>
-
-        <!-- Card Content Body -->
-        <div class="p-5 flex-1 flex flex-col justify-between">
-          <div>
-            <h4 class="font-display font-bold text-lg text-white mb-2 group-hover:text-amber-400 transition-colors">
-              ${event.title}
-            </h4>
-            <p class="text-xs text-slate-400 font-body line-clamp-2 mb-4 leading-relaxed">
-              ${event.summary}
-            </p>
-          </div>
-
-          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-slate-400">
-            <span class="flex items-center gap-1.5">
-              <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-400"></i>
-              ${event.time.split('-')[0].trim()}
-            </span>
-            <span class="text-amber-400 font-semibold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
-              Details &rarr;
-            </span>
-          </div>
-        </div>
-
-      </div>
-    `).join('');
+      `;
+    }).join('');
   });
 
   if (window.lucide) lucide.createIcons();
@@ -168,6 +240,7 @@ function renderMasterSchedule(filter) {
           ${item.dayLabel}
         </div>
         <div>
+          <div class="text-[10px] font-mono uppercase text-slate-400">${item.club || 'IIIT Dharwad'}</div>
           <h4 class="font-display font-bold text-base text-white hover:text-amber-400 transition-colors">
             ${item.title}
           </h4>
@@ -240,7 +313,7 @@ window.toggleFaq = function(idx) {
 };
 
 /* ==========================================================================
-   2. EVENT MODAL LOGIC (DESKTOP MODAL / MOBILE BOTTOM SHEET)
+   3. EVENT DOSSIER MODAL LOGIC (DEEP PROTOCOL SLOTS)
    ========================================================================== */
 
 window.openEventModal = function(eventId) {
@@ -257,7 +330,7 @@ window.openEventModal = function(eventId) {
 
   if (!targetEvent) return;
 
-  document.getElementById('modal-category').innerText = targetEvent.category;
+  document.getElementById('modal-category').innerText = `${targetEvent.club || 'IIIT Dharwad'} // ${targetEvent.category}`;
   document.getElementById('modal-title').innerText = targetEvent.title;
   document.getElementById('modal-image').src = targetEvent.image;
   document.getElementById('modal-time').innerText = targetEvent.time;
@@ -265,8 +338,23 @@ window.openEventModal = function(eventId) {
   document.getElementById('modal-bounty').innerText = `${targetEvent.bounty} (${targetEvent.berries})`;
   document.getElementById('modal-summary').innerText = targetEvent.summary;
 
+  // Rounds
+  const roundsContainer = document.getElementById('modal-rounds');
+  if (roundsContainer && targetEvent.rounds) {
+    roundsContainer.innerHTML = targetEvent.rounds.map(rd => `<li>${rd}</li>`).join('');
+  }
+
+  // Rules
   const rulesList = document.getElementById('modal-rules');
-  rulesList.innerHTML = targetEvent.rules.map(r => `<li>${r}</li>`).join('');
+  if (rulesList && targetEvent.rules) {
+    rulesList.innerHTML = targetEvent.rules.map(r => `<li>${r}</li>`).join('');
+  }
+
+  // Coordinator Contact
+  const coordEl = document.getElementById('modal-coordinator');
+  if (coordEl) {
+    coordEl.innerText = targetEvent.coordinator || "Avinya Core Secretariat (avinya@iiitdwd.ac.in)";
+  }
 
   document.getElementById('event-modal-backdrop').classList.add('is-open');
   document.body.style.overflow = 'hidden';
@@ -278,7 +366,7 @@ window.closeEventModal = function() {
 };
 
 /* ==========================================================================
-   3. APPLE-STYLE GSAP SCROLLTRIGGERS & LOG POSE SYNC
+   4. APPLE-STYLE GSAP SCROLLTRIGGERS & LOG POSE SYNC
    ========================================================================== */
 
 function initAppleScrollTriggers() {
@@ -342,7 +430,7 @@ function activateIsland(island) {
 }
 
 /* ==========================================================================
-   4. INTERACTIVE AMBIENT CANVAS PARTICLE ENGINE
+   5. INTERACTIVE AMBIENT CANVAS PARTICLE ENGINE
    ========================================================================== */
 
 function initAmbientCanvas() {
@@ -358,7 +446,7 @@ function initAmbientCanvas() {
     height = canvas.height = window.innerHeight;
   });
 
-  let currentMode = 'harbor'; // 'harbor', 'dune', 'synthwave', 'carnival', 'space'
+  let currentMode = 'harbor';
   window.setParticleMode = (mode) => { currentMode = mode; };
 
   const particleCount = window.innerWidth < 768 ? 35 : 70;
@@ -379,29 +467,23 @@ function initAmbientCanvas() {
     ctx.clearRect(0, 0, width, height);
 
     particles.forEach(p => {
-      // Behavior based on active island mode
       if (currentMode === 'dune') {
-        // Dune desert sand drift (horizontal blowing)
         p.vx = 1.2 + Math.random() * 0.5;
         p.vy = (Math.random() - 0.5) * 0.4;
         ctx.fillStyle = `rgba(245, 158, 11, ${p.alpha * 0.8})`;
       } else if (currentMode === 'synthwave') {
-        // High speed neon vertical pulses
         p.vx = (Math.random() - 0.5) * 0.3;
         p.vy = -1.5 - Math.random() * 0.5;
         ctx.fillStyle = `rgba(236, 72, 153, ${p.alpha * 0.9})`;
       } else if (currentMode === 'carnival') {
-        // Floating bioluminescent golden embers
         p.vx = (Math.random() - 0.5) * 0.6;
         p.vy = -0.8 - Math.random() * 0.4;
         ctx.fillStyle = `rgba(250, 204, 21, ${p.alpha * 0.9})`;
       } else if (currentMode === 'space') {
-        // Starfield twinkling
         p.vx = (Math.random() - 0.5) * 0.2;
         p.vy = (Math.random() - 0.5) * 0.2;
         ctx.fillStyle = `rgba(56, 189, 248, ${p.alpha * 0.9})`;
       } else {
-        // Harbor calm night drift
         p.vx = (Math.random() - 0.5) * 0.4;
         p.vy = (Math.random() - 0.5) * 0.4;
         ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha * 0.4})`;
@@ -427,7 +509,7 @@ function initAmbientCanvas() {
 }
 
 /* ==========================================================================
-   5. COUNTDOWN TIMER ENGINE
+   6. COUNTDOWN TIMER ENGINE
    ========================================================================== */
 
 function initCountdown() {
@@ -438,11 +520,14 @@ function initCountdown() {
     const distance = targetDate - now;
 
     if (distance <= 0) {
-      document.getElementById('countdown-grid').innerHTML = `
-        <div class="col-span-4 py-3 text-center text-amber-400 font-mono font-bold text-lg">
-          EXPEDITION VOYAGE IS CURRENTLY LIVE!
-        </div>
-      `;
+      const grid = document.getElementById('countdown-grid');
+      if (grid) {
+        grid.innerHTML = `
+          <div class="col-span-4 py-3 text-center text-amber-400 font-mono font-bold text-lg">
+            EXPEDITION VOYAGE IS CURRENTLY LIVE!
+          </div>
+        `;
+      }
       return;
     }
 
@@ -464,63 +549,6 @@ function initCountdown() {
 
   update();
   setInterval(update, 1000);
-}
-
-/* ==========================================================================
-   6. AMBIENT AUDIO SYNTHESIZER (ZERO EXTERNAL MP3 DEPENDENCIES)
-   ========================================================================== */
-
-function initAudioAmbience() {
-  const toggleBtn = document.getElementById('audio-toggle');
-  const icon = document.getElementById('audio-icon');
-  if (!toggleBtn) return;
-
-  let audioCtx = null;
-  let isPlaying = false;
-  let oscillator = null;
-  let gainNode = null;
-
-  toggleBtn.addEventListener('click', () => {
-    if (!isPlaying) {
-      try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        audioCtx = new AudioContext();
-
-        // Synthesize a calming low nautical ocean drone
-        oscillator = audioCtx.createOscillator();
-        gainNode = audioCtx.createGain();
-
-        oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(110, audioCtx.currentTime); // Deep A2 nautical harmonic
-
-        gainNode.gain.setValueAtTime(0.01, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.05, audioCtx.currentTime + 2);
-
-        oscillator.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        oscillator.start();
-
-        isPlaying = true;
-        icon.setAttribute('data-lucide', 'volume-2');
-        toggleBtn.classList.add('text-amber-400', 'border-amber-400');
-        if (window.lucide) lucide.createIcons();
-      } catch (e) {
-        console.warn('AudioContext not allowed without gesture', e);
-      }
-    } else {
-      if (gainNode && audioCtx) {
-        gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
-        setTimeout(() => {
-          if (oscillator) oscillator.stop();
-          if (audioCtx) audioCtx.close();
-          isPlaying = false;
-        }, 500);
-      }
-      icon.setAttribute('data-lucide', 'volume-x');
-      toggleBtn.classList.remove('text-amber-400', 'border-amber-400');
-      if (window.lucide) lucide.createIcons();
-    }
-  });
 }
 
 /* ==========================================================================

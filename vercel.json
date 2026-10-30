@@ -1,5 +1,11 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/day1", "destination": "/day1.html" },
+    { "source": "/day2", "destination": "/day2.html" },
+    { "source": "/day3", "destination": "/day3.html" },
+    { "source": "/hack2future", "destination": "/hack2future.html" }
+  ]
 }
