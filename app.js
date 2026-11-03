@@ -43,48 +43,113 @@ if (document.readyState === 'loading') {
   initApp();
 }
 
+/* ==========================================================================
+   SMOOTH ZERO-LAG ARCHIPELAGO SHIP CONTROLLER (rAF LERP + PRECOMPUTED SPLINE)
+   ========================================================================== */
 function initArchipelagoShip() {
   const ship = document.getElementById('interactive-ship');
   const path = document.getElementById('voyage-curved-track');
   const section = document.getElementById('voyage-map');
-  if (!ship) return;
+  if (!ship || !path || !section) return;
 
-  function updateShipPosition() {
-    if (!section || !path) return;
-    const rect = section.getBoundingClientRect();
-    const sectionHeight = rect.height;
-    const windowHeight = window.innerHeight;
+  // Pre-sample spline coordinates to eliminate layout thrashing & getPointAtLength reflows during scroll
+  const SAMPLES = 120;
+  let splineSamples = [];
+  let pathLen = 1800;
 
-    // Calculate progress as user scrolls through voyage-map section
-    let progress = (windowHeight - rect.top) / (sectionHeight + windowHeight * 0.4);
-    progress = Math.max(0, Math.min(1, progress));
-
-    const pathLength = path.getTotalLength ? path.getTotalLength() : 1800;
-    const currentLength = progress * pathLength;
-
-    if (path.getPointAtLength) {
-      const pt = path.getPointAtLength(currentLength);
-      const nextPt = path.getPointAtLength(Math.min(pathLength, currentLength + 8));
-      const angle = Math.atan2(nextPt.y - pt.y, nextPt.x - pt.x) * (180 / Math.PI);
-
-      // SVG viewBox is 1200 x 2400
-      const leftPct = (pt.x / 1200) * 100;
-      const topPct = (pt.y / 2400) * 100;
-
-      ship.style.left = `${leftPct}%`;
-      ship.style.top = `${topPct}%`;
-      ship.style.transform = `translate(-50%, -50%) rotate(${angle - 90}deg)`;
+  function cacheSpline() {
+    try {
+      pathLen = path.getTotalLength ? path.getTotalLength() : 1800;
+      splineSamples = [];
+      for (let i = 0; i <= SAMPLES; i++) {
+        const len = (i / SAMPLES) * pathLen;
+        const pt = path.getPointAtLength(len);
+        const nextLen = Math.min(pathLen, len + 6);
+        const nextPt = path.getPointAtLength(nextLen);
+        const angle = Math.atan2(nextPt.y - pt.y, nextPt.x - pt.x) * (180 / Math.PI);
+        splineSamples.push({
+          xPct: (pt.x / 1200) * 100,
+          yPct: (pt.y / 2400) * 100,
+          angle: angle - 90
+        });
+      }
+    } catch (e) {
+      console.warn('SVG Spline caching fallback', e);
     }
   }
 
-  window.addEventListener('scroll', updateShipPosition, { passive: true });
-  window.addEventListener('resize', updateShipPosition);
-  setTimeout(updateShipPosition, 100);
+  cacheSpline();
+  window.addEventListener('resize', cacheSpline, { passive: true });
+
+  let targetProgress = 0;
+  let currentProgress = 0;
+  let isTicking = false;
+  let cachedRect = { top: 0, height: 2400 };
+
+  function measureSection() {
+    if (!section) return;
+    const box = section.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    cachedRect.top = box.top + scrollTop;
+    cachedRect.height = box.height;
+  }
+
+  measureSection();
+  window.addEventListener('resize', measureSection, { passive: true });
+
+  function onScrollPassive() {
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    const windowH = window.innerHeight;
+    const startY = cachedRect.top - windowH * 0.7;
+    const totalDist = cachedRect.height + windowH * 0.4;
+    
+    let p = (scrollY - startY) / totalDist;
+    targetProgress = Math.max(0, Math.min(1, p));
+
+    if (!isTicking) {
+      isTicking = true;
+      requestAnimationFrame(updateShipLoop);
+    }
+  }
+
+  function updateShipLoop() {
+    // Smooth lerp (linear interpolation) for buttery 60/120fps motion
+    currentProgress += (targetProgress - currentProgress) * 0.085;
+
+    if (splineSamples.length > 0) {
+      const idxFloat = currentProgress * (splineSamples.length - 1);
+      const idxBase = Math.floor(idxFloat);
+      const idxNext = Math.min(splineSamples.length - 1, idxBase + 1);
+      const fraction = idxFloat - idxBase;
+
+      const p1 = splineSamples[idxBase];
+      const p2 = splineSamples[idxNext];
+
+      const x = p1.xPct + (p2.xPct - p1.xPct) * fraction;
+      const y = p1.yPct + (p2.yPct - p1.yPct) * fraction;
+      const angle = p1.angle + (p2.angle - p1.angle) * fraction;
+
+      ship.style.left = `${x}%`;
+      ship.style.top = `${y}%`;
+      ship.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+    }
+
+    // Continue loop if still interpolating
+    if (Math.abs(targetProgress - currentProgress) > 0.0005) {
+      requestAnimationFrame(updateShipLoop);
+    } else {
+      isTicking = false;
+    }
+  }
+
+  window.addEventListener('scroll', onScrollPassive, { passive: true });
+  // Initial frame
+  onScrollPassive();
 
   window.sailToIsland = function(dayNum) {
     const targetSection = document.getElementById(`day${dayNum}`);
     if (targetSection) {
-      targetSection.scrollIntoView({ behavior: 'smooth' });
+      targetSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   };
 }
@@ -482,55 +547,10 @@ function initDevToolsPoneglyph() {
 /* ==========================================================================
    60 FPS GPU-ACCELERATED LIVING SEA ENGINE (TIME-OF-DAY OCEAN DYNAMICS)
    ========================================================================== */
+/* ==========================================================================
+   ULTRA-OPTIMIZED LIVING SEA CONTROLLER (GPU HARDWARE CSS SHADERS)
+   ========================================================================== */
 function initLivingSea() {
-  const canvas = document.getElementById('living-sea-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return;
-
-  let width = canvas.width = window.innerWidth;
-  let height = canvas.height = window.innerHeight;
-
-  window.addEventListener('resize', () => {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-  });
-
-  const PALETTES = {
-    morning: {
-      skyTop: [12, 74, 110],       // #0c4a6e
-      skyBottom: [56, 189, 248],   // #38bdf8 light azure
-      seaDeep: [3, 105, 161],      // #0369a1
-      seaMid: [14, 165, 233],      // #0ea5e9
-      seaCrest: [186, 230, 253],   // #bae6fd
-      shimmer: [254, 240, 138, 0.45]
-    },
-    day: {
-      skyTop: [8, 47, 73],         // #082f49
-      skyBottom: [14, 165, 233],   // #0ea5e9
-      seaDeep: [2, 132, 199],      // #0284c7
-      seaMid: [56, 189, 248],      // #38bdf8
-      seaCrest: [224, 242, 254],
-      shimmer: [255, 255, 255, 0.5]
-    },
-    sunset: {
-      skyTop: [59, 7, 100],        // #3b0764
-      skyBottom: [234, 88, 12],    // #ea580c
-      seaDeep: [67, 20, 7],        // #431407
-      seaMid: [194, 65, 12],       // #c2410c
-      seaCrest: [253, 186, 116],   // #fdba74
-      shimmer: [254, 215, 170, 0.55]
-    },
-    night: {
-      skyTop: [2, 6, 23],          // #020617
-      skyBottom: [15, 23, 42],     // #0f172a
-      seaDeep: [3, 7, 18],         // #030712
-      seaMid: [15, 30, 60],
-      seaCrest: [56, 189, 248],    // #38bdf8 bioluminescent aqua
-      shimmer: [56, 189, 248, 0.35]
-    }
-  };
-
   function getAutoTimeMode() {
     const hour = new Date().getHours();
     if (hour >= 5 && hour < 10) return 'morning';
@@ -539,18 +559,8 @@ function initLivingSea() {
     return 'night';
   }
 
-  let currentMode = getAutoTimeMode();
-  let targetMode = currentMode;
   let isAuto = true;
-
-  let currentColors = {
-    skyTop: [...PALETTES[currentMode].skyTop],
-    skyBottom: [...PALETTES[currentMode].skyBottom],
-    seaDeep: [...PALETTES[currentMode].seaDeep],
-    seaMid: [...PALETTES[currentMode].seaMid],
-    seaCrest: [...PALETTES[currentMode].seaCrest],
-    shimmer: [...PALETTES[currentMode].shimmer]
-  };
+  let targetMode = getAutoTimeMode();
 
   window.setLivingSeaTime = function(mode) {
     if (mode === 'auto') {
@@ -561,104 +571,30 @@ function initLivingSea() {
       targetMode = mode;
     }
     document.body.setAttribute('data-time', targetMode);
+    
+    // Update HUD buttons if present
+    document.querySelectorAll('#time-of-day-picker .time-btn').forEach(btn => {
+      const bTime = btn.getAttribute('data-time');
+      if (bTime === (isAuto ? 'auto' : targetMode)) {
+        btn.classList.add('is-active');
+      } else {
+        btn.classList.remove('is-active');
+      }
+    });
   };
 
-  document.body.setAttribute('data-time', targetMode);
+  // Set initial time
+  window.setLivingSeaTime('auto');
 
-  let time = 0;
-  const sparkles = [];
-  for (let i = 0; i < 45; i++) {
-    sparkles.push({
-      x: Math.random(),
-      y: Math.random() * 0.7 + 0.3,
-      size: Math.random() * 2 + 1,
-      speed: Math.random() * 0.02 + 0.01,
-      phase: Math.random() * Math.PI * 2
-    });
-  }
-
-  function lerp(a, b, t) {
-    return a + (b - a) * t;
-  }
-
-  function updatePaletteTransition() {
+  // Gentle periodic check for auto mode every 5 minutes
+  setInterval(() => {
     if (isAuto) {
-      targetMode = getAutoTimeMode();
-    }
-    const target = PALETTES[targetMode] || PALETTES.night;
-    const speed = 0.04;
-
-    for (const key of ['skyTop', 'skyBottom', 'seaDeep', 'seaMid', 'seaCrest']) {
-      for (let i = 0; i < 3; i++) {
-        currentColors[key][i] = lerp(currentColors[key][i], target[key][i], speed);
+      const newAuto = getAutoTimeMode();
+      if (newAuto !== targetMode) {
+        window.setLivingSeaTime('auto');
       }
     }
-    for (let i = 0; i < 4; i++) {
-      currentColors.shimmer[i] = lerp(currentColors.shimmer[i], target.shimmer[i], speed);
-    }
-  }
-
-  function drawWave(yOffset, amplitude, frequency, speed, colorHex, strokeColorHex) {
-    ctx.beginPath();
-    ctx.moveTo(0, height);
-    
-    for (let x = 0; x <= width; x += 16) {
-      const y = yOffset + 
-                Math.sin(x * frequency + time * speed) * amplitude + 
-                Math.cos(x * frequency * 0.5 + time * speed * 0.7) * (amplitude * 0.4);
-      ctx.lineTo(x, y);
-    }
-    ctx.lineTo(width, height);
-    ctx.closePath();
-    ctx.fillStyle = colorHex;
-    ctx.fill();
-
-    if (strokeColorHex) {
-      ctx.strokeStyle = strokeColorHex;
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-    }
-  }
-
-  function render() {
-    time += 0.015;
-    updatePaletteTransition();
-
-    const c = currentColors;
-    const skyTopStr = `rgb(${Math.round(c.skyTop[0])}, ${Math.round(c.skyTop[1])}, ${Math.round(c.skyTop[2])})`;
-    const skyBtmStr = `rgb(${Math.round(c.skyBottom[0])}, ${Math.round(c.skyBottom[1])}, ${Math.round(c.skyBottom[2])})`;
-    
-    const skyGrad = ctx.createLinearGradient(0, 0, 0, height);
-    skyGrad.addColorStop(0, skyTopStr);
-    skyGrad.addColorStop(1, skyBtmStr);
-    ctx.fillStyle = skyGrad;
-    ctx.fillRect(0, 0, width, height);
-
-    const shimStr = `rgba(${Math.round(c.shimmer[0])}, ${Math.round(c.shimmer[1])}, ${Math.round(c.shimmer[2])}, ${c.shimmer[3].toFixed(2)})`;
-    ctx.fillStyle = shimStr;
-    for (const sp of sparkles) {
-      const sx = sp.x * width;
-      const sy = sp.y * height + Math.sin(time + sp.phase) * 6;
-      const alpha = (Math.sin(time * 2 + sp.phase) + 1) * 0.5;
-      ctx.globalAlpha = alpha;
-      ctx.beginPath();
-      ctx.arc(sx, sy, sp.size, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.globalAlpha = 1.0;
-
-    const deepRgb = `rgb(${Math.round(c.seaDeep[0])}, ${Math.round(c.seaDeep[1])}, ${Math.round(c.seaDeep[2])})`;
-    const midRgb = `rgb(${Math.round(c.seaMid[0])}, ${Math.round(c.seaMid[1])}, ${Math.round(c.seaMid[2])})`;
-    const crestRgb = `rgb(${Math.round(c.seaCrest[0])}, ${Math.round(c.seaCrest[1])}, ${Math.round(c.seaCrest[2])})`;
-
-    drawWave(height * 0.55, 24, 0.002, 0.8, deepRgb, null);
-    drawWave(height * 0.68, 32, 0.003, -1.1, midRgb, crestRgb);
-    drawWave(height * 0.82, 38, 0.004, 1.4, deepRgb, crestRgb);
-
-    requestAnimationFrame(render);
-  }
-
-  requestAnimationFrame(render);
+  }, 300000);
 }
 
 /* ==========================================================================
@@ -716,6 +652,297 @@ function initWeatherWidget() {
 /* ==========================================================================
    EVENT DOSSIER & LOCATION INSPECTOR MODAL CONTROLLER
    ========================================================================== */
+
+/* ==========================================================================
+   TWO-STAGE ISLAND ZOOM & SCATTERED EVENT CONTROLLER
+   ========================================================================== */
+
+/**
+ * Stage 1 Zoom: Click on Island entity -> zooms into island & scatters event pins
+ */
+window.zoomIntoIsland = function(islandId) {
+  const target = document.getElementById(islandId);
+  if (!target) return;
+
+  const allIslands = document.querySelectorAll('.island-entity');
+  allIslands.forEach(isl => {
+    if (isl.id !== islandId) {
+      isl.classList.remove('is-zoomed', 'is-focused-event');
+      isl.style.removeProperty('--focus-x');
+      isl.style.removeProperty('--focus-y');
+      isl.querySelectorAll('.island-pin-anchor').forEach(p => p.classList.remove('is-active-pin'));
+    }
+  });
+
+  const isAlreadyZoomed = target.classList.contains('is-zoomed');
+  if (!isAlreadyZoomed) {
+    target.classList.add('is-zoomed');
+    target.classList.remove('is-focused-event');
+    target.style.removeProperty('--focus-x');
+    target.style.removeProperty('--focus-y');
+
+    // Smoothly center the island in the viewport
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // Switch environmental audio & particle modes
+    if (islandId === 'day1') {
+      if (window.setParticleMode) window.setParticleMode('dune');
+      if (window.setAudioTheme) window.setAudioTheme('dune');
+    } else if (islandId === 'day2') {
+      if (window.setParticleMode) window.setParticleMode('synthwave');
+      if (window.setAudioTheme) window.setAudioTheme('synthwave');
+    } else if (islandId === 'day3') {
+      if (window.setParticleMode) window.setParticleMode('carnival');
+      if (window.setAudioTheme) window.setAudioTheme('carnival');
+    }
+  }
+};
+
+/**
+ * Reset Island View: Returns island to pristine clean default state (only Day & Theme)
+ */
+window.resetIslandZoom = function(islandId) {
+  const target = document.getElementById(islandId);
+  if (target) {
+    target.classList.remove('is-zoomed', 'is-focused-event');
+    target.style.removeProperty('--focus-x');
+    target.style.removeProperty('--focus-y');
+    target.querySelectorAll('.island-pin-anchor').forEach(p => p.classList.remove('is-active-pin'));
+  }
+  window.closeEventDrawer();
+};
+
+/**
+ * Stage 2 Zoom: Click on Event Pin -> Zooms directly to that coordinate & slides in Side Drawer
+ */
+window.focusEventLocation = function(islandId, eventId, xPercent, yPercent) {
+  const island = document.getElementById(islandId);
+  if (!island) return;
+
+  // Set island to zoomed and focused-event stage
+  island.classList.add('is-zoomed');
+  island.classList.add('is-focused-event');
+
+  // Calculate normalized coordinate offset to center pin inside viewport
+  const focusX = (50 - xPercent) * 0.55;
+  const focusY = (50 - yPercent) * 0.55;
+  island.style.setProperty('--focus-x', `${focusX}%`);
+  island.style.setProperty('--focus-y', `${focusY}%`);
+
+  // Highlight active pin
+  island.querySelectorAll('.island-pin-anchor').forEach(pin => {
+    if (pin.id === `pin-${eventId}`) {
+      pin.classList.add('is-active-pin');
+    } else {
+      pin.classList.remove('is-active-pin');
+    }
+  });
+
+  // Retrieve event data from window.AVINYA_DATA
+  const data = window.AVINYA_DATA;
+  if (!data || !data.islands) return;
+
+  let foundEvent = null;
+  let parentIsland = null;
+
+  for (const isl of data.islands) {
+    const ev = (isl.events || []).find(e => e.id === eventId);
+    if (ev) {
+      foundEvent = ev;
+      parentIsland = isl;
+      break;
+    }
+  }
+
+  if (!foundEvent) {
+    if (eventId === 'd1-e1') {
+      foundEvent = data.islands[0].events[0];
+      parentIsland = data.islands[0];
+    } else {
+      return;
+    }
+  }
+
+  // Populate Side Drawer
+  const drawer = document.getElementById('event-side-drawer');
+  const backdrop = document.getElementById('event-side-drawer-backdrop');
+  const content = document.getElementById('event-side-drawer-content');
+  if (!drawer || !content) return;
+
+  const sponsorsHtml = (foundEvent.sponsors || []).map(sp => `
+    <div class="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between text-xs">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-400 flex items-center justify-center text-amber-400 shrink-0">
+          <i data-lucide="${sp.logo || 'award'}" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <div class="font-display font-bold text-white text-xs">${sp.name}</div>
+          <div class="text-[10px] font-mono text-slate-400">${sp.tier}</div>
+        </div>
+      </div>
+      <div class="text-right">
+        <div class="text-xs font-mono font-bold text-amber-400">${sp.spending}</div>
+        <div class="text-[9px] font-mono text-slate-500 uppercase">Patron Grant</div>
+      </div>
+    </div>
+  `).join('');
+
+  const rulesHtml = (foundEvent.rules || []).map(r => `
+    <li class="flex items-start gap-2 text-xs text-slate-300 font-mono">
+      <span class="text-amber-400 mt-0.5">✦</span>
+      <span>${r}</span>
+    </li>
+  `).join('');
+
+  content.innerHTML = `
+    <!-- Top Header & Close Button -->
+    <div class="flex items-start justify-between gap-3 pb-4 border-b border-white/15 mb-5">
+      <div>
+        <div class="flex items-center gap-2 text-xs font-mono text-amber-400 font-bold mb-1">
+          <span class="px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 text-[11px]">${parentIsland ? parentIsland.dayNumber : 'DAY'}</span>
+          <span>•</span>
+          <span class="flex items-center gap-1 text-[11px]">
+            <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+            <span>${foundEvent.islandPlace || foundEvent.venue}</span>
+          </span>
+        </div>
+        <h3 class="font-display font-black text-2xl text-white tracking-tight">${foundEvent.title}</h3>
+        <p class="text-xs text-slate-300 font-body mt-1 leading-relaxed">${foundEvent.tagline || foundEvent.summary}</p>
+      </div>
+      <button onclick="window.closeEventDrawer()" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white transition-colors cursor-pointer shrink-0" title="Close Drawer (Esc)">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Official Prize Bounty Banner -->
+    <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 mb-5">
+      <div class="flex items-center justify-between mb-2.5">
+        <div class="flex items-center gap-2 text-xs font-mono font-bold text-amber-400 uppercase">
+          <i data-lucide="trophy" class="w-4 h-4"></i>
+          <span>Official Prize Bounty</span>
+        </div>
+        <span class="font-display font-black text-xl text-amber-300">${foundEvent.prize || foundEvent.bounty || '₹50,000'}</span>
+      </div>
+      ${foundEvent.podium ? `
+        <div class="grid grid-cols-3 gap-2 font-mono text-[11px]">
+          <div class="p-2.5 rounded-xl bg-black/50 border border-amber-500/40 text-center">
+            <div class="text-[9px] text-amber-400 uppercase font-bold">1st (Gold)</div>
+            <div class="font-bold text-white mt-0.5 text-xs">${foundEvent.podium.first}</div>
+          </div>
+          <div class="p-2.5 rounded-xl bg-black/50 border border-slate-400/40 text-center">
+            <div class="text-[9px] text-slate-300 uppercase font-bold">2nd (Silver)</div>
+            <div class="font-bold text-white mt-0.5 text-xs">${foundEvent.podium.second}</div>
+          </div>
+          <div class="p-2.5 rounded-xl bg-black/50 border border-amber-700/40 text-center">
+            <div class="text-[9px] text-amber-600 uppercase font-bold">3rd (Bronze)</div>
+            <div class="font-bold text-white mt-0.5 text-xs">${foundEvent.podium.third}</div>
+          </div>
+        </div>
+      ` : ''}
+    </div>
+
+    <!-- Scannable Registration QR & Direct Entry Pass -->
+    <div class="p-4 rounded-2xl bg-black/60 border border-white/15 mb-5 flex flex-col sm:flex-row items-center gap-4">
+      <div class="w-28 h-28 rounded-xl bg-white p-2 shrink-0 shadow-lg flex items-center justify-center">
+        <img src="${foundEvent.qrCodeImage || 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + encodeURIComponent(foundEvent.registrationUrl || 'https://hack2future.iiitdwd.ac.in')}" alt="Registration QR Code" class="w-full h-full object-contain">
+      </div>
+      <div class="flex-1 text-center sm:text-left">
+        <div class="text-[10px] font-mono text-slate-400 mb-1">SCAN QR OR CLAIM ENTRY PASS</div>
+        <h4 class="font-display font-bold text-sm text-white mb-1.5">Official Port Pass</h4>
+        <p class="text-[11px] text-slate-300 font-body mb-3 leading-relaxed">
+          Open to all undergraduate students nationwide. Secure spot before registration caps out.
+        </p>
+        <a href="${foundEvent.registrationUrl || 'https://hack2future.iiitdwd.ac.in'}" target="_blank" class="btn-primary text-xs !py-2 !px-4 inline-flex items-center gap-1.5">
+          <span>Register Now</span>
+          <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Declared Sponsors & Spending Allocation -->
+    ${sponsorsHtml ? `
+      <div class="mb-5">
+        <h4 class="text-xs font-mono uppercase tracking-widest text-slate-400 mb-2.5 flex items-center gap-1.5">
+          <i data-lucide="building-2" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>Event Patrons & Spending Allocation</span>
+        </h4>
+        <div class="space-y-2">
+          ${sponsorsHtml}
+        </div>
+      </div>
+    ` : ''}
+
+    <!-- Protocol & Guidelines -->
+    ${rulesHtml ? `
+      <div class="mb-5">
+        <h4 class="text-xs font-mono uppercase tracking-widest text-slate-400 mb-2 flex items-center gap-1.5">
+          <i data-lucide="scroll" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>Guidelines & Protocols</span>
+        </h4>
+        <ul class="space-y-1.5 bg-black/40 p-3.5 rounded-xl border border-white/5">
+          ${rulesHtml}
+        </ul>
+      </div>
+    ` : ''}
+
+    <!-- Guild, Lead & Venue Info -->
+    <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 grid grid-cols-2 gap-3 text-xs font-mono mb-5">
+      <div>
+        <span class="text-slate-500 block text-[10px]">Host Guild:</span>
+        <strong class="text-slate-200 text-xs">${foundEvent.hostClub || 'Avinya Student Committee'}</strong>
+      </div>
+      <div>
+        <span class="text-slate-500 block text-[10px]">Student Coordinator:</span>
+        <strong class="text-amber-400 text-xs">${foundEvent.studentLead || 'Fest Secretariat'}</strong>
+      </div>
+      <div class="col-span-2">
+        <span class="text-slate-500 block text-[10px]">Campus Landmark:</span>
+        <strong class="text-slate-200 text-xs">${foundEvent.venue}</strong>
+      </div>
+    </div>
+
+    <!-- Standalone Links -->
+    <div class="pt-3 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+      <a href="event.html?id=${foundEvent.id}" class="text-amber-400 hover:text-white underline underline-offset-4 flex items-center gap-1">
+        <span>Standalone Event Dossier</span>
+        <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+      </a>
+      <a href="${parentIsland ? parentIsland.id + '.html' : 'index.html'}" class="text-slate-400 hover:text-amber-400 flex items-center gap-1">
+        <span>${parentIsland ? parentIsland.name : 'Island'} Full Ledger &rarr;</span>
+      </a>
+    </div>
+  `;
+
+  drawer.classList.add('is-open');
+  if (backdrop) backdrop.classList.add('is-open');
+  if (window.lucide) lucide.createIcons();
+};
+
+/**
+ * Close Event Drawer and return island from Stage 2 (event focused) back to Stage 1 (island overview)
+ */
+window.closeEventDrawer = function() {
+  const drawer = document.getElementById('event-side-drawer');
+  const backdrop = document.getElementById('event-side-drawer-backdrop');
+  if (drawer) drawer.classList.remove('is-open');
+  if (backdrop) backdrop.classList.remove('is-open');
+
+  const allIslands = document.querySelectorAll('.island-entity');
+  allIslands.forEach(isl => {
+    isl.classList.remove('is-focused-event');
+    isl.style.removeProperty('--focus-x');
+    isl.style.removeProperty('--focus-y');
+    isl.querySelectorAll('.island-pin-anchor').forEach(p => p.classList.remove('is-active-pin'));
+  });
+};
+
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    window.closeEventDrawer();
+  }
+});
+
+
 window.openEventDossier = function(eventId) {
   const data = window.AVINYA_DATA;
   if (!data || !data.islands) return;

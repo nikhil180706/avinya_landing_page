@@ -902,3 +902,333 @@ body[data-time="night"] {
   box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.8), 0 0 25px var(--realm-glow, rgba(245, 158, 11, 0.3));
 }
 
+
+/* ==========================================================================
+   PROFESSIONAL CINEMATIC LIVING SEA BACKGROUND (ZERO CPU, 120FPS GPU COMPOSITED)
+   ========================================================================== */
+.living-sea-engine {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: var(--sea-abyss, #030712);
+  transition: background 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sea-bathymetry-depth {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 35%, var(--sea-mid, #0369A1) 0%, var(--sea-abyss, #030712) 75%);
+  opacity: 0.85;
+  transition: all 1s ease;
+}
+
+.sea-sun-caustics {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(1.5px 1.5px at 20% 30%, var(--sea-shimmer, rgba(255,255,255,0.4)) 50%, transparent 100%),
+    radial-gradient(2px 2px at 60% 45%, var(--sea-shimmer, rgba(255,255,255,0.4)) 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 80% 25%, var(--sea-shimmer, rgba(255,255,255,0.4)) 50%, transparent 100%),
+    radial-gradient(2px 2px at 35% 75%, var(--sea-shimmer, rgba(255,255,255,0.3)) 50%, transparent 100%);
+  background-size: 280px 280px;
+  opacity: 0.6;
+  animation: causticsDrift 24s linear infinite;
+}
+
+@keyframes causticsDrift {
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-30px, -15px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+.sea-wave-mesh {
+  position: absolute;
+  left: -20%;
+  width: 140%;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.wave-layer-1 {
+  bottom: 0;
+  height: 60%;
+  background: radial-gradient(ellipse at 50% 100%, var(--sea-mid, #0E7490) 0%, transparent 70%);
+  opacity: 0.55;
+  animation: waveSwell1 10s ease-in-out infinite alternate;
+}
+
+.wave-layer-2 {
+  bottom: 0;
+  height: 42%;
+  background: radial-gradient(ellipse at 40% 100%, var(--sea-crest, #38BDF8) 0%, transparent 65%);
+  opacity: 0.4;
+  animation: waveSwell2 8s ease-in-out infinite alternate-reverse;
+}
+
+.wave-layer-3 {
+  bottom: 0;
+  height: 25%;
+  background: radial-gradient(ellipse at 60% 100%, var(--sea-deep, #0284C7) 0%, transparent 60%);
+  opacity: 0.5;
+  animation: waveSwell3 12s ease-in-out infinite alternate;
+}
+
+@keyframes waveSwell1 {
+  0% { transform: translate3d(-20px, 0, 0) scaleY(0.95); }
+  100% { transform: translate3d(20px, -12px, 0) scaleY(1.08); }
+}
+
+@keyframes waveSwell2 {
+  0% { transform: translate3d(25px, 0, 0) scaleY(1.05); }
+  100% { transform: translate3d(-25px, -8px, 0) scaleY(0.92); }
+}
+
+@keyframes waveSwell3 {
+  0% { transform: translate3d(-15px, 0, 0); }
+  100% { transform: translate3d(15px, -10px, 0); }
+}
+
+.sea-horizon-mist {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 35%;
+  background: linear-gradient(to bottom, var(--sky-tint, rgba(5,6,10,0.85)) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Dynamic Time of Day Palettes */
+body[data-time="morning"] {
+  --sea-abyss: #041B2D;
+  --sea-deep: #0284C7;
+  --sea-mid: #0EA5E9;
+  --sea-crest: #BAE6FD;
+  --sea-shimmer: rgba(254, 240, 138, 0.55);
+  --sky-tint: rgba(12, 74, 110, 0.7);
+}
+
+body[data-time="day"] {
+  --sea-abyss: #031422;
+  --sea-deep: #0369A1;
+  --sea-mid: #0284C7;
+  --sea-crest: #7DD3FC;
+  --sea-shimmer: rgba(255, 255, 255, 0.5);
+  --sky-tint: rgba(8, 47, 73, 0.65);
+}
+
+body[data-time="sunset"] {
+  --sea-abyss: #1A0704;
+  --sea-deep: #431407;
+  --sea-mid: #C2410C;
+  --sea-crest: #FDBA74;
+  --sea-shimmer: rgba(254, 215, 170, 0.6);
+  --sky-tint: rgba(59, 7, 100, 0.75);
+}
+
+body[data-time="night"] {
+  --sea-abyss: #020617;
+  --sea-deep: #0B1329;
+  --sea-mid: #0F172A;
+  --sea-crest: #38BDF8;
+  --sea-shimmer: rgba(56, 189, 248, 0.4);
+  --sky-tint: rgba(2, 6, 23, 0.85);
+}
+
+/* ==========================================================================
+   ISLAND ZOOM & SCATTER ARCHITECTURE (CLEAN INITIAL STATE -> CINEMATIC ZOOM)
+   ========================================================================== */
+.island-entity {
+  position: relative;
+  z-index: 15;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Minimalist Clean Island Title Bar */
+.island-header-clean {
+  background: rgba(11, 14, 24, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid var(--realm-accent, #F59E0B);
+  border-radius: 9999px;
+  padding: 10px 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.7), 0 0 20px var(--realm-glow, rgba(245, 158, 11, 0.3));
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-bottom: 24px;
+}
+
+.island-header-clean:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 20px 45px -5px rgba(0, 0, 0, 0.8), 0 0 30px var(--realm-glow, rgba(245, 158, 11, 0.5));
+}
+
+.explore-cue-badge {
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background: var(--realm-accent, #F59E0B);
+  color: #05060A;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  animation: cuePulse 2s infinite ease-in-out;
+}
+
+@keyframes cuePulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.85; }
+}
+
+/* Island Viewport & Landmass Container */
+.island-viewport {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  overflow: visible;
+}
+
+.island-landmass-inner {
+  position: relative;
+  width: 100%;
+  transform-origin: center center;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.95));
+}
+
+/* STAGE 1: Island Zoomed In */
+.island-entity.is-zoomed .island-landmass-inner {
+  transform: scale(1.35);
+  filter: drop-shadow(0 40px 90px var(--realm-glow, rgba(245, 158, 11, 0.5)));
+}
+
+/* STAGE 2: Event Focus Zoom-In */
+.island-entity.is-focused-event .island-landmass-inner {
+  transform: scale(2.2) translate(var(--focus-x, 0), var(--focus-y, 0));
+  filter: drop-shadow(0 45px 100px var(--realm-glow, rgba(245, 158, 11, 0.6)));
+}
+
+/* Floating Island Telemetry HUD during Zoom */
+.island-zoom-hud {
+  position: absolute;
+  top: -60px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 40;
+}
+
+.island-entity.is-zoomed .island-zoom-hud {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Event Location Pins Scattered on Island (Hidden initially, Pop in on Zoom) */
+.island-pin-anchor {
+  position: absolute;
+  transform: translate(-50%, -50%) scale(0.4);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 30;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Staggered Pop-In When Island is Zoomed */
+.island-entity.is-zoomed .island-pin-anchor {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.island-entity.is-zoomed .island-pin-anchor:nth-child(1) { transition-delay: 0.06s; }
+.island-entity.is-zoomed .island-pin-anchor:nth-child(2) { transition-delay: 0.12s; }
+.island-entity.is-zoomed .island-pin-anchor:nth-child(3) { transition-delay: 0.18s; }
+.island-entity.is-zoomed .island-pin-anchor:nth-child(4) { transition-delay: 0.24s; }
+.island-entity.is-zoomed .island-pin-anchor:nth-child(5) { transition-delay: 0.30s; }
+.island-entity.is-zoomed .island-pin-anchor:nth-child(6) { transition-delay: 0.36s; }
+
+.island-pin-anchor:hover {
+  transform: translate(-50%, -50%) scale(1.15) !important;
+  z-index: 60;
+}
+
+.island-pin-anchor.is-active-pin {
+  transform: translate(-50%, -50%) scale(1.25) !important;
+  z-index: 70;
+}
+
+.island-pin-anchor.is-active-pin .pin-icon-badge {
+  background: #FFFFFF;
+  color: #05060A;
+  box-shadow: 0 0 28px #FFFFFF;
+}
+
+/* ==========================================================================
+   CINEMATIC SIDE EVENT DOSSIER DRAWER
+   ========================================================================== */
+#event-side-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 140;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+#event-side-drawer-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#event-side-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(520px, 92vw);
+  height: 100vh;
+  z-index: 150;
+  background: rgba(10, 13, 22, 0.94);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border-left: 1.5px solid rgba(255, 255, 255, 0.15);
+  box-shadow: -25px 0 70px rgba(0, 0, 0, 0.95);
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+#event-side-drawer.is-open {
+  transform: translateX(0);
+}
+
+/* Sailing Ship Ultra-Smooth Performance */
+.voyager-ship {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 25;
+  pointer-events: none;
+  will-change: transform;
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.9));
+}
