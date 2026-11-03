@@ -30,6 +30,8 @@ window.AVINYA_DATA = {
       date: "Friday, March 12, 2027",
       name: "The Last Outpost",
       theme: "Dune Desert Sci-Fi",
+      portName: "Port of Arid Monoliths (Pier 01)",
+      portCoordinates: "15.4288° N, 75.0560° E",
       tagline: "Decipher the Ancient Monoliths of Code across the Shifting Dunes",
       accentColor: "#F59E0B",
       badge: "Arid Sector // Compass Locked",
@@ -43,6 +45,8 @@ window.AVINYA_DATA = {
         {
           id: "d1-e1",
           title: "Algorithmic Dunes (Flagship CP)",
+          islandPlace: "The Algorithmic Monolith",
+          islandLocationTag: "North Plateau • Pier Alpha",
           club: "Velocity Coding Club",
           clubLogo: "code-2",
           category: "Competitive Programming",
@@ -94,6 +98,8 @@ window.AVINYA_DATA = {
         {
           id: "d1-e2",
           title: "Sand-Cipher: National CTF",
+          islandPlace: "Sandstorm Cyber Fortress",
+          islandLocationTag: "Citadel Bastion • Sub-node 4",
           club: "Cyber Security Wing",
           clubLogo: "shield-alert",
           category: "Cybersecurity & Exploitation",
@@ -138,6 +144,8 @@ window.AVINYA_DATA = {
         {
           id: "d1-e3",
           title: "YUKTI: Silicon & VLSI Showdown",
+          islandPlace: "Silicon Foundry Caverns",
+          islandLocationTag: "FPGA Deep Chamber • Tech Vault 2",
           club: "Hardware & VLSI Club",
           clubLogo: "cpu",
           category: "Chip Design & Embedded",
@@ -181,6 +189,8 @@ window.AVINYA_DATA = {
         {
           id: "d1-e4",
           title: "Dune Rover Autonomous Challenge",
+          islandPlace: "Terra-Rover Dunes",
+          islandLocationTag: "Crater Proving Grounds • Dune Basin",
           club: "Quantum Robotics Society",
           clubLogo: "bot",
           category: "Autonomous Robotics",
@@ -230,6 +240,8 @@ window.AVINYA_DATA = {
       date: "Saturday, March 13, 2027",
       name: "The Pandemonium",
       theme: "Synthwave Cyberpunk",
+      portName: "Cyber-Bay Marina (Pier Neon 02)",
+      portCoordinates: "15.4285° N, 75.0572° E",
       tagline: "Overclock the Neon Surge in the Digital Cyber-Metropolis",
       accentColor: "#EC4899",
       badge: "High Distortion // Magnetic Overdrive",
@@ -243,6 +255,8 @@ window.AVINYA_DATA = {
         {
           id: "d2-e1",
           title: "RoboWars: Cyber Clash",
+          islandPlace: "The Steel Colosseum",
+          islandLocationTag: "Lower Mecha Docks • Grid 7",
           club: "Quantum Robotics Society",
           clubLogo: "swords",
           category: "Combat Robotics",
@@ -286,6 +300,8 @@ window.AVINYA_DATA = {
         {
           id: "d2-e2",
           title: "Neon Overdrive: Spatial UI/UX",
+          islandPlace: "Spatial Hologram Studio",
+          islandLocationTag: "Design Tower Apex • Sector Magenta",
           club: "Mosaic Design Club",
           clubLogo: "palette",
           category: "Product & Spatial Design",
@@ -329,6 +345,8 @@ window.AVINYA_DATA = {
         {
           id: "d2-e3",
           title: "RetroWave E-Sports Arena",
+          islandPlace: "Neon Grid Arcade",
+          islandLocationTag: "Cyber Arcade Alley • Floor 3",
           club: "Gaming & Esports Syndicate",
           clubLogo: "gamepad-2",
           category: "Competitive Esports",
@@ -369,6 +387,8 @@ window.AVINYA_DATA = {
         {
           id: "d2-e4",
           title: "Cyber Beats: DJ War & Beatbox",
+          islandPlace: "Cyber Beats Stage",
+          islandLocationTag: "Neon Waterfront Amphitheater",
           club: "440 Hz (Music Club)",
           clubLogo: "disc",
           category: "Music Production",
@@ -415,6 +435,8 @@ window.AVINYA_DATA = {
       date: "Sunday, March 14, 2027",
       name: "The Carnival Island",
       theme: "Grand Midnight Festival",
+      portName: "Grand Carnival Lagoon (Wharf 03)",
+      portCoordinates: "15.4295° N, 75.0552° E",
       tagline: "Celebrate the Grand Finale Across Golden Illuminated Waters",
       accentColor: "#EAB308",
       badge: "Critical Overload // Grand Revelry",
@@ -428,6 +450,8 @@ window.AVINYA_DATA = {
         {
           id: "d3-e1",
           title: "Star-Nite: Grand Celebrity Concert",
+          islandPlace: "The Grand Lagoon Stage",
+          islandLocationTag: "Open Waterfront Pavilion",
           club: "440 Hz & Avinya Core",
           clubLogo: "sparkles",
           category: "Pro-Nite Flagship Concert",
@@ -469,6 +493,8 @@ window.AVINYA_DATA = {
         {
           id: "d3-e2",
           title: "Rhythm of the Tide: Mega Choreo",
+          islandPlace: "Starlight Dance Arena",
+          islandLocationTag: "Central Festival Grounds",
           club: "Dynamight Dance Club",
           clubLogo: "flame",
           category: "Group Dance Championship",
@@ -509,6 +535,8 @@ window.AVINYA_DATA = {
         {
           id: "d3-e3",
           title: "Battle of the Bands: Sound Clash",
+          islandPlace: "Sunken Amphitheatre",
+          islandLocationTag: "Acoustic Basin Wharf",
           club: "440 Hz (Music Club)",
           clubLogo: "volume-2",
           category: "Live Rock & Fusion",
@@ -546,6 +574,8 @@ window.AVINYA_DATA = {
         {
           id: "d3-e4",
           title: "Haute Couture: The Grand Runway",
+          islandPlace: "Lantern Promenade",
+          islandLocationTag: "Grand Ramp Walkway • Wharf 3",
           club: "Mosaic Arts Club",
           clubLogo: "sparkle",
           category: "Fashion & Theatrics",
@@ -676,5 +706,84 @@ window.AVINYA_DATA = {
       q: "How does the boat navigation and 3 Islands concept work?",
       a: "Avinya is designed as an interactive nautical journey across 3 themed islands: Day 1 (The Last Outpost - Dune Desert), Day 2 (The Pandemonium - Synthwave Cyberpunk), and Day 3 (The Carnival Island - Grand Night Festival). Hack2Future is our cosmic ascension section into deep space!"
     }
-  ]
+  ],
+
+  champions: [
+    {
+      name: "Team NeuralNexus",
+      institution: "IIT Bombay & IIIT Dharwad",
+      event: "Hack2Future '26 Flagship Winner",
+      prize: "₹1,50,000",
+      berries: "฿ 150,000,000",
+      project: "AetherMesh: Autonomous DePIN Satellite Drone Relay",
+      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
+      badge: "Grand Champions"
+    },
+    {
+      name: "Team MechaTitans",
+      institution: "NIT Surathkal",
+      event: "RoboWars '26 Combat Title",
+      prize: "₹60,000",
+      berries: "฿ 60,000,000",
+      project: "Combat Bot: Cerberus V2 (Pneumatic 30kg Drum Spinner)",
+      image: "https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=800&q=80",
+      badge: "Steel Pit Victor"
+    },
+    {
+      name: "Team BinaryPulse",
+      institution: "BITS Pilani",
+      event: "Algorithmic Conquest First Blood",
+      prize: "₹35,000",
+      berries: "฿ 35,000,000",
+      project: "Perfect Score in 68 minutes (Rank #1 ICPC Division)",
+      image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80",
+      badge: "Algorithm Monolith"
+    },
+    {
+      name: "Vibe Crew",
+      institution: "Christ University",
+      event: "Mega Choreo National Trophy '26",
+      prize: "₹45,000",
+      berries: "฿ 45,000,000",
+      project: "Thematic Production: 'Shattered Oceans'",
+      image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=800&q=80",
+      badge: "Carnival Gold"
+    }
+  ],
+
+  termsAndConditions: [
+    {
+      title: "Direct Bank Transfer & Timelines",
+      desc: "All podium cash bounties are disbursed directly via NEFT/RTGS/UPI to the designated team leader's verified Indian bank account within 14 business days of festival completion."
+    },
+    {
+      title: "Mandatory Identity Verification",
+      desc: "Winning teams must present original Government Photo ID (Aadhaar / Passport) along with official college identity cards and bank passbook/cancelled cheque copies at the Valedictory desk."
+    },
+    {
+      title: "Originality & Anti-Plagiarism Protocol",
+      desc: "Code, hardware designs, and artistic creations must be authentic and created within designated contest windows. Automated code similarity scanners are run before prize authorization."
+    },
+    {
+      title: "Statutory Tax Compliance (TDS)",
+      desc: "Prizes exceeding statutory thresholds are subject to applicable Indian Income Tax regulations (TDS under Section 194B/194J) with corresponding Form 16A certificates issued."
+    },
+    {
+      title: "Host Institution Campus Conduct",
+      desc: "Respect for IIIT Dharwad campus infrastructure, lab equipment, and fellow crews is mandatory. Disciplinary violations result in immediate bounty revocation."
+    }
+  ],
+
+  campusTransit: {
+    address: "Indian Institute of Information Technology, Dharwad. Permanent Campus, Ittigatti Road, Near Sattur Colony, Dharwad, Karnataka 580009",
+    coordinates: { lat: 15.4288, lng: 75.0560 },
+    googleMapsEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3847.3820299690196!2d75.05381137578059!3d15.42880008516086!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bb8d29ffb191abf%3A0x6b9d62874134be50!2sIndian%20Institute%20of%20Information%20Technology%2C%20Dharwad!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin",
+    transitHubs: [
+      { name: "Hubballi Airport (HBX)", distance: "22 km", time: "35 mins", type: "Flight", icon: "plane" },
+      { name: "Dharwad Railway Station (DWR)", distance: "12 km", time: "20 mins", type: "Train", icon: "train" },
+      { name: "Hubballi Junction (UBL)", distance: "24 km", time: "40 mins", type: "Train", icon: "train" },
+      { name: "Belagavi Airport (IXG)", distance: "88 km", time: "90 mins", type: "Flight", icon: "plane" }
+    ],
+    shuttles: "Dedicated free Avinya shuttle buses will run hourly from Dharwad BRTS Corridor (Sattur Stop) directly into the IIIT Dharwad campus gates throughout March 12-14."
+  }
 };

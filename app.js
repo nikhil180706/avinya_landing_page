@@ -16,10 +16,13 @@ function initApp() {
 
   // Safe Component Initializations
   try { if (window.lucide) lucide.createIcons(); } catch(e) { console.warn('Lucide error', e); }
+  try { initCustomCursor(); } catch(e) { console.warn('Cursor error', e); }
   try { initWebGLOcean(); } catch(e) { console.warn('WebGL Ocean error', e); }
   try { initAdaptiveSoundscape(); } catch(e) { console.warn('Audio error', e); }
   try { initHolographicPass(); } catch(e) { console.warn('Pass error', e); }
   try { renderAllEvents(); } catch(e) { console.warn('Events render error', e); }
+  try { renderChampionsAndRegulations(); } catch(e) { console.warn('Champions render error', e); }
+  try { renderCampusTransit(); } catch(e) { console.warn('Transit render error', e); }
   try { renderHackathonSection(); } catch(e) { console.warn('Hackathon render error', e); }
   try { renderMasterSchedule('all'); } catch(e) { console.warn('Schedule render error', e); }
   try { initScheduleTabs(); } catch(e) { console.warn('Tabs error', e); }
@@ -81,6 +84,7 @@ function renderAllEvents() {
 
     container.innerHTML = island.events.map(event => {
       const eventPageUrl = `event.html?id=${event.id}`;
+      const placeName = event.islandPlace || event.venue;
 
       return `
         <div class="apple-reveal island-atoll-card flex flex-col justify-between group">
@@ -89,9 +93,11 @@ function renderAllEvents() {
               <img src="${event.image}" alt="${event.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <div class="absolute inset-0 bg-gradient-to-t from-[#0D101A] via-transparent to-transparent"></div>
               
-              <div class="absolute top-3 left-3">
-                <span class="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-black/75 border border-white/20 text-white backdrop-blur-md">
-                  ${event.category}
+              <!-- Island Place Pin Badge -->
+              <div class="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/85 border border-white/20 text-white backdrop-blur-md">
+                <i data-lucide="map-pin" class="w-3 h-3" style="color: ${island.accentColor};"></i>
+                <span class="text-[10px] font-mono font-bold uppercase tracking-wider">
+                  ${placeName}
                 </span>
               </div>
 
@@ -103,9 +109,12 @@ function renderAllEvents() {
             </div>
 
             <div class="p-5">
-              <div class="text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1.5">
-                <i data-lucide="shield" class="w-3 h-3 text-amber-400"></i>
-                <span>${event.club || 'IIIT Dharwad'}</span>
+              <div class="text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-1.5 flex items-center justify-between">
+                <span class="flex items-center gap-1.5">
+                  <i data-lucide="shield" class="w-3 h-3" style="color: ${island.accentColor};"></i>
+                  <span>${event.club || 'IIIT Dharwad'}</span>
+                </span>
+                <span class="font-semibold" style="color: ${island.accentColor};">${event.category}</span>
               </div>
               
               <h4 class="font-display font-bold text-lg text-white mb-2 group-hover:text-amber-400 transition-colors">
@@ -118,7 +127,7 @@ function renderAllEvents() {
 
               ${event.sponsors && event.sponsors.length > 0 ? `
                 <div class="p-2 rounded-xl bg-white/5 border border-white/5 mb-4 text-[10px] font-mono flex items-center justify-between text-slate-300">
-                  <span class="text-slate-400">Partner:</span>
+                  <span class="text-slate-400">Patron:</span>
                   <span class="text-sky-300 font-semibold">${event.sponsors[0].name}</span>
                 </div>
               ` : ''}
@@ -128,12 +137,12 @@ function renderAllEvents() {
           <div class="p-5 pt-0">
             <div class="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-slate-400">
               <span class="flex items-center gap-1.5">
-                <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-400"></i>
+                <i data-lucide="clock" class="w-3.5 h-3.5" style="color: ${island.accentColor};"></i>
                 ${event.time.split('-')[0].trim()}
               </span>
               
-              <a href="${eventPageUrl}" class="px-3 py-1.5 rounded-full bg-white/10 hover:bg-amber-500 hover:text-black text-amber-400 font-bold transition-all flex items-center gap-1">
-                <span>Dossier & QR</span>
+              <a href="${eventPageUrl}" class="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-amber-500 hover:text-black text-amber-400 font-bold transition-all flex items-center gap-1">
+                <span>Place Dossier & QR</span>
                 <i data-lucide="arrow-right" class="w-3 h-3"></i>
               </a>
             </div>
@@ -479,27 +488,28 @@ function initDevToolsPoneglyph() {
 }
 
 /* ==========================================================================
-   THREE.JS 3D PROCEDURAL OCEAN & SAILING SHIP ENGINE
+   THREE.JS 3D PROCEDURAL OCEAN & SAILING SHIP ENGINE (WITH 3 PROCEDURAL ISLANDS)
    ========================================================================== */
 function initWebGLOcean() {
   const container = document.getElementById('webgl-ocean-container');
   if (!container || typeof THREE === 'undefined') return;
 
   let scene, camera, renderer, oceanMesh, oceanGeometry, originalPositions, shipGroup, sailMesh, dirLight, oceanMaterial;
+  let outpostGroup, pandemoniumGroup, carnivalGroup, stargateGroup, panRing;
 
   try {
     scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x05060A, 0.018);
+    scene.fog = new THREE.FogExp2(0x05060A, 0.009);
 
-    camera = new THREE.PerspectiveCamera(52, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 11, 26);
+    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 11, 28);
     camera.lookAt(0, -1, 0);
 
     renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    renderer.toneMappingExposure = 1.15;
     container.appendChild(renderer.domElement);
   } catch (err) {
     console.warn('WebGL initialization failed, running in 2D fallback mode:', err);
@@ -518,12 +528,12 @@ function initWebGLOcean() {
   const ambientLight = new THREE.AmbientLight(0x0e1726, 1.8);
   scene.add(ambientLight);
 
-  dirLight = new THREE.DirectionalLight(0xF59E0B, 2.4);
-  dirLight.position.set(20, 35, 18);
+  dirLight = new THREE.DirectionalLight(0xF59E0B, 2.5);
+  dirLight.position.set(25, 40, 20);
   scene.add(dirLight);
 
-  const fillLight = new THREE.PointLight(0x38BDF8, 2.0, 60);
-  fillLight.position.set(-18, 12, 10);
+  const fillLight = new THREE.PointLight(0x38BDF8, 2.2, 90);
+  fillLight.position.set(-20, 14, 15);
   scene.add(fillLight);
 
   // Dynamic Theme Palette Interpolation
@@ -543,10 +553,10 @@ function initWebGLOcean() {
     }
   };
 
-  // Procedural Ocean Geometry (Flat-shaded low-poly wave mesh)
-  const oceanWidth = 140;
-  const oceanHeight = 140;
-  const segments = 64;
+  // Procedural Ocean Mesh (Large 280x280 world)
+  const oceanWidth = 280;
+  const oceanHeight = 280;
+  const segments = 72;
   oceanGeometry = new THREE.PlaneGeometry(oceanWidth, oceanHeight, segments, segments);
   oceanGeometry.rotateX(-Math.PI / 2);
 
@@ -554,9 +564,9 @@ function initWebGLOcean() {
   originalPositions = new Float32Array(posAttr.array);
 
   oceanMaterial = new THREE.MeshStandardMaterial({
-    color: 0x081326,
-    roughness: 0.2,
-    metalness: 0.85,
+    color: 0x071224,
+    roughness: 0.22,
+    metalness: 0.82,
     flatShading: true,
     wireframe: false
   });
@@ -565,7 +575,171 @@ function initWebGLOcean() {
   oceanMesh.position.y = -6.5;
   scene.add(oceanMesh);
 
-  // Procedural Exploration Sailing Ship
+  // ========================================================================
+  // PROCEDURAL 3D ISLANDS IN THE OCEAN
+  // ========================================================================
+
+  // 1. Island 01: The Last Outpost (Desert Citadel at x:16, z:-22)
+  outpostGroup = new THREE.Group();
+  outpostGroup.position.set(16, -6.0, -22);
+
+  // Lower Atoll Base
+  const outBaseGeo = new THREE.CylinderGeometry(15, 20, 5, 12);
+  const outBaseMat = new THREE.MeshStandardMaterial({ color: 0xC27803, roughness: 0.8, flatShading: true });
+  const outBaseMesh = new THREE.Mesh(outBaseGeo, outBaseMat);
+  outBaseMesh.position.y = 2.0;
+  outpostGroup.add(outBaseMesh);
+
+  // Upper Desert Dunes
+  const outDuneGeo = new THREE.DodecahedronGeometry(6.5, 0);
+  outDuneGeo.scale(1.6, 0.7, 1.4);
+  const outDuneMat = new THREE.MeshStandardMaterial({ color: 0xD97706, roughness: 0.9, flatShading: true });
+  const outDuneMesh = new THREE.Mesh(outDuneGeo, outDuneMat);
+  outDuneMesh.position.set(-1, 5.0, 0);
+  outpostGroup.add(outDuneMesh);
+
+  // Monolith Spires
+  for (let i = 0; i < 4; i++) {
+    const spireGeo = new THREE.ConeGeometry(1.2, 7 + i * 1.5, 5);
+    const spireMat = new THREE.MeshStandardMaterial({ color: 0x92400E, roughness: 0.7, flatShading: true });
+    const spireMesh = new THREE.Mesh(spireGeo, spireMat);
+    const ang = (i / 4) * Math.PI * 2;
+    spireMesh.position.set(Math.cos(ang) * 6, 6 + i, Math.sin(ang) * 6);
+    outpostGroup.add(spireMesh);
+  }
+
+  // Outpost Watchtower & Amber Beacon
+  const outTowerGeo = new THREE.CylinderGeometry(0.9, 1.3, 9, 6);
+  const outTowerMat = new THREE.MeshStandardMaterial({ color: 0x78350F, roughness: 0.6, flatShading: true });
+  const outTowerMesh = new THREE.Mesh(outTowerGeo, outTowerMat);
+  outTowerMesh.position.set(-3, 8.5, 2);
+  outpostGroup.add(outTowerMesh);
+
+  const outBeacon = new THREE.PointLight(0xF59E0B, 3.5, 30);
+  outBeacon.position.set(-3, 13.5, 2);
+  outpostGroup.add(outBeacon);
+
+  // Harbor Wooden Dock Pier (where ship parks)
+  const outPierGeo = new THREE.BoxGeometry(4.5, 0.5, 11);
+  const outPierMat = new THREE.MeshStandardMaterial({ color: 0x451A03, roughness: 0.7 });
+  const outPierMesh = new THREE.Mesh(outPierGeo, outPierMat);
+  outPierMesh.position.set(-7.5, 1.5, 3.0);
+  outpostGroup.add(outPierMesh);
+
+  scene.add(outpostGroup);
+
+  // 2. Island 02: The Pandemonium (Cyberpunk Island at x:-18, z:-70)
+  pandemoniumGroup = new THREE.Group();
+  pandemoniumGroup.position.set(-18, -6.0, -70);
+
+  // Volcanic Base
+  const panBaseGeo = new THREE.CylinderGeometry(16, 22, 6, 14);
+  const panBaseMat = new THREE.MeshStandardMaterial({ color: 0x111827, roughness: 0.5, metalness: 0.6, flatShading: true });
+  const panBaseMesh = new THREE.Mesh(panBaseGeo, panBaseMat);
+  panBaseMesh.position.y = 2.5;
+  pandemoniumGroup.add(panBaseMesh);
+
+  // Cyberpunk Neon Spire Towers
+  const panSpire1Geo = new THREE.BoxGeometry(2.5, 16, 2.5);
+  const panSpire1Mat = new THREE.MeshStandardMaterial({
+    color: 0x1E1035,
+    emissive: 0xEC4899,
+    emissiveIntensity: 0.8,
+    roughness: 0.2
+  });
+  const panSpire1 = new THREE.Mesh(panSpire1Geo, panSpire1Mat);
+  panSpire1.position.set(0, 10, 0);
+  pandemoniumGroup.add(panSpire1);
+
+  const panSpire2Geo = new THREE.BoxGeometry(1.8, 11, 1.8);
+  const panSpire2Mat = new THREE.MeshStandardMaterial({
+    color: 0x082F49,
+    emissive: 0x06B6D4,
+    emissiveIntensity: 0.8,
+    roughness: 0.2
+  });
+  const panSpire2 = new THREE.Mesh(panSpire2Geo, panSpire2Mat);
+  panSpire2.position.set(4, 7.5, 2);
+  pandemoniumGroup.add(panSpire2);
+
+  // Floating Hologram Ring
+  const panRingGeo = new THREE.TorusGeometry(3.2, 0.22, 16, 32);
+  const panRingMat = new THREE.MeshStandardMaterial({ color: 0xEC4899, emissive: 0xEC4899, emissiveIntensity: 1 });
+  panRing = new THREE.Mesh(panRingGeo, panRingMat);
+  panRing.position.set(0, 18, 0);
+  panRing.rotation.x = Math.PI / 2;
+  pandemoniumGroup.add(panRing);
+
+  // Cyber Dock Pier (where ship parks)
+  const panPierGeo = new THREE.BoxGeometry(4.5, 0.5, 11);
+  const panPierMat = new THREE.MeshStandardMaterial({ color: 0x1F2937, metalness: 0.8, roughness: 0.3 });
+  const panPierMesh = new THREE.Mesh(panPierGeo, panPierMat);
+  panPierMesh.position.set(7.5, 1.5, 4.0);
+  pandemoniumGroup.add(panPierMesh);
+
+  const panHarborLight = new THREE.PointLight(0xEC4899, 4.0, 35);
+  panHarborLight.position.set(7.5, 4.0, 4.0);
+  pandemoniumGroup.add(panHarborLight);
+
+  scene.add(pandemoniumGroup);
+
+  // 3. Island 03: The Carnival Island (Festival Island at x:18, z:-118)
+  carnivalGroup = new THREE.Group();
+  carnivalGroup.position.set(18, -6.0, -118);
+
+  // Base Earth
+  const carBaseGeo = new THREE.CylinderGeometry(18, 24, 6, 14);
+  const carBaseMat = new THREE.MeshStandardMaterial({ color: 0xCA8A04, roughness: 0.8, flatShading: true });
+  const carBaseMesh = new THREE.Mesh(carBaseGeo, carBaseMat);
+  carBaseMesh.position.y = 2.5;
+  carnivalGroup.add(carBaseMesh);
+
+  // Big Top Circus Tent Pavilion
+  const carTentGeo = new THREE.ConeGeometry(7, 5.5, 12);
+  const carTentMat = new THREE.MeshStandardMaterial({ color: 0xFBBF24, roughness: 0.5, flatShading: true });
+  const carTent = new THREE.Mesh(carTentGeo, carTentMat);
+  carTent.position.set(0, 7.5, 0);
+  carnivalGroup.add(carTent);
+
+  // Festival Boardwalk Pier (where ship parks)
+  const carPierGeo = new THREE.BoxGeometry(4.5, 0.5, 12);
+  const carPierMat = new THREE.MeshStandardMaterial({ color: 0x78350F, roughness: 0.6 });
+  const carPierMesh = new THREE.Mesh(carPierGeo, carPierMat);
+  carPierMesh.position.set(-8.0, 1.5, 3.5);
+  carnivalGroup.add(carPierMesh);
+
+  const carLantern1 = new THREE.PointLight(0xFBBF24, 3.5, 30);
+  carLantern1.position.set(-8.0, 4.0, 3.5);
+  carnivalGroup.add(carLantern1);
+
+  const carLantern2 = new THREE.PointLight(0xEF4444, 2.5, 25);
+  carLantern2.position.set(3, 8.0, 3);
+  carnivalGroup.add(carLantern2);
+
+  scene.add(carnivalGroup);
+
+  // 4. Hack2Future Celestial Star-Gate (x:0, y:16, z:-170)
+  stargateGroup = new THREE.Group();
+  stargateGroup.position.set(0, 16, -170);
+
+  const gateGeo = new THREE.TorusGeometry(11, 0.5, 16, 64);
+  const gateMat = new THREE.MeshStandardMaterial({
+    color: 0x38BDF8,
+    emissive: 0x38BDF8,
+    emissiveIntensity: 1.2,
+    roughness: 0.1
+  });
+  const gateMesh = new THREE.Mesh(gateGeo, gateMat);
+  stargateGroup.add(gateMesh);
+
+  const gateCoreLight = new THREE.PointLight(0x38BDF8, 5.0, 70);
+  stargateGroup.add(gateCoreLight);
+
+  scene.add(stargateGroup);
+
+  // ========================================================================
+  // PROCEDURAL SAILING EXPLORATION SHIP
+  // ========================================================================
   shipGroup = new THREE.Group();
 
   // Ship Hull
@@ -624,9 +798,46 @@ function initWebGLOcean() {
 
   // Wave height calculation helper
   function getWaveHeight(x, z, t) {
-    return Math.sin(x * 0.10 + t * 1.5) * 1.25 +
-           Math.cos(z * 0.12 + t * 1.2) * 1.10 +
-           Math.sin((x + z) * 0.08 + t * 0.9) * 0.65;
+    return Math.sin(x * 0.08 + t * 1.4) * 1.25 +
+           Math.cos(z * 0.10 + t * 1.1) * 1.10 +
+           Math.sin((x + z) * 0.06 + t * 0.8) * 0.60;
+  }
+
+  // ========================================================================
+  // SMOOTH VOYAGE WAYPOINT CHECKPOINTS
+  // ========================================================================
+  const voyageWaypoints = [
+    { s: 0.00, x: 0.0,   z: 16.0,   label: "PORT OF DHARWAD (READY TO EMBARK)" },
+    { s: 0.14, x: 4.5,   z: 0.0,    label: "SAILING: HEADING TO ISLAND 01 (18 KNOTS)" },
+    { s: 0.28, x: 8.5,   z: -19.0,  label: "DOCKED: PORT OF ARID MONOLITHS (ISLAND 01)" },
+    { s: 0.42, x: -2.0,  z: -44.0,  label: "SAILING: CROSSING ARCHIPELAGO STRAITS" },
+    { s: 0.56, x: -10.5, z: -67.0,  label: "DOCKED: CYBER-BAY MARINA (ISLAND 02)" },
+    { s: 0.70, x: 2.0,   z: -92.0,  label: "SAILING: CROSSING CARNIVAL REEF" },
+    { s: 0.82, x: 10.0,  z: -115.0, label: "DOCKED: GRAND LAGOON WHARF (ISLAND 03)" },
+    { s: 0.96, x: 0.0,   z: -155.0, label: "ASCENDING: HACK2FUTURE ORBIT STATION" }
+  ];
+
+  function getVoyagePosition(scrollPct) {
+    const s = Math.max(0, Math.min(1, scrollPct));
+    let i = 0;
+    while (i < voyageWaypoints.length - 1 && s > voyageWaypoints[i + 1].s) {
+      i++;
+    }
+    if (i >= voyageWaypoints.length - 1) {
+      const last = voyageWaypoints[voyageWaypoints.length - 1];
+      return { x: last.x, z: last.z, label: last.label };
+    }
+    const wpA = voyageWaypoints[i];
+    const wpB = voyageWaypoints[i + 1];
+    const span = Math.max(0.001, wpB.s - wpA.s);
+    let ratio = (s - wpA.s) / span;
+    // Smoothstep easing
+    ratio = ratio * ratio * (3 - 2 * ratio);
+
+    const x = wpA.x + (wpB.x - wpA.x) * ratio;
+    const z = wpA.z + (wpB.z - wpA.z) * ratio;
+    const label = ratio > 0.5 ? wpB.label : wpA.label;
+    return { x, z, label };
   }
 
   // Mouse Parallax
@@ -635,12 +846,14 @@ function initWebGLOcean() {
   window.addEventListener('mousemove', (e) => {
     const normX = (e.clientX / window.innerWidth) * 2 - 1;
     const normY = -(e.clientY / window.innerHeight) * 2 + 1;
-    targetCamX = normX * 4;
-    targetCamY = 11 + normY * 1.8;
+    targetCamX = normX * 3.5;
+    targetCamY = 11 + normY * 1.5;
   });
 
   // Animation Loop
   const clock = new THREE.Clock();
+  const telemetryEl = document.getElementById('logpose-telemetry');
+
   function animate() {
     requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
@@ -656,14 +869,21 @@ function initWebGLOcean() {
     oceanGeometry.attributes.position.needsUpdate = true;
     oceanGeometry.computeVertexNormals();
 
-    // 2. Position Ship on Waves & Track Page Scroll
+    // 2. Track Page Scroll & Move Ship along Voyage Checkpoints
     const maxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight);
     const scrollPct = window.scrollY / maxScroll;
+    const voyage = getVoyagePosition(scrollPct);
 
-    const targetShipX = -12 + scrollPct * 24;
-    const targetShipZ = 7 - scrollPct * 15;
-    shipGroup.position.x += (targetShipX - shipGroup.position.x) * 0.05;
-    shipGroup.position.z += (targetShipZ - shipGroup.position.z) * 0.05;
+    // Live Telemetry Label update
+    if (telemetryEl && telemetryEl.innerText !== voyage.label) {
+      telemetryEl.innerText = voyage.label;
+    }
+
+    const prevX = shipGroup.position.x;
+    const prevZ = shipGroup.position.z;
+
+    shipGroup.position.x += (voyage.x - shipGroup.position.x) * 0.08;
+    shipGroup.position.z += (voyage.z - shipGroup.position.z) * 0.08;
 
     const sx = shipGroup.position.x;
     const sz = shipGroup.position.z;
@@ -682,15 +902,37 @@ function initWebGLOcean() {
 
     shipGroup.rotation.z = -pitch * 0.65;
     shipGroup.rotation.x = roll * 0.65;
-    shipGroup.rotation.y = -Math.PI / 2 + Math.sin(t * 0.7) * 0.08 + (scrollPct * 0.35);
+
+    // Automatic ship heading in direction of travel
+    const moveDX = shipGroup.position.x - prevX;
+    const moveDZ = shipGroup.position.z - prevZ;
+    const moveDist = Math.hypot(moveDX, moveDZ);
+    if (moveDist > 0.002) {
+      const targetHeading = Math.atan2(moveDX, -moveDZ) - Math.PI / 2;
+      shipGroup.rotation.y += (targetHeading - shipGroup.rotation.y) * 0.08;
+    } else {
+      // Resting sway at dock
+      shipGroup.rotation.y = -Math.PI / 2 + Math.sin(t * 0.7) * 0.08;
+    }
 
     // Billow Sail gently
     sailMesh.rotation.y = 0.15 + Math.sin(t * 2.4) * 0.05;
 
-    // Smooth Camera Follow
-    camera.position.x += (targetCamX - camera.position.x) * 0.03;
-    camera.position.y += (targetCamY - camera.position.y) * 0.03;
-    camera.lookAt(shipGroup.position.x * 0.3, -1, shipGroup.position.z * 0.3);
+    // Rotate Stargate ring & Hologram ring
+    if (stargateGroup) {
+      stargateGroup.rotation.z += 0.006;
+      stargateGroup.rotation.y += 0.004;
+    }
+    if (panRing) {
+      panRing.rotation.z += 0.01;
+    }
+
+    // Smooth Camera Tracking (Frames ship and destination island)
+    const targetCamPosZ = shipGroup.position.z + 24;
+    camera.position.x += ((shipGroup.position.x * 0.35 + targetCamX) - camera.position.x) * 0.04;
+    camera.position.y += ((shipGroup.position.y + 10.5 + targetCamY) - camera.position.y) * 0.04;
+    camera.position.z += (targetCamPosZ - camera.position.z) * 0.04;
+    camera.lookAt(shipGroup.position.x, shipGroup.position.y + 0.5, shipGroup.position.z - 8);
 
     renderer.render(scene, camera);
   }
@@ -1091,4 +1333,157 @@ function initIslandAtollCardsTilt() {
       card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px)';
     });
   });
+}
+
+/* ==========================================================================
+   CUSTOM NAUTICAL COMPASS CURSOR ENGINE
+   ========================================================================== */
+function initCustomCursor() {
+  const dot = document.getElementById('custom-cursor-dot');
+  const ring = document.getElementById('custom-cursor-ring');
+  if (!dot || !ring) return;
+
+  if (window.matchMedia('(pointer: coarse)').matches) {
+    dot.style.display = 'none';
+    ring.style.display = 'none';
+    return;
+  }
+
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let ringX = mouseX;
+  let ringY = mouseY;
+
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+  });
+
+  function renderCursor() {
+    ringX += (mouseX - ringX) * 0.18;
+    ringY += (mouseY - ringY) * 0.18;
+    ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
+    requestAnimationFrame(renderCursor);
+  }
+  renderCursor();
+
+  // Hover enlargement on interactive elements
+  const interactiveSelector = 'a, button, input, select, textarea, .island-atoll-card, [onclick], .dial-sphere, .role-btn, .schedule-tab-btn';
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest(interactiveSelector)) {
+      ring.classList.add('is-hovering');
+      dot.classList.add('is-hovering');
+    }
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest(interactiveSelector)) {
+      ring.classList.remove('is-hovering');
+      dot.classList.remove('is-hovering');
+    }
+  });
+}
+
+/* ==========================================================================
+   HALL OF CHAMPIONS & REGULATIONS RENDERER
+   ========================================================================== */
+function renderChampionsAndRegulations() {
+  const data = window.AVINYA_DATA;
+  if (!data) return;
+
+  // 1. Render Champions Grid
+  const champsContainer = document.getElementById('champions-grid');
+  if (champsContainer && data.champions) {
+    champsContainer.innerHTML = data.champions.map(c => `
+      <div class="apple-reveal champion-card flex flex-col justify-between group">
+        <div>
+          <div class="relative aspect-video overflow-hidden rounded-t-[22px]">
+            <img src="${c.image}" alt="${c.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0D101A] via-transparent to-transparent"></div>
+            
+            <div class="absolute top-3 left-3">
+              <span class="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-400 text-amber-300 backdrop-blur-md">
+                ${c.badge}
+              </span>
+            </div>
+
+            <div class="absolute bottom-2 right-3">
+              <span class="bounty-tag text-[11px] shadow-lg">
+                ${c.prize}
+              </span>
+            </div>
+          </div>
+
+          <div class="p-5">
+            <div class="text-[10px] font-mono uppercase text-slate-400 mb-1">${c.event}</div>
+            <h4 class="font-display font-bold text-lg text-white mb-1 group-hover:text-amber-400 transition-colors">
+              ${c.name}
+            </h4>
+            <div class="text-xs font-mono text-amber-400 mb-3">${c.institution}</div>
+            <p class="text-xs text-slate-300 font-body line-clamp-2 leading-relaxed">
+              ${c.project}
+            </p>
+          </div>
+        </div>
+
+        <div class="p-5 pt-0">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-slate-400">
+            <span>Verified Fleet Victor</span>
+            <span class="text-emerald-400 font-bold">● DISBURSED</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // 2. Render Terms & Conditions List
+  const termsContainer = document.getElementById('terms-list');
+  if (termsContainer && data.termsAndConditions) {
+    termsContainer.innerHTML = data.termsAndConditions.map((item, idx) => `
+      <div class="p-4 rounded-2xl bg-black/40 border border-white/5 flex flex-col justify-between">
+        <div>
+          <div class="text-amber-400 font-bold mb-1.5 flex items-center gap-1.5">
+            <span class="w-5 h-5 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-[10px] shrink-0">
+              0${idx + 1}
+            </span>
+            <span>${item.title}</span>
+          </div>
+          <p class="text-slate-300 font-body leading-relaxed text-[11px]">
+            ${item.desc}
+          </p>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  if (window.lucide) lucide.createIcons();
+}
+
+/* ==========================================================================
+   CAMPUS TRANSIT & HUBS RENDERER
+   ========================================================================== */
+function renderCampusTransit() {
+  const data = window.AVINYA_DATA;
+  if (!data || !data.campusTransit) return;
+
+  const hubsContainer = document.getElementById('transit-hubs-grid');
+  if (hubsContainer && data.campusTransit.transitHubs) {
+    hubsContainer.innerHTML = data.campusTransit.transitHubs.map(hub => `
+      <div class="p-3.5 rounded-2xl bg-black/40 border border-white/10 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-slate-400 text-[10px] uppercase">${hub.type}</span>
+            <span class="text-amber-400 font-bold text-xs">${hub.distance}</span>
+          </div>
+          <h5 class="text-white font-bold text-xs mb-1">${hub.name}</h5>
+        </div>
+        <div class="text-slate-400 text-[10px] pt-2 border-t border-white/5 flex items-center gap-1">
+          <i data-lucide="clock" class="w-3 h-3 text-amber-400"></i>
+          <span>${hub.time} drive</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  if (window.lucide) lucide.createIcons();
 }

@@ -35,6 +35,10 @@
 </head>
 <body class="bg-[#05060A] text-slate-100 antialiased selection:bg-amber-500 selection:text-black">
 
+  <!-- Custom Nautical Compass Cursor -->
+  <div class="cursor-dot" id="custom-cursor-dot"></div>
+  <div class="cursor-ring" id="custom-cursor-ring"></div>
+
   <!-- 3D WebGL Ocean Container -->
   <div id="webgl-ocean-container"></div>
 
@@ -303,15 +307,48 @@
       <div class="absolute inset-0 bg-gradient-to-b from-amber-950/20 via-transparent to-transparent pointer-events-none"></div>
 
       <div class="max-w-7xl mx-auto relative">
+        
+        <!-- Port Arrival Docking Banner -->
+        <div class="apple-reveal mb-8 p-4 sm:p-5 rounded-2xl glass-panel border border-amber-500/30 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-black/40 backdrop-blur-md">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-400 flex items-center justify-center text-amber-400 shrink-0 shadow-lg shadow-amber-500/20">
+              <i data-lucide="anchor" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="flex flex-wrap items-center gap-2 text-xs font-mono font-bold text-amber-400">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                <span>VESSEL STATUS: DOCKED AT PORT OF ARID MONOLITHS</span>
+                <span class="text-slate-500">•</span>
+                <span class="text-slate-300">PIER 01</span>
+              </div>
+              <p class="text-[11px] text-slate-300 font-mono mt-0.5">
+                Coordinates: 15.4288° N, 75.0560° E | Disembark to explore 8 active island places & battlegrounds.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30 text-xs font-mono font-semibold">
+              8 Island Places
+            </span>
+            <a href="day1.html" class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-mono transition-colors">
+              Island Archive &rarr;
+            </a>
+          </div>
+        </div>
+
         <div class="apple-reveal mb-14 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <div class="flex items-center gap-3 font-mono text-xs text-amber-400 font-semibold mb-3">
               <span class="px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/30">DAY 01 // MARCH 12, 2027</span>
-              <span>LANDFALL AT SECTOR 01</span>
+              <span>DUNE DESERT ARCHIPELAGO</span>
             </div>
             <h2 class="font-display font-black text-4xl sm:text-6xl text-white uppercase tracking-tight">
               THE LAST <span class="text-amber-400">OUTPOST</span>
             </h2>
+            <p class="text-slate-300 font-body text-base sm:text-lg max-w-2xl mt-2 leading-relaxed">
+              Step onto an ancient desert atoll where monolithic coding citadels, sand-cipher vaults, and rover dunes test every crew member.
+            </p>
           </div>
           <a href="day1.html" class="btn-secondary text-xs flex items-center gap-2 self-start md:self-auto">
             <span>EXPLORE FULL SECTOR 01 (8+ EVENTS)</span>
@@ -331,15 +368,48 @@
       <div class="absolute inset-0 bg-gradient-to-b from-pink-950/20 via-transparent to-transparent pointer-events-none"></div>
 
       <div class="max-w-7xl mx-auto relative">
+        
+        <!-- Port Arrival Docking Banner -->
+        <div class="apple-reveal mb-8 p-4 sm:p-5 rounded-2xl glass-panel border border-pink-500/30 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-black/40 backdrop-blur-md">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-xl bg-pink-500/20 border border-pink-400 flex items-center justify-center text-pink-400 shrink-0 shadow-lg shadow-pink-500/20">
+              <i data-lucide="anchor" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="flex flex-wrap items-center gap-2 text-xs font-mono font-bold text-pink-400">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                <span>VESSEL STATUS: DOCKED AT CYBER-BAY MARINA</span>
+                <span class="text-slate-500">•</span>
+                <span class="text-slate-300">PIER NEON 02</span>
+              </div>
+              <p class="text-[11px] text-slate-300 font-mono mt-0.5">
+                Coordinates: 15.4285° N, 75.0572° E | Heavy bot arenas, esports stages, and neon design districts.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1 rounded-full bg-pink-500/10 text-pink-300 border border-pink-500/30 text-xs font-mono font-semibold">
+              8 Cyber Places
+            </span>
+            <a href="day2.html" class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-mono transition-colors">
+              Island Archive &rarr;
+            </a>
+          </div>
+        </div>
+
         <div class="apple-reveal mb-14 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <div class="flex items-center gap-3 font-mono text-xs text-pink-400 font-semibold mb-3">
               <span class="px-2.5 py-1 rounded bg-pink-500/10 border border-pink-500/30">DAY 02 // MARCH 13, 2027</span>
-              <span>LANDFALL AT SECTOR 02</span>
+              <span>SYNTHWAVE CYBERPUNK ARCHIPELAGO</span>
             </div>
             <h2 class="font-display font-black text-4xl sm:text-6xl text-white uppercase tracking-tight">
               THE <span class="text-pink-500">PANDEMONIUM</span>
             </h2>
+            <p class="text-slate-300 font-body text-base sm:text-lg max-w-2xl mt-2 leading-relaxed">
+              Magenta sea reflections, overclocked combat robotics, national LAN esports brackets, and spatial design studios.
+            </p>
           </div>
           <a href="day2.html" class="btn-secondary text-xs flex items-center gap-2 self-start md:self-auto">
             <span>EXPLORE FULL SECTOR 02 (8+ EVENTS)</span>
@@ -358,15 +428,48 @@
       <div class="absolute inset-0 bg-gradient-to-b from-yellow-950/20 via-transparent to-transparent pointer-events-none"></div>
 
       <div class="max-w-7xl mx-auto relative">
+        
+        <!-- Port Arrival Docking Banner -->
+        <div class="apple-reveal mb-8 p-4 sm:p-5 rounded-2xl glass-panel border border-yellow-500/30 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-black/40 backdrop-blur-md">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-xl bg-yellow-500/20 border border-yellow-400 flex items-center justify-center text-yellow-400 shrink-0 shadow-lg shadow-yellow-500/20">
+              <i data-lucide="anchor" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="flex flex-wrap items-center gap-2 text-xs font-mono font-bold text-yellow-400">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                <span>VESSEL STATUS: DOCKED AT GRAND LAGOON WHARF</span>
+                <span class="text-slate-500">•</span>
+                <span class="text-slate-300">WHARF 03</span>
+              </div>
+              <p class="text-[11px] text-slate-300 font-mono mt-0.5">
+                Coordinates: 15.4295° N, 75.0552° E | Pro-Nite concert stage, choreography amphitheaters, and festive night markets.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1 rounded-full bg-yellow-500/10 text-yellow-300 border border-yellow-500/30 text-xs font-mono font-semibold">
+              8 Festival Places
+            </span>
+            <a href="day3.html" class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-mono transition-colors">
+              Island Archive &rarr;
+            </a>
+          </div>
+        </div>
+
         <div class="apple-reveal mb-14 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <div class="flex items-center gap-3 font-mono text-xs text-yellow-400 font-semibold mb-3">
               <span class="px-2.5 py-1 rounded bg-yellow-500/10 border border-yellow-500/30">DAY 03 // MARCH 14, 2027</span>
-              <span>LANDFALL AT SECTOR 03</span>
+              <span>CARNIVAL CELEBRATION ARCHIPELAGO</span>
             </div>
             <h2 class="font-display font-black text-4xl sm:text-6xl text-white uppercase tracking-tight">
               THE CARNIVAL <span class="text-yellow-400">ISLAND</span>
             </h2>
+            <p class="text-slate-300 font-body text-base sm:text-lg max-w-2xl mt-2 leading-relaxed">
+              Grand illuminated waters, midnight fireworks, national band clashes, high-fashion runways, and the Star-Nite concert.
+            </p>
           </div>
           <a href="day3.html" class="btn-secondary text-xs flex items-center gap-2 self-start md:self-auto">
             <span>EXPLORE FULL SECTOR 03 (8+ EVENTS)</span>
@@ -617,6 +720,109 @@
       <div class="space-y-4 font-body" id="faqs-accordion"></div>
     </section>
 
+    <!-- ========================================================================
+         HALL OF CHAMPIONS & PRIZE DISBURSEMENT PROTOCOLS
+         ======================================================================== -->
+    <section id="champions" class="py-24 px-4 sm:px-6 max-w-7xl mx-auto border-t border-white/10 relative">
+      <div class="apple-reveal text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-mono uppercase tracking-widest text-amber-400 mb-2 block">Victory Archives & Regulations</span>
+        <h2 class="font-display font-black text-4xl sm:text-5xl text-white uppercase tracking-tight mb-4">
+          HALL OF CHAMPIONS & PRIZES
+        </h2>
+        <p class="text-slate-300 font-body text-base">
+          Honoring past fleet victors and outlining the strict, transparent protocols for cash bounty disbursement and integrity.
+        </p>
+      </div>
+
+      <!-- Past Winners Showcase Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16" id="champions-grid"></div>
+
+      <!-- Terms & Conditions Regulations Panel -->
+      <div class="apple-reveal p-6 sm:p-10 rounded-3xl glass-panel border border-white/10">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-400 flex items-center justify-center text-amber-400">
+            <i data-lucide="scale" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-display font-bold text-xl text-white">Official Bounty & Fest Terms & Conditions</h3>
+            <p class="text-xs font-mono text-slate-400">Governance directives for prize money, campus ethics, and anti-plagiarism compliance.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 font-mono text-xs" id="terms-list"></div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         INTERACTIVE CAMPUS TRANSIT & DIRECT GOOGLE MAPS NAVIGATION
+         ======================================================================== -->
+    <section id="campus-transit" class="py-24 px-4 sm:px-6 max-w-7xl mx-auto border-t border-white/10 relative">
+      <div class="apple-reveal text-center max-w-3xl mx-auto mb-16">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono mb-3">
+          <i data-lucide="navigation" class="w-3.5 h-3.5"></i>
+          <span>CAMPUS ARRIVAL & DIRECT NAVIGATION</span>
+        </div>
+        <h2 class="font-display font-black text-4xl sm:text-5xl text-white uppercase tracking-tight mb-4">
+          FIND YOUR WAY TO IIIT DHARWAD
+        </h2>
+        <p class="text-slate-300 font-body text-base">
+          Get direct turn-by-turn Google Maps directions from your current location right to our campus gates.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        
+        <!-- Left: Transit Logistics & Direct Directions Button (5 cols) -->
+        <div class="lg:col-span-5 space-y-6">
+          <div class="p-6 sm:p-8 rounded-3xl glass-panel border border-amber-500/20">
+            <div class="text-xs font-mono text-amber-400 uppercase tracking-widest mb-1">HOST INSTITUTION & DESTINATION</div>
+            <h3 class="font-display font-bold text-2xl text-white mb-3">IIIT Dharwad Permanent Campus</h3>
+            <p class="text-xs text-slate-300 font-mono leading-relaxed mb-6">
+              Ittigatti Road, Near Sattur Colony, Dharwad, Karnataka 580009.<br>
+              <span class="text-amber-400">Coordinates: 15.4288° N, 75.0560° E</span>
+            </p>
+
+            <a href="https://www.google.com/maps/dir/?api=1&destination=Indian+Institute+of+Information+Technology+Dharwad" target="_blank" class="w-full btn-primary text-xs !py-3.5 flex items-center justify-center gap-2 mb-4">
+              <i data-lucide="map-pin" class="w-4 h-4"></i>
+              <span>GET DIRECT DIRECTIONS FROM MY LOCATION</span>
+            </a>
+
+            <div class="p-3.5 rounded-xl bg-sky-500/10 border border-sky-500/20 text-[11px] font-mono text-sky-300 flex items-start gap-2.5">
+              <i data-lucide="bus" class="w-4 h-4 text-sky-400 shrink-0 mt-0.5"></i>
+              <span>Free Hourly Shuttles run between Sattur BRTS Station and IIIT Dharwad campus main gate throughout March 12-14.</span>
+            </div>
+          </div>
+
+          <!-- Transit Hub Distances Grid -->
+          <div class="grid grid-cols-2 gap-3 font-mono text-xs" id="transit-hubs-grid"></div>
+        </div>
+
+        <!-- Right: Interactive Google Map Embed (7 cols) -->
+        <div class="lg:col-span-7">
+          <div class="campus-map-wrapper">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3847.3820299690196!2d75.05381137578059!3d15.42880008516086!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bb8d29ffb191abf%3A0x6b9d62874134be50!2sIndian%20Institute%20of%20Information%20Technology%2C%20Dharwad!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade"
+              title="IIIT Dharwad Permanent Campus Map">
+            </iframe>
+            
+            <div class="p-4 bg-[#090D16] border-t border-white/10 flex items-center justify-between text-xs font-mono">
+              <span class="text-slate-300 flex items-center gap-2">
+                <i data-lucide="compass" class="w-4 h-4 text-amber-400"></i>
+                <span>Google Maps Verified Destination</span>
+              </span>
+              <a href="https://maps.app.goo.gl/o1kZ4eD8hS6zM7zU8" target="_blank" class="text-amber-400 hover:text-white transition-colors">
+                Open in Google Maps App &rarr;
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
     <!-- Footer -->
     <footer class="py-16 px-4 sm:px-6 border-t border-white/10 bg-[#040508] relative z-20">
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-12">
@@ -659,6 +865,12 @@
       <div class="hidden sm:flex items-center gap-2 border-r border-white/15 pr-3 text-slate-400">
         <i data-lucide="compass" class="w-4 h-4 text-amber-400"></i>
         <span class="text-[10px] font-mono font-bold tracking-wider uppercase text-slate-300">LOG POSE</span>
+      </div>
+
+      <!-- Live Voyage Telemetry Status Indicator -->
+      <div class="hidden lg:flex items-center gap-2 border-r border-white/15 pr-3 text-[10px] font-mono font-bold text-amber-400" id="logpose-telemetry-badge">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span id="logpose-telemetry">PORT OF DHARWAD (HELM)</span>
       </div>
 
       <a href="day1.html" class="dial-sphere group" id="dial-day1" title="Day 1: The Last Outpost">

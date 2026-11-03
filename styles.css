@@ -68,7 +68,7 @@ body {
   height: 100vh;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.85;
+  opacity: 0.95;
   transition: opacity 1s ease;
 }
 
@@ -436,4 +436,126 @@ body {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   CUSTOM NAUTICAL COMPASS CURSOR
+   ========================================================================== */
+@media (pointer: fine) {
+  body {
+    cursor: none;
+  }
+  a, button, input, select, textarea, [onclick], .cursor-pointer {
+    cursor: none !important;
+  }
+  .cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--current-accent);
+    box-shadow: 0 0 12px var(--current-accent);
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s ease, height 0.2s ease, background-color 0.3s ease;
+  }
+  .cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid var(--current-accent);
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: width 0.25s ease, height 0.25s ease, border-color 0.3s ease, background-color 0.3s ease;
+    opacity: 0.8;
+  }
+  /* Reticle Crosshairs */
+  .cursor-ring::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    left: 50%;
+    width: 1px;
+    transform: translateX(-50%);
+    background: var(--current-accent);
+    opacity: 0.5;
+  }
+  .cursor-ring::after {
+    content: '';
+    position: absolute;
+    left: -4px;
+    right: -4px;
+    top: 50%;
+    height: 1px;
+    transform: translateY(-50%);
+    background: var(--current-accent);
+    opacity: 0.5;
+  }
+  .cursor-ring.is-hovering {
+    width: 52px;
+    height: 52px;
+    border-color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 24px var(--current-glow);
+  }
+  .cursor-dot.is-hovering {
+    transform: translate(-50%, -50%) scale(1.6);
+    background-color: #FFFFFF;
+    box-shadow: 0 0 16px #FFFFFF;
+  }
+}
+
+/* ==========================================================================
+   OCEAN VISIBILITY & GLASS OVERLAYS
+   ========================================================================== */
+.island-section {
+  background: transparent !important;
+  position: relative;
+  z-index: 10;
+}
+
+/* Embedded Google Maps Container */
+.campus-map-wrapper {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+}
+
+.campus-map-wrapper iframe {
+  width: 100%;
+  height: 380px;
+  border: none;
+  filter: invert(90%) hue-rotate(180deg) contrast(1.15) brightness(0.85);
+  transition: filter 0.4s ease;
+}
+
+.campus-map-wrapper:hover iframe {
+  filter: invert(85%) hue-rotate(180deg) contrast(1.1) brightness(0.95);
+}
+
+/* Champion Cards */
+.champion-card {
+  position: relative;
+  border-radius: 24px;
+  background: rgba(13, 16, 26, 0.75);
+  backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.champion-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--current-accent);
+  box-shadow: 0 20px 40px -10px var(--current-glow);
 }
