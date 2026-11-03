@@ -1,12 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@500;700;800;900&display=swap');
 
+/* ==========================================================================
+   GLOBAL RESET & THEME TOKENS
+   ========================================================================== */
 :root {
   --font-display: 'Syne', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
   --current-accent: #F59E0B;
-  --current-glow: rgba(245, 158, 11, 0.35);
+  --current-glow: rgba(245, 158, 11, 0.4);
   --bg-deep: #05060A;
   --card-bg: rgba(13, 16, 26, 0.9);
   --card-border: rgba(255, 255, 255, 0.1);
@@ -48,29 +51,53 @@ body {
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.22);
   border-radius: 9999px;
+  transition: background 0.3s ease;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--current-accent);
 }
 
-/* Never block view on initial load */
-.page-curtain {
+/* ==========================================================================
+   THREE.JS 3D OCEAN & AMBIENT CANVAS
+   ========================================================================== */
+#webgl-ocean-container {
   position: fixed;
-  inset: 0;
-  background: #05060A;
-  z-index: 999;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  display: none;
+  opacity: 0.85;
+  transition: opacity 1s ease;
 }
 
-.page-curtain.is-active {
-  display: block;
-  opacity: 1;
-  pointer-events: auto;
+#ambient-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.6;
 }
 
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* ==========================================================================
+   TYPOGRAPHY
+   ========================================================================== */
 .font-display {
   font-family: var(--font-display);
   letter-spacing: -0.035em;
@@ -106,39 +133,18 @@ body {
   }
 }
 
-/* NEVER default to invisible 0 opacity! */
 .apple-reveal {
   opacity: 1;
   transform: translateY(0) scale(1);
   filter: blur(0);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-#ambient-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.75;
-}
-
-.noise-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 2;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-}
-
+/* ==========================================================================
+   GLASSMORPHISM & PANELS
+   ========================================================================== */
 .glass-panel {
   background: var(--card-bg);
   backdrop-filter: blur(24px);
@@ -147,54 +153,146 @@ body {
 }
 
 .glass-pill {
-  background: rgba(11, 14, 23, 0.9);
+  background: rgba(11, 14, 23, 0.92);
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 24px 48px -15px rgba(0, 0, 0, 0.8),
-              0 0 32px -10px var(--current-glow);
+  box-shadow: 0 24px 48px -15px rgba(0, 0, 0, 0.85),
+              0 0 35px -10px var(--current-glow);
 }
 
+/* ==========================================================================
+   ISLAND ATOLL CARDS WITH 3D TILT & CONTOURS
+   ========================================================================== */
 .island-atoll-card {
   position: relative;
-  background: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.06), rgba(13, 16, 26, 0.95));
+  background: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.08), rgba(13, 16, 26, 0.95));
   border: 1.5px solid rgba(255, 255, 255, 0.12);
-  border-radius: 24px;
+  border-radius: 26px;
   overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
   transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.45s ease;
-  box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.7);
 }
 
 .island-atoll-card:hover {
-  transform: translateY(-6px) scale(1.015);
+  transform: translateY(-8px) scale(1.02);
   border-color: var(--current-accent);
-  box-shadow: 0 25px 45px -12px var(--current-glow),
-              0 0 20px -5px var(--current-glow);
+  box-shadow: 0 30px 60px -15px var(--current-glow),
+              0 0 25px -5px var(--current-glow);
 }
 
-.archipelago-map-container {
+.island-atoll-card::before {
+  content: '';
+  position: absolute;
+  top: -25%;
+  right: -25%;
+  width: 150%;
+  height: 150%;
+  border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+  border: 1px dashed rgba(255, 255, 255, 0.05);
+  pointer-events: none;
+  transition: transform 0.8s ease;
+}
+
+.island-atoll-card:hover::before {
+  transform: rotate(20deg);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* 3D Specular Glare Layer */
+.tilt-card-glare {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.15) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.island-atoll-card:hover .tilt-card-glare {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   HOLOGRAPHIC BOARDING PASS GENERATOR
+   ========================================================================== */
+.holographic-pass-container {
+  perspective: 1200px;
+}
+
+.holographic-card {
   position: relative;
   width: 100%;
-  background: radial-gradient(ellipse at center, rgba(16, 24, 40, 0.6) 0%, rgba(5, 6, 10, 0.95) 80%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 36px;
+  max-width: 480px;
+  min-height: 290px;
+  margin: 0 auto;
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(20, 24, 38, 0.95), rgba(8, 10, 18, 0.98));
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9),
+              0 0 40px -10px var(--current-glow);
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out, box-shadow 0.3s ease;
   overflow: hidden;
-  box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.9),
-              inset 0 0 50px rgba(0, 0, 0, 0.8);
 }
 
-.voyager-ship {
+/* Holographic Prismatic Rainbow Foil */
+.holographic-foil {
   position: absolute;
-  width: 48px;
-  height: 48px;
-  transform: translate(-50%, -50%);
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), left 0.5s ease, top 0.5s ease;
-  z-index: 30;
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.8));
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgba(255, 0, 128, 0.15) 25%,
+    rgba(0, 255, 255, 0.18) 50%,
+    rgba(255, 215, 0, 0.15) 75%,
+    transparent 100%
+  );
+  background-size: 250% 250%;
+  background-position: var(--foil-x, 50%) var(--foil-y, 50%);
+  mix-blend-mode: color-dodge;
+  opacity: 0.75;
+  transition: opacity 0.3s ease;
 }
 
+.holographic-card:hover .holographic-foil {
+  opacity: 1;
+}
+
+/* Golden Microchip / Security Badge */
+.security-chip {
+  width: 38px;
+  height: 28px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #F59E0B, #D97706, #B45309);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  position: relative;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4),
+              0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.security-chip::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================================================
+   LOG POSE GYRO HUD & AUDIO EQUALIZER
+   ========================================================================== */
 .logpose-dock {
   position: fixed;
   bottom: 24px;
@@ -222,13 +320,13 @@ body {
 
 .dial-sphere:hover {
   border-color: var(--current-accent);
-  box-shadow: 0 0 16px var(--current-glow);
+  box-shadow: 0 0 18px var(--current-glow);
 }
 
 .dial-sphere.is-active {
   border-color: var(--current-accent);
-  box-shadow: 0 0 22px var(--current-glow),
-              inset 0 0 10px var(--current-glow);
+  box-shadow: 0 0 24px var(--current-glow),
+              inset 0 0 12px var(--current-glow);
 }
 
 .dial-needle {
@@ -250,6 +348,36 @@ body {
   100% { transform: rotate(calc(var(--angle, 0deg) + 3deg)); }
 }
 
+/* Live Equalizer Audio Bars in Dock */
+.equalizer-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 2.5px;
+  height: 18px;
+  padding: 0 4px;
+  cursor: pointer;
+}
+
+.eq-bar {
+  width: 3px;
+  border-radius: 9999px;
+  background: var(--current-accent);
+  box-shadow: 0 0 8px var(--current-accent);
+  transition: height 0.15s ease;
+  height: 4px;
+}
+
+.equalizer-container.is-playing .eq-bar:nth-child(1) { animation: eqBounce1 0.7s infinite alternate ease-in-out; }
+.equalizer-container.is-playing .eq-bar:nth-child(2) { animation: eqBounce2 0.5s infinite alternate ease-in-out; }
+.equalizer-container.is-playing .eq-bar:nth-child(3) { animation: eqBounce3 0.8s infinite alternate ease-in-out; }
+.equalizer-container.is-playing .eq-bar:nth-child(4) { animation: eqBounce4 0.6s infinite alternate ease-in-out; }
+
+@keyframes eqBounce1 { 0% { height: 4px; } 100% { height: 16px; } }
+@keyframes eqBounce2 { 0% { height: 8px; } 100% { height: 18px; } }
+@keyframes eqBounce3 { 0% { height: 5px; } 100% { height: 14px; } }
+@keyframes eqBounce4 { 0% { height: 6px; } 100% { height: 17px; } }
+
+/* Bounty Tags */
 .bounty-tag {
   font-family: var(--font-mono);
   font-weight: 700;
@@ -261,6 +389,7 @@ body {
   border-radius: 6px;
 }
 
+/* Primary & Secondary Buttons */
 .btn-primary {
   position: relative;
   display: inline-flex;
