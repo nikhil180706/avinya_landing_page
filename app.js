@@ -723,7 +723,14 @@ function renderDynamicIslandPins() {
         </div>
       `;
     }).join('');
-  });
+  
+    // Dynamically update HUD badge count
+    const hudSpan = document.getElementById(`hud-count-${island.id}`);
+    if (hudSpan) {
+      const count = (island.events || []).length;
+      hudSpan.textContent = `ISLAND VIEW: ${count} Event Location${count === 1 ? '' : 's'} Active`;
+    }
+});
 }
 
 /* ==========================================================================

@@ -1162,6 +1162,10 @@ body[data-time="night"] {
 .island-entity.is-zoomed .island-pin-anchor:nth-child(4) { transition-delay: 0.24s; }
 .island-entity.is-zoomed .island-pin-anchor:nth-child(5) { transition-delay: 0.30s; }
 .island-entity.is-zoomed .island-pin-anchor:nth-child(6) { transition-delay: 0.36s; }
+.island-entity.is-zoomed .island-pin-anchor:nth-child(7) { transition-delay: 0.42s; }
+.island-entity.is-zoomed .island-pin-anchor:nth-child(8) { transition-delay: 0.48s; }
+.island-entity.is-zoomed .island-pin-anchor:nth-child(9) { transition-delay: 0.54s; }
+.island-entity.is-zoomed .island-pin-anchor:nth-child(10) { transition-delay: 0.60s; }
 
 .island-pin-anchor:hover {
   transform: translate(-50%, -50%) scale(1.15) !important;

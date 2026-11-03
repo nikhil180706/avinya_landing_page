@@ -380,6 +380,70 @@ window.AVINYA_DATA = {
               logo: "briefcase"
             }
           ]
+        }        ,
+        {
+          id: "d1-e7",
+          pinX: 42,
+          pinY: 55,
+          badgeNum: 7,
+          shortLabel: "Power Citadel",
+          title: "AI Robo-Wars Championship",
+          islandPlace: "Solar Power Citadel",
+          islandLocationTag: "South Dunes • Sector Apex",
+          club: "Robotics & Autonomous Systems Guild",
+          clubLogo: "cpu",
+          category: "Robotics & AI",
+          tagline: "Autonomous combat rovers clash under desert atmospheric storm conditions",
+          summary: "Autonomous and remote-controlled combat rovers face off inside an enclosed arena with active hazard zones, kinetic ramps, and real-time sensor telemetry.",
+          time: "02:00 PM - 05:00 PM",
+          venue: "Robotics Arena & Mechatronics Lab",
+          prize: "₹60,000",
+          totalBounty: "₹60,000",
+          berries: "60,000,000 Berries",
+          podium: {
+            first: "₹30,000 + Gold Trophy & Patron Pass",
+            second: "₹20,000 + Silver Medal",
+            third: "₹10,000 + Bronze Medal",
+            swag: "Hardware Dev Kits + Sponsor Cloud Credits"
+          },
+          teamSize: "2-4 Pilots",
+          image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1200&q=80",
+          rounds: [
+            "Round 1: Autonomous Obstacle Traversal & Radar Navigation (45 mins)",
+            "Round 2: Steel Pit Combat Clash & Kinetic Arena Showdown (60 mins)"
+          ],
+          rules: [
+            "Weight limit: 15kg combat bots in autonomous or teleoperated mode.",
+            "Flame or chemical weapons strictly prohibited; kinetic weapons allowed.",
+            "Teams of 2 to 4 student pilots with valid institutional ID card."
+          ],
+          coordinator: {
+            name: "Aryan Deshmukh",
+            role: "Robotics Lead",
+            contact: "+91 98765 43210",
+            email: "aryan.robotics@iiitdwd.ac.in"
+          },
+          hostClub: "Robotics & Autonomous Systems Guild",
+          studentLead: "Aryan Deshmukh (+91 98765 43210)",
+          facultyLead: "Dr. K. Venkatesh (Dept of CSE & Robotics)",
+          registrationUrl: "https://forms.gle/avinya27-d1-robowars",
+          qrCodeImage: "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https://forms.gle/avinya27-d1-robowars",
+          sponsors: [
+            {
+              name: "NVIDIA / Jetson Embedded",
+              tier: "Edge AI Partner",
+              category: "Hardware Acceleration",
+              spending: "₹80,000 in Edge GPUs & Grants",
+              logo: "cpu"
+            },
+            {
+              name: "Arduino & Robu.in",
+              tier: "Hardware Patron",
+              category: "Robotics Kits",
+              spending: "₹40,000 Component Vouchers",
+              logo: "award"
+            }
+          ]
         }
       ]
     },
