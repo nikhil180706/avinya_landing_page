@@ -58,9 +58,9 @@ body {
 }
 
 /* ==========================================================================
-   THREE.JS 3D OCEAN & AMBIENT CANVAS
+   LIVING SEA 60FPS CANVAS & AMBIENT OVERLAYS
    ========================================================================== */
-#webgl-ocean-container {
+#living-sea-canvas {
   position: fixed;
   top: 0;
   left: 0;
@@ -68,8 +68,10 @@ body {
   height: 100vh;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.95;
-  transition: opacity 1s ease;
+}
+
+#webgl-ocean-container {
+  display: none;
 }
 
 #ambient-canvas {
@@ -559,3 +561,173 @@ body {
   border-color: var(--current-accent);
   box-shadow: 0 20px 40px -10px var(--current-glow);
 }
+
+/* ==========================================================================
+   ARCHIPELAGO SEA CHART (EXACT USER SKETCH VOYAGE ROUTE)
+   ========================================================================== */
+.archipelago-sea-chart {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+}
+
+.voyage-svg-route {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.voyager-ship {
+  position: absolute;
+  z-index: 25;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: top 0.25s ease-out, left 0.25s ease-out, transform 0.3s ease;
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.9));
+}
+
+.island-realm {
+  position: relative;
+  z-index: 15;
+  border-radius: 36px;
+  background: rgba(11, 14, 24, 0.82);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.85);
+}
+
+.island-realm:hover {
+  border-color: var(--realm-accent, #F59E0B);
+  box-shadow: 0 35px 80px -10px var(--realm-glow, rgba(245, 158, 11, 0.35));
+}
+
+.island-realm.is-active {
+  border-color: var(--realm-accent, #F59E0B);
+  box-shadow: 0 35px 80px -10px var(--realm-glow, rgba(245, 158, 11, 0.35));
+}
+
+.island-location-chip {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 16px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.island-location-chip:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--realm-accent, #F59E0B);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 14px 30px -5px rgba(0, 0, 0, 0.6);
+}
+
+/* Event Dossier Modal */
+.event-dossier-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.event-dossier-modal-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.event-dossier-modal-content {
+  background: #0B0E17;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border-radius: 28px;
+  max-width: 720px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 40px 90px -20px rgba(0, 0, 0, 0.95);
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.event-dossier-modal-backdrop.is-open .event-dossier-modal-content {
+  transform: translateY(0) scale(1);
+}
+
+/* ==========================================================================
+   TIME OF DAY HUD & WEATHER BAR
+   ========================================================================== */
+.time-btn {
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: #94A3B8;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.25s ease;
+}
+
+.time-btn:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.time-btn.is-active {
+  color: #05060A;
+  background: var(--current-accent, #F59E0B);
+  border-color: var(--current-accent, #F59E0B);
+  box-shadow: 0 0 16px var(--current-glow, rgba(245, 158, 11, 0.5));
+}
+
+/* Atmospheric Lighting Shifts on Body */
+body[data-time="morning"] {
+  --sky-tint: rgba(14, 165, 233, 0.15);
+}
+body[data-time="day"] {
+  --sky-tint: rgba(6, 182, 212, 0.12);
+}
+body[data-time="sunset"] {
+  --sky-tint: rgba(249, 115, 22, 0.2);
+}
+body[data-time="night"] {
+  --sky-tint: rgba(15, 23, 42, 0.4);
+}
+
+/* Empty Space Compass Water Ripple */
+.water-ripple-cursor {
+  position: fixed;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px dashed rgba(245, 158, 11, 0.35);
+  pointer-events: none;
+  z-index: 9997;
+  transform: translate(-50%, -50%);
+  animation: cursorRipple 2s infinite linear;
+}
+
+@keyframes cursorRipple {
+  0% { transform: translate(-50%, -50%) rotate(0deg) scale(0.8); opacity: 0.8; }
+  50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.15); opacity: 0.4; }
+  100% { transform: translate(-50%, -50%) rotate(360deg) scale(0.8); opacity: 0.8; }
+}
+

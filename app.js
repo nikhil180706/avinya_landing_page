@@ -17,7 +17,9 @@ function initApp() {
   // Safe Component Initializations
   try { if (window.lucide) lucide.createIcons(); } catch(e) { console.warn('Lucide error', e); }
   try { initCustomCursor(); } catch(e) { console.warn('Cursor error', e); }
-  try { initWebGLOcean(); } catch(e) { console.warn('WebGL Ocean error', e); }
+    try { initLivingSea(); } catch(e) { console.warn('Living Sea error', e); }
+  try { initTimeOfDayPicker(); } catch(e) { console.warn('Time of Day error', e); }
+  try { initWeatherWidget(); } catch(e) { console.warn('Weather error', e); }
   try { initAdaptiveSoundscape(); } catch(e) { console.warn('Audio error', e); }
   try { initHolographicPass(); } catch(e) { console.warn('Pass error', e); }
   try { renderAllEvents(); } catch(e) { console.warn('Events render error', e); }
@@ -43,31 +45,44 @@ if (document.readyState === 'loading') {
 
 function initArchipelagoShip() {
   const ship = document.getElementById('interactive-ship');
+  const path = document.getElementById('voyage-curved-track');
+  const section = document.getElementById('voyage-map');
   if (!ship) return;
 
-  window.sailToIsland = function(dayNum) {
-    let topPos = '68%';
-    let leftPos = '16%';
-    let sectionId = 'day1';
+  function updateShipPosition() {
+    if (!section || !path) return;
+    const rect = section.getBoundingClientRect();
+    const sectionHeight = rect.height;
+    const windowHeight = window.innerHeight;
 
-    if (dayNum === 1) {
-      topPos = '60%';
-      leftPos = '24%';
-      sectionId = 'day1';
-    } else if (dayNum === 2) {
-      topPos = '45%';
-      leftPos = '52%';
-      sectionId = 'day2';
-    } else if (dayNum === 3) {
-      topPos = '25%';
-      leftPos = '82%';
-      sectionId = 'day3';
+    // Calculate progress as user scrolls through voyage-map section
+    let progress = (windowHeight - rect.top) / (sectionHeight + windowHeight * 0.4);
+    progress = Math.max(0, Math.min(1, progress));
+
+    const pathLength = path.getTotalLength ? path.getTotalLength() : 1800;
+    const currentLength = progress * pathLength;
+
+    if (path.getPointAtLength) {
+      const pt = path.getPointAtLength(currentLength);
+      const nextPt = path.getPointAtLength(Math.min(pathLength, currentLength + 8));
+      const angle = Math.atan2(nextPt.y - pt.y, nextPt.x - pt.x) * (180 / Math.PI);
+
+      // SVG viewBox is 1200 x 1800
+      const leftPct = (pt.x / 1200) * 100;
+      const topPct = (pt.y / 1800) * 100;
+
+      ship.style.left = `${leftPct}%`;
+      ship.style.top = `${topPct}%`;
+      ship.style.transform = `translate(-50%, -50%) rotate(${angle - 90}deg)`;
     }
+  }
 
-    ship.style.top = topPos;
-    ship.style.left = leftPos;
+  window.addEventListener('scroll', updateShipPosition, { passive: true });
+  window.addEventListener('resize', updateShipPosition);
+  setTimeout(updateShipPosition, 100);
 
-    const targetSection = document.getElementById(sectionId);
+  window.sailToIsland = function(dayNum) {
+    const targetSection = document.getElementById(`day${dayNum}`);
     if (targetSection) {
       targetSection.scrollIntoView({ behavior: 'smooth' });
     }
@@ -83,69 +98,47 @@ function renderAllEvents() {
     if (!container) return;
 
     container.innerHTML = island.events.map(event => {
-      const eventPageUrl = `event.html?id=${event.id}`;
       const placeName = event.islandPlace || event.venue;
+      const totalBounty = event.prize || event.totalBounty || event.bounty;
+      const patron = (event.sponsors && event.sponsors.length > 0) ? event.sponsors[0] : null;
 
       return `
-        <div class="apple-reveal island-atoll-card flex flex-col justify-between group">
+        <div class="apple-reveal island-location-chip flex flex-col justify-between group cursor-pointer" onclick="window.openEventDossier('${event.id}')">
           <div>
-            <div class="relative aspect-video overflow-hidden rounded-t-[22px]">
-              <img src="${event.image}" alt="${event.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-              <div class="absolute inset-0 bg-gradient-to-t from-[#0D101A] via-transparent to-transparent"></div>
-              
-              <!-- Island Place Pin Badge -->
-              <div class="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/85 border border-white/20 text-white backdrop-blur-md">
+            <div class="flex items-center justify-between text-[10px] font-mono mb-2">
+              <span class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/60 border border-white/10 text-white">
                 <i data-lucide="map-pin" class="w-3 h-3" style="color: ${island.accentColor};"></i>
-                <span class="text-[10px] font-mono font-bold uppercase tracking-wider">
-                  ${placeName}
-                </span>
-              </div>
-
-              <div class="absolute bottom-2 right-3">
-                <span class="bounty-tag text-[11px] shadow-lg">
-                  ${event.totalBounty || event.bounty}
-                </span>
-              </div>
+                <span class="font-bold uppercase tracking-wider">${placeName}</span>
+              </span>
+              <span class="font-bold text-amber-400 font-mono">${totalBounty}</span>
             </div>
 
-            <div class="p-5">
-              <div class="text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-1.5 flex items-center justify-between">
-                <span class="flex items-center gap-1.5">
-                  <i data-lucide="shield" class="w-3 h-3" style="color: ${island.accentColor};"></i>
-                  <span>${event.club || 'IIIT Dharwad'}</span>
-                </span>
-                <span class="font-semibold" style="color: ${island.accentColor};">${event.category}</span>
-              </div>
-              
-              <h4 class="font-display font-bold text-lg text-white mb-2 group-hover:text-amber-400 transition-colors">
-                ${event.title}
-              </h4>
-              
-              <p class="text-xs text-slate-300 font-body line-clamp-2 mb-4 leading-relaxed">
-                ${event.summary}
-              </p>
+            <h4 class="font-display font-bold text-base text-white mb-1 group-hover:text-amber-400 transition-colors">
+              ${event.title}
+            </h4>
 
-              ${event.sponsors && event.sponsors.length > 0 ? `
-                <div class="p-2 rounded-xl bg-white/5 border border-white/5 mb-4 text-[10px] font-mono flex items-center justify-between text-slate-300">
-                  <span class="text-slate-400">Patron:</span>
-                  <span class="text-sky-300 font-semibold">${event.sponsors[0].name}</span>
-                </div>
-              ` : ''}
-            </div>
+            <p class="text-xs text-slate-300 font-body line-clamp-2 mb-3 leading-relaxed">
+              ${event.tagline || event.summary}
+            </p>
+
+            ${patron ? `
+              <div class="p-2 rounded-xl bg-white/5 border border-white/5 mb-3 text-[10px] font-mono flex items-center justify-between text-slate-300">
+                <span class="text-slate-400">Patron:</span>
+                <span class="text-sky-300 font-semibold">${patron.name} (${patron.spending})</span>
+              </div>
+            ` : ''}
           </div>
 
-          <div class="p-5 pt-0">
-            <div class="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-slate-400">
-              <span class="flex items-center gap-1.5">
-                <i data-lucide="clock" class="w-3.5 h-3.5" style="color: ${island.accentColor};"></i>
-                ${event.time.split('-')[0].trim()}
-              </span>
-              
-              <a href="${eventPageUrl}" class="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-amber-500 hover:text-black text-amber-400 font-bold transition-all flex items-center gap-1">
-                <span>Place Dossier & QR</span>
-                <i data-lucide="arrow-right" class="w-3 h-3"></i>
-              </a>
-            </div>
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-slate-400">
+            <span class="flex items-center gap-1">
+              <i data-lucide="clock" class="w-3 h-3" style="color: ${island.accentColor};"></i>
+              <span>${event.time.split('-')[0].trim()}</span>
+            </span>
+
+            <span class="text-xs font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+              <span>Inspect Dossier & QR</span>
+              <i data-lucide="arrow-right" class="w-3 h-3"></i>
+            </span>
           </div>
         </div>
       `;
@@ -153,7 +146,6 @@ function renderAllEvents() {
   });
 
   if (window.lucide) lucide.createIcons();
-  try { initIslandAtollCardsTilt(); } catch(e) {}
 }
 
 function renderHackathonSection() {
@@ -488,457 +480,418 @@ function initDevToolsPoneglyph() {
 }
 
 /* ==========================================================================
-   THREE.JS 3D PROCEDURAL OCEAN & SAILING SHIP ENGINE (WITH 3 PROCEDURAL ISLANDS)
+   60 FPS GPU-ACCELERATED LIVING SEA ENGINE (TIME-OF-DAY OCEAN DYNAMICS)
    ========================================================================== */
-function initWebGLOcean() {
-  const container = document.getElementById('webgl-ocean-container');
-  if (!container || typeof THREE === 'undefined') return;
+function initLivingSea() {
+  const canvas = document.getElementById('living-sea-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
 
-  let scene, camera, renderer, oceanMesh, oceanGeometry, originalPositions, shipGroup, sailMesh, dirLight, oceanMaterial;
-  let outpostGroup, pandemoniumGroup, carnivalGroup, stargateGroup, panRing;
+  let width = canvas.width = window.innerWidth;
+  let height = canvas.height = window.innerHeight;
 
-  try {
-    scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x05060A, 0.009);
-
-    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 11, 28);
-    camera.lookAt(0, -1, 0);
-
-    renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
-    container.appendChild(renderer.domElement);
-  } catch (err) {
-    console.warn('WebGL initialization failed, running in 2D fallback mode:', err);
-    return;
-  }
-
-  // Window Resize
   window.addEventListener('resize', () => {
-    if (!camera || !renderer) return;
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
   });
 
-  // Lighting
-  const ambientLight = new THREE.AmbientLight(0x0e1726, 1.8);
-  scene.add(ambientLight);
-
-  dirLight = new THREE.DirectionalLight(0xF59E0B, 2.5);
-  dirLight.position.set(25, 40, 20);
-  scene.add(dirLight);
-
-  const fillLight = new THREE.PointLight(0x38BDF8, 2.2, 90);
-  fillLight.position.set(-20, 14, 15);
-  scene.add(fillLight);
-
-  // Dynamic Theme Palette Interpolation
-  window.setWebGLTheme = function(hexColor) {
-    if (!dirLight || !oceanMaterial) return;
-    const targetColor = new THREE.Color(hexColor);
-    if (window.gsap) {
-      gsap.to(dirLight.color, { r: targetColor.r, g: targetColor.g, b: targetColor.b, duration: 1.2 });
-      gsap.to(oceanMaterial.color, {
-        r: Math.max(0.02, targetColor.r * 0.12),
-        g: Math.max(0.04, targetColor.g * 0.12),
-        b: Math.max(0.08, targetColor.b * 0.15),
-        duration: 1.2
-      });
-    } else {
-      dirLight.color.copy(targetColor);
+  const PALETTES = {
+    morning: {
+      skyTop: [12, 74, 110],       // #0c4a6e
+      skyBottom: [56, 189, 248],   // #38bdf8 light azure
+      seaDeep: [3, 105, 161],      // #0369a1
+      seaMid: [14, 165, 233],      // #0ea5e9
+      seaCrest: [186, 230, 253],   // #bae6fd
+      shimmer: [254, 240, 138, 0.45]
+    },
+    day: {
+      skyTop: [8, 47, 73],         // #082f49
+      skyBottom: [14, 165, 233],   // #0ea5e9
+      seaDeep: [2, 132, 199],      // #0284c7
+      seaMid: [56, 189, 248],      // #38bdf8
+      seaCrest: [224, 242, 254],
+      shimmer: [255, 255, 255, 0.5]
+    },
+    sunset: {
+      skyTop: [59, 7, 100],        // #3b0764
+      skyBottom: [234, 88, 12],    // #ea580c
+      seaDeep: [67, 20, 7],        // #431407
+      seaMid: [194, 65, 12],       // #c2410c
+      seaCrest: [253, 186, 116],   // #fdba74
+      shimmer: [254, 215, 170, 0.55]
+    },
+    night: {
+      skyTop: [2, 6, 23],          // #020617
+      skyBottom: [15, 23, 42],     // #0f172a
+      seaDeep: [3, 7, 18],         // #030712
+      seaMid: [15, 30, 60],
+      seaCrest: [56, 189, 248],    // #38bdf8 bioluminescent aqua
+      shimmer: [56, 189, 248, 0.35]
     }
   };
 
-  // Procedural Ocean Mesh (Large 280x280 world)
-  const oceanWidth = 280;
-  const oceanHeight = 280;
-  const segments = 72;
-  oceanGeometry = new THREE.PlaneGeometry(oceanWidth, oceanHeight, segments, segments);
-  oceanGeometry.rotateX(-Math.PI / 2);
-
-  const posAttr = oceanGeometry.attributes.position;
-  originalPositions = new Float32Array(posAttr.array);
-
-  oceanMaterial = new THREE.MeshStandardMaterial({
-    color: 0x071224,
-    roughness: 0.22,
-    metalness: 0.82,
-    flatShading: true,
-    wireframe: false
-  });
-
-  oceanMesh = new THREE.Mesh(oceanGeometry, oceanMaterial);
-  oceanMesh.position.y = -6.5;
-  scene.add(oceanMesh);
-
-  // ========================================================================
-  // PROCEDURAL 3D ISLANDS IN THE OCEAN
-  // ========================================================================
-
-  // 1. Island 01: The Last Outpost (Desert Citadel at x:16, z:-22)
-  outpostGroup = new THREE.Group();
-  outpostGroup.position.set(16, -6.0, -22);
-
-  // Lower Atoll Base
-  const outBaseGeo = new THREE.CylinderGeometry(15, 20, 5, 12);
-  const outBaseMat = new THREE.MeshStandardMaterial({ color: 0xC27803, roughness: 0.8, flatShading: true });
-  const outBaseMesh = new THREE.Mesh(outBaseGeo, outBaseMat);
-  outBaseMesh.position.y = 2.0;
-  outpostGroup.add(outBaseMesh);
-
-  // Upper Desert Dunes
-  const outDuneGeo = new THREE.DodecahedronGeometry(6.5, 0);
-  outDuneGeo.scale(1.6, 0.7, 1.4);
-  const outDuneMat = new THREE.MeshStandardMaterial({ color: 0xD97706, roughness: 0.9, flatShading: true });
-  const outDuneMesh = new THREE.Mesh(outDuneGeo, outDuneMat);
-  outDuneMesh.position.set(-1, 5.0, 0);
-  outpostGroup.add(outDuneMesh);
-
-  // Monolith Spires
-  for (let i = 0; i < 4; i++) {
-    const spireGeo = new THREE.ConeGeometry(1.2, 7 + i * 1.5, 5);
-    const spireMat = new THREE.MeshStandardMaterial({ color: 0x92400E, roughness: 0.7, flatShading: true });
-    const spireMesh = new THREE.Mesh(spireGeo, spireMat);
-    const ang = (i / 4) * Math.PI * 2;
-    spireMesh.position.set(Math.cos(ang) * 6, 6 + i, Math.sin(ang) * 6);
-    outpostGroup.add(spireMesh);
+  function getAutoTimeMode() {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 10) return 'morning';
+    if (hour >= 10 && hour < 17) return 'day';
+    if (hour >= 17 && hour < 20) return 'sunset';
+    return 'night';
   }
 
-  // Outpost Watchtower & Amber Beacon
-  const outTowerGeo = new THREE.CylinderGeometry(0.9, 1.3, 9, 6);
-  const outTowerMat = new THREE.MeshStandardMaterial({ color: 0x78350F, roughness: 0.6, flatShading: true });
-  const outTowerMesh = new THREE.Mesh(outTowerGeo, outTowerMat);
-  outTowerMesh.position.set(-3, 8.5, 2);
-  outpostGroup.add(outTowerMesh);
+  let currentMode = getAutoTimeMode();
+  let targetMode = currentMode;
+  let isAuto = true;
 
-  const outBeacon = new THREE.PointLight(0xF59E0B, 3.5, 30);
-  outBeacon.position.set(-3, 13.5, 2);
-  outpostGroup.add(outBeacon);
+  let currentColors = {
+    skyTop: [...PALETTES[currentMode].skyTop],
+    skyBottom: [...PALETTES[currentMode].skyBottom],
+    seaDeep: [...PALETTES[currentMode].seaDeep],
+    seaMid: [...PALETTES[currentMode].seaMid],
+    seaCrest: [...PALETTES[currentMode].seaCrest],
+    shimmer: [...PALETTES[currentMode].shimmer]
+  };
 
-  // Harbor Wooden Dock Pier (where ship parks)
-  const outPierGeo = new THREE.BoxGeometry(4.5, 0.5, 11);
-  const outPierMat = new THREE.MeshStandardMaterial({ color: 0x451A03, roughness: 0.7 });
-  const outPierMesh = new THREE.Mesh(outPierGeo, outPierMat);
-  outPierMesh.position.set(-7.5, 1.5, 3.0);
-  outpostGroup.add(outPierMesh);
-
-  scene.add(outpostGroup);
-
-  // 2. Island 02: The Pandemonium (Cyberpunk Island at x:-18, z:-70)
-  pandemoniumGroup = new THREE.Group();
-  pandemoniumGroup.position.set(-18, -6.0, -70);
-
-  // Volcanic Base
-  const panBaseGeo = new THREE.CylinderGeometry(16, 22, 6, 14);
-  const panBaseMat = new THREE.MeshStandardMaterial({ color: 0x111827, roughness: 0.5, metalness: 0.6, flatShading: true });
-  const panBaseMesh = new THREE.Mesh(panBaseGeo, panBaseMat);
-  panBaseMesh.position.y = 2.5;
-  pandemoniumGroup.add(panBaseMesh);
-
-  // Cyberpunk Neon Spire Towers
-  const panSpire1Geo = new THREE.BoxGeometry(2.5, 16, 2.5);
-  const panSpire1Mat = new THREE.MeshStandardMaterial({
-    color: 0x1E1035,
-    emissive: 0xEC4899,
-    emissiveIntensity: 0.8,
-    roughness: 0.2
-  });
-  const panSpire1 = new THREE.Mesh(panSpire1Geo, panSpire1Mat);
-  panSpire1.position.set(0, 10, 0);
-  pandemoniumGroup.add(panSpire1);
-
-  const panSpire2Geo = new THREE.BoxGeometry(1.8, 11, 1.8);
-  const panSpire2Mat = new THREE.MeshStandardMaterial({
-    color: 0x082F49,
-    emissive: 0x06B6D4,
-    emissiveIntensity: 0.8,
-    roughness: 0.2
-  });
-  const panSpire2 = new THREE.Mesh(panSpire2Geo, panSpire2Mat);
-  panSpire2.position.set(4, 7.5, 2);
-  pandemoniumGroup.add(panSpire2);
-
-  // Floating Hologram Ring
-  const panRingGeo = new THREE.TorusGeometry(3.2, 0.22, 16, 32);
-  const panRingMat = new THREE.MeshStandardMaterial({ color: 0xEC4899, emissive: 0xEC4899, emissiveIntensity: 1 });
-  panRing = new THREE.Mesh(panRingGeo, panRingMat);
-  panRing.position.set(0, 18, 0);
-  panRing.rotation.x = Math.PI / 2;
-  pandemoniumGroup.add(panRing);
-
-  // Cyber Dock Pier (where ship parks)
-  const panPierGeo = new THREE.BoxGeometry(4.5, 0.5, 11);
-  const panPierMat = new THREE.MeshStandardMaterial({ color: 0x1F2937, metalness: 0.8, roughness: 0.3 });
-  const panPierMesh = new THREE.Mesh(panPierGeo, panPierMat);
-  panPierMesh.position.set(7.5, 1.5, 4.0);
-  pandemoniumGroup.add(panPierMesh);
-
-  const panHarborLight = new THREE.PointLight(0xEC4899, 4.0, 35);
-  panHarborLight.position.set(7.5, 4.0, 4.0);
-  pandemoniumGroup.add(panHarborLight);
-
-  scene.add(pandemoniumGroup);
-
-  // 3. Island 03: The Carnival Island (Festival Island at x:18, z:-118)
-  carnivalGroup = new THREE.Group();
-  carnivalGroup.position.set(18, -6.0, -118);
-
-  // Base Earth
-  const carBaseGeo = new THREE.CylinderGeometry(18, 24, 6, 14);
-  const carBaseMat = new THREE.MeshStandardMaterial({ color: 0xCA8A04, roughness: 0.8, flatShading: true });
-  const carBaseMesh = new THREE.Mesh(carBaseGeo, carBaseMat);
-  carBaseMesh.position.y = 2.5;
-  carnivalGroup.add(carBaseMesh);
-
-  // Big Top Circus Tent Pavilion
-  const carTentGeo = new THREE.ConeGeometry(7, 5.5, 12);
-  const carTentMat = new THREE.MeshStandardMaterial({ color: 0xFBBF24, roughness: 0.5, flatShading: true });
-  const carTent = new THREE.Mesh(carTentGeo, carTentMat);
-  carTent.position.set(0, 7.5, 0);
-  carnivalGroup.add(carTent);
-
-  // Festival Boardwalk Pier (where ship parks)
-  const carPierGeo = new THREE.BoxGeometry(4.5, 0.5, 12);
-  const carPierMat = new THREE.MeshStandardMaterial({ color: 0x78350F, roughness: 0.6 });
-  const carPierMesh = new THREE.Mesh(carPierGeo, carPierMat);
-  carPierMesh.position.set(-8.0, 1.5, 3.5);
-  carnivalGroup.add(carPierMesh);
-
-  const carLantern1 = new THREE.PointLight(0xFBBF24, 3.5, 30);
-  carLantern1.position.set(-8.0, 4.0, 3.5);
-  carnivalGroup.add(carLantern1);
-
-  const carLantern2 = new THREE.PointLight(0xEF4444, 2.5, 25);
-  carLantern2.position.set(3, 8.0, 3);
-  carnivalGroup.add(carLantern2);
-
-  scene.add(carnivalGroup);
-
-  // 4. Hack2Future Celestial Star-Gate (x:0, y:16, z:-170)
-  stargateGroup = new THREE.Group();
-  stargateGroup.position.set(0, 16, -170);
-
-  const gateGeo = new THREE.TorusGeometry(11, 0.5, 16, 64);
-  const gateMat = new THREE.MeshStandardMaterial({
-    color: 0x38BDF8,
-    emissive: 0x38BDF8,
-    emissiveIntensity: 1.2,
-    roughness: 0.1
-  });
-  const gateMesh = new THREE.Mesh(gateGeo, gateMat);
-  stargateGroup.add(gateMesh);
-
-  const gateCoreLight = new THREE.PointLight(0x38BDF8, 5.0, 70);
-  stargateGroup.add(gateCoreLight);
-
-  scene.add(stargateGroup);
-
-  // ========================================================================
-  // PROCEDURAL SAILING EXPLORATION SHIP
-  // ========================================================================
-  shipGroup = new THREE.Group();
-
-  // Ship Hull
-  const hullGeo = new THREE.ConeGeometry(2.0, 7.0, 5);
-  hullGeo.rotateZ(Math.PI / 2);
-  hullGeo.scale(1, 0.45, 0.75);
-  const hullMat = new THREE.MeshStandardMaterial({
-    color: 0x1E293B,
-    roughness: 0.35,
-    metalness: 0.65,
-    flatShading: true
-  });
-  const hullMesh = new THREE.Mesh(hullGeo, hullMat);
-  hullMesh.position.y = 0.4;
-  shipGroup.add(hullMesh);
-
-  // Deck Cabin
-  const cabinGeo = new THREE.BoxGeometry(1.5, 0.9, 1.1);
-  const cabinMat = new THREE.MeshStandardMaterial({ color: 0x0F172A, roughness: 0.3 });
-  const cabinMesh = new THREE.Mesh(cabinGeo, cabinMat);
-  cabinMesh.position.set(-0.8, 0.9, 0);
-  shipGroup.add(cabinMesh);
-
-  // Mast
-  const mastGeo = new THREE.CylinderGeometry(0.06, 0.08, 5.2, 8);
-  const mastMat = new THREE.MeshStandardMaterial({ color: 0xD97706, roughness: 0.5 });
-  const mastMesh = new THREE.Mesh(mastGeo, mastMat);
-  mastMesh.position.set(0.6, 2.7, 0);
-  shipGroup.add(mastMesh);
-
-  // Billowing Main Sail
-  const sailGeo = new THREE.PlaneGeometry(2.6, 3.0, 4, 4);
-  const sailPos = sailGeo.attributes.position;
-  for (let i = 0; i < sailPos.count; i++) {
-    const vx = sailPos.getX(i);
-    const vz = Math.sin((vx + 1.3) / 2.6 * Math.PI) * 0.42;
-    sailPos.setZ(i, vz);
-  }
-  sailGeo.computeVertexNormals();
-  const sailMat = new THREE.MeshStandardMaterial({
-    color: 0xF8FAFC,
-    roughness: 0.6,
-    side: THREE.DoubleSide
-  });
-  sailMesh = new THREE.Mesh(sailGeo, sailMat);
-  sailMesh.position.set(0.6, 3.1, 0.25);
-  sailMesh.rotation.y = 0.15;
-  shipGroup.add(sailMesh);
-
-  // Ship Lantern Light
-  const lantern = new THREE.PointLight(0xF59E0B, 2.2, 10);
-  lantern.position.set(2.8, 1.2, 0);
-  shipGroup.add(lantern);
-
-  scene.add(shipGroup);
-
-  // Wave height calculation helper
-  function getWaveHeight(x, z, t) {
-    return Math.sin(x * 0.08 + t * 1.4) * 1.25 +
-           Math.cos(z * 0.10 + t * 1.1) * 1.10 +
-           Math.sin((x + z) * 0.06 + t * 0.8) * 0.60;
-  }
-
-  // ========================================================================
-  // SMOOTH VOYAGE WAYPOINT CHECKPOINTS
-  // ========================================================================
-  const voyageWaypoints = [
-    { s: 0.00, x: 0.0,   z: 16.0,   label: "PORT OF DHARWAD (READY TO EMBARK)" },
-    { s: 0.14, x: 4.5,   z: 0.0,    label: "SAILING: HEADING TO ISLAND 01 (18 KNOTS)" },
-    { s: 0.28, x: 8.5,   z: -19.0,  label: "DOCKED: PORT OF ARID MONOLITHS (ISLAND 01)" },
-    { s: 0.42, x: -2.0,  z: -44.0,  label: "SAILING: CROSSING ARCHIPELAGO STRAITS" },
-    { s: 0.56, x: -10.5, z: -67.0,  label: "DOCKED: CYBER-BAY MARINA (ISLAND 02)" },
-    { s: 0.70, x: 2.0,   z: -92.0,  label: "SAILING: CROSSING CARNIVAL REEF" },
-    { s: 0.82, x: 10.0,  z: -115.0, label: "DOCKED: GRAND LAGOON WHARF (ISLAND 03)" },
-    { s: 0.96, x: 0.0,   z: -155.0, label: "ASCENDING: HACK2FUTURE ORBIT STATION" }
-  ];
-
-  function getVoyagePosition(scrollPct) {
-    const s = Math.max(0, Math.min(1, scrollPct));
-    let i = 0;
-    while (i < voyageWaypoints.length - 1 && s > voyageWaypoints[i + 1].s) {
-      i++;
-    }
-    if (i >= voyageWaypoints.length - 1) {
-      const last = voyageWaypoints[voyageWaypoints.length - 1];
-      return { x: last.x, z: last.z, label: last.label };
-    }
-    const wpA = voyageWaypoints[i];
-    const wpB = voyageWaypoints[i + 1];
-    const span = Math.max(0.001, wpB.s - wpA.s);
-    let ratio = (s - wpA.s) / span;
-    // Smoothstep easing
-    ratio = ratio * ratio * (3 - 2 * ratio);
-
-    const x = wpA.x + (wpB.x - wpA.x) * ratio;
-    const z = wpA.z + (wpB.z - wpA.z) * ratio;
-    const label = ratio > 0.5 ? wpB.label : wpA.label;
-    return { x, z, label };
-  }
-
-  // Mouse Parallax
-  let targetCamX = 0;
-  let targetCamY = 11;
-  window.addEventListener('mousemove', (e) => {
-    const normX = (e.clientX / window.innerWidth) * 2 - 1;
-    const normY = -(e.clientY / window.innerHeight) * 2 + 1;
-    targetCamX = normX * 3.5;
-    targetCamY = 11 + normY * 1.5;
-  });
-
-  // Animation Loop
-  const clock = new THREE.Clock();
-  const telemetryEl = document.getElementById('logpose-telemetry');
-
-  function animate() {
-    requestAnimationFrame(animate);
-    const t = clock.getElapsedTime();
-
-    // 1. Dynamic Wave Vertex Displacement
-    const pos = oceanGeometry.attributes.position.array;
-    for (let i = 0; i < posAttr.count; i++) {
-      const idx = i * 3;
-      const ox = originalPositions[idx];
-      const oz = originalPositions[idx + 2];
-      pos[idx + 1] = getWaveHeight(ox, oz, t);
-    }
-    oceanGeometry.attributes.position.needsUpdate = true;
-    oceanGeometry.computeVertexNormals();
-
-    // 2. Track Page Scroll & Move Ship along Voyage Checkpoints
-    const maxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight);
-    const scrollPct = window.scrollY / maxScroll;
-    const voyage = getVoyagePosition(scrollPct);
-
-    // Live Telemetry Label update
-    if (telemetryEl && telemetryEl.innerText !== voyage.label) {
-      telemetryEl.innerText = voyage.label;
-    }
-
-    const prevX = shipGroup.position.x;
-    const prevZ = shipGroup.position.z;
-
-    shipGroup.position.x += (voyage.x - shipGroup.position.x) * 0.08;
-    shipGroup.position.z += (voyage.z - shipGroup.position.z) * 0.08;
-
-    const sx = shipGroup.position.x;
-    const sz = shipGroup.position.z;
-    const currentWaveY = oceanMesh.position.y + getWaveHeight(sx, sz, t);
-    shipGroup.position.y += (currentWaveY - shipGroup.position.y) * 0.15;
-
-    // Pitch & Roll based on local wave slope
-    const delta = 0.5;
-    const hFront = getWaveHeight(sx + delta, sz, t);
-    const hBack  = getWaveHeight(sx - delta, sz, t);
-    const hRight = getWaveHeight(sx, sz + delta, t);
-    const hLeft  = getWaveHeight(sx, sz - delta, t);
-
-    const pitch = Math.atan2(hFront - hBack, delta * 2);
-    const roll  = Math.atan2(hRight - hLeft, delta * 2);
-
-    shipGroup.rotation.z = -pitch * 0.65;
-    shipGroup.rotation.x = roll * 0.65;
-
-    // Automatic ship heading in direction of travel
-    const moveDX = shipGroup.position.x - prevX;
-    const moveDZ = shipGroup.position.z - prevZ;
-    const moveDist = Math.hypot(moveDX, moveDZ);
-    if (moveDist > 0.002) {
-      const targetHeading = Math.atan2(moveDX, -moveDZ) - Math.PI / 2;
-      shipGroup.rotation.y += (targetHeading - shipGroup.rotation.y) * 0.08;
+  window.setLivingSeaTime = function(mode) {
+    if (mode === 'auto') {
+      isAuto = true;
+      targetMode = getAutoTimeMode();
     } else {
-      // Resting sway at dock
-      shipGroup.rotation.y = -Math.PI / 2 + Math.sin(t * 0.7) * 0.08;
+      isAuto = false;
+      targetMode = mode;
     }
+    document.body.setAttribute('data-time', targetMode);
+  };
 
-    // Billow Sail gently
-    sailMesh.rotation.y = 0.15 + Math.sin(t * 2.4) * 0.05;
+  document.body.setAttribute('data-time', targetMode);
 
-    // Rotate Stargate ring & Hologram ring
-    if (stargateGroup) {
-      stargateGroup.rotation.z += 0.006;
-      stargateGroup.rotation.y += 0.004;
-    }
-    if (panRing) {
-      panRing.rotation.z += 0.01;
-    }
-
-    // Smooth Camera Tracking (Frames ship and destination island)
-    const targetCamPosZ = shipGroup.position.z + 24;
-    camera.position.x += ((shipGroup.position.x * 0.35 + targetCamX) - camera.position.x) * 0.04;
-    camera.position.y += ((shipGroup.position.y + 10.5 + targetCamY) - camera.position.y) * 0.04;
-    camera.position.z += (targetCamPosZ - camera.position.z) * 0.04;
-    camera.lookAt(shipGroup.position.x, shipGroup.position.y + 0.5, shipGroup.position.z - 8);
-
-    renderer.render(scene, camera);
+  let time = 0;
+  const sparkles = [];
+  for (let i = 0; i < 45; i++) {
+    sparkles.push({
+      x: Math.random(),
+      y: Math.random() * 0.7 + 0.3,
+      size: Math.random() * 2 + 1,
+      speed: Math.random() * 0.02 + 0.01,
+      phase: Math.random() * Math.PI * 2
+    });
   }
 
-  animate();
+  function lerp(a, b, t) {
+    return a + (b - a) * t;
+  }
+
+  function updatePaletteTransition() {
+    if (isAuto) {
+      targetMode = getAutoTimeMode();
+    }
+    const target = PALETTES[targetMode] || PALETTES.night;
+    const speed = 0.04;
+
+    for (const key of ['skyTop', 'skyBottom', 'seaDeep', 'seaMid', 'seaCrest']) {
+      for (let i = 0; i < 3; i++) {
+        currentColors[key][i] = lerp(currentColors[key][i], target[key][i], speed);
+      }
+    }
+    for (let i = 0; i < 4; i++) {
+      currentColors.shimmer[i] = lerp(currentColors.shimmer[i], target.shimmer[i], speed);
+    }
+  }
+
+  function drawWave(yOffset, amplitude, frequency, speed, colorHex, strokeColorHex) {
+    ctx.beginPath();
+    ctx.moveTo(0, height);
+    
+    for (let x = 0; x <= width; x += 16) {
+      const y = yOffset + 
+                Math.sin(x * frequency + time * speed) * amplitude + 
+                Math.cos(x * frequency * 0.5 + time * speed * 0.7) * (amplitude * 0.4);
+      ctx.lineTo(x, y);
+    }
+    ctx.lineTo(width, height);
+    ctx.closePath();
+    ctx.fillStyle = colorHex;
+    ctx.fill();
+
+    if (strokeColorHex) {
+      ctx.strokeStyle = strokeColorHex;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+  }
+
+  function render() {
+    time += 0.015;
+    updatePaletteTransition();
+
+    const c = currentColors;
+    const skyTopStr = `rgb(${Math.round(c.skyTop[0])}, ${Math.round(c.skyTop[1])}, ${Math.round(c.skyTop[2])})`;
+    const skyBtmStr = `rgb(${Math.round(c.skyBottom[0])}, ${Math.round(c.skyBottom[1])}, ${Math.round(c.skyBottom[2])})`;
+    
+    const skyGrad = ctx.createLinearGradient(0, 0, 0, height);
+    skyGrad.addColorStop(0, skyTopStr);
+    skyGrad.addColorStop(1, skyBtmStr);
+    ctx.fillStyle = skyGrad;
+    ctx.fillRect(0, 0, width, height);
+
+    const shimStr = `rgba(${Math.round(c.shimmer[0])}, ${Math.round(c.shimmer[1])}, ${Math.round(c.shimmer[2])}, ${c.shimmer[3].toFixed(2)})`;
+    ctx.fillStyle = shimStr;
+    for (const sp of sparkles) {
+      const sx = sp.x * width;
+      const sy = sp.y * height + Math.sin(time + sp.phase) * 6;
+      const alpha = (Math.sin(time * 2 + sp.phase) + 1) * 0.5;
+      ctx.globalAlpha = alpha;
+      ctx.beginPath();
+      ctx.arc(sx, sy, sp.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1.0;
+
+    const deepRgb = `rgb(${Math.round(c.seaDeep[0])}, ${Math.round(c.seaDeep[1])}, ${Math.round(c.seaDeep[2])})`;
+    const midRgb = `rgb(${Math.round(c.seaMid[0])}, ${Math.round(c.seaMid[1])}, ${Math.round(c.seaMid[2])})`;
+    const crestRgb = `rgb(${Math.round(c.seaCrest[0])}, ${Math.round(c.seaCrest[1])}, ${Math.round(c.seaCrest[2])})`;
+
+    drawWave(height * 0.55, 24, 0.002, 0.8, deepRgb, null);
+    drawWave(height * 0.68, 32, 0.003, -1.1, midRgb, crestRgb);
+    drawWave(height * 0.82, 38, 0.004, 1.4, deepRgb, crestRgb);
+
+    requestAnimationFrame(render);
+  }
+
+  requestAnimationFrame(render);
 }
+
+/* ==========================================================================
+   TIME OF DAY HUD INTERACTIVE PICKER
+   ========================================================================== */
+function initTimeOfDayPicker() {
+  const buttons = document.querySelectorAll('#time-of-day-picker .time-btn');
+  if (!buttons.length) return;
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      const mode = btn.getAttribute('data-time');
+      if (window.setLivingSeaTime) {
+        window.setLivingSeaTime(mode);
+      }
+    });
+  });
+}
+
+/* ==========================================================================
+   LIVE DHARWAD WEATHER TELEMETRY HUD
+   ========================================================================== */
+function initWeatherWidget() {
+  const tempDesc = document.getElementById('weather-temp-desc');
+  const windEl = document.getElementById('weather-wind');
+  if (!tempDesc) return;
+
+  tempDesc.textContent = '28°C Clear Skies';
+  if (windEl) windEl.textContent = 'Wind: 14 km/h NE';
+
+  fetch('https://api.open-meteo.com/v1/forecast?latitude=15.4288&longitude=75.0560&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m')
+    .then(r => r.json())
+    .then(data => {
+      if (data && data.current) {
+        const temp = Math.round(data.current.temperature_2m);
+        const wind = Math.round(data.current.wind_speed_10m);
+        const code = data.current.weather_code;
+        let condition = 'Clear Skies';
+        if (code >= 1 && code <= 3) condition = 'Partly Cloudy';
+        else if (code >= 45 && code <= 48) condition = 'Misty Winds';
+        else if (code >= 51 && code <= 67) condition = 'Gentle Showers';
+        else if (code >= 80) condition = 'Oceanic Rain';
+
+        tempDesc.textContent = `${temp}°C ${condition}`;
+        if (windEl) windEl.textContent = `Wind: ${wind} km/h NE`;
+      }
+    })
+    .catch(() => {
+      // Non-blocking fallback
+    });
+}
+
+/* ==========================================================================
+   EVENT DOSSIER & LOCATION INSPECTOR MODAL CONTROLLER
+   ========================================================================== */
+window.openEventDossier = function(eventId) {
+  const data = window.AVINYA_DATA;
+  if (!data || !data.islands) return;
+
+  let foundEvent = null;
+  let parentIsland = null;
+
+  for (const island of data.islands) {
+    const ev = island.events.find(e => e.id === eventId);
+    if (ev) {
+      foundEvent = ev;
+      parentIsland = island;
+      break;
+    }
+  }
+
+  if (!foundEvent) {
+    if (eventId === 'hack2future' || eventId === 'h2f') {
+      window.location.href = 'hack2future.html';
+      return;
+    }
+    return;
+  }
+
+  const modal = document.getElementById('event-dossier-modal');
+  const body = document.getElementById('event-dossier-body');
+  if (!modal || !body) return;
+
+  const sponsorsHtml = (foundEvent.sponsors || []).map(sp => `
+    <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-amber-500/20 border border-amber-400 flex items-center justify-center text-amber-400">
+          <i data-lucide="${sp.logo || 'award'}" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <div class="font-display font-bold text-sm text-white">${sp.name}</div>
+          <div class="text-[10px] font-mono text-slate-400">${sp.tier} • ${sp.category}</div>
+        </div>
+      </div>
+      <div class="text-right">
+        <div class="text-xs font-mono font-bold text-amber-400">${sp.spending}</div>
+        <div class="text-[9px] font-mono text-slate-500 uppercase">Patron Grant</div>
+      </div>
+    </div>
+  `).join('');
+
+  const rulesHtml = (foundEvent.rules || []).map(r => `
+    <li class="flex items-start gap-2 text-xs text-slate-300 font-mono">
+      <span class="text-amber-400 mt-0.5">✦</span>
+      <span>${r}</span>
+    </li>
+  `).join('');
+
+  body.innerHTML = `
+    <!-- Modal Header -->
+    <div class="flex items-start justify-between gap-4 pb-5 border-b border-white/15 mb-6">
+      <div>
+        <div class="flex items-center gap-2 text-xs font-mono text-amber-400 font-bold mb-1.5">
+          <span class="px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/30">${parentIsland ? parentIsland.dayNumber : 'AVINYA'}</span>
+          <span>•</span>
+          <span class="flex items-center gap-1">
+            <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+            <span>${foundEvent.islandPlace || foundEvent.venue}</span>
+          </span>
+        </div>
+        <h3 class="font-display font-black text-2xl sm:text-3xl text-white">${foundEvent.title}</h3>
+        <p class="text-xs text-slate-300 font-body mt-1">${foundEvent.tagline || foundEvent.summary}</p>
+      </div>
+
+      <button onclick="window.closeEventDossier()" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white transition-colors cursor-pointer" title="Close Dossier">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Podium Prize Bounty Grid -->
+    <div class="p-5 rounded-2xl bg-amber-500/10 border border-amber-500/30 mb-6">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2 text-xs font-mono font-bold text-amber-400 uppercase">
+          <i data-lucide="trophy" class="w-4 h-4"></i>
+          <span>Official Prize Bounty</span>
+        </div>
+        <span class="font-display font-black text-xl text-amber-300">${foundEvent.prize || foundEvent.totalBounty}</span>
+      </div>
+
+      ${foundEvent.podium ? `
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
+          <div class="p-3 rounded-xl bg-black/40 border border-amber-500/30 text-center">
+            <div class="text-[10px] text-amber-400 uppercase font-bold">1st Place (Gold)</div>
+            <div class="font-bold text-white mt-1">${foundEvent.podium.first}</div>
+          </div>
+          <div class="p-3 rounded-xl bg-black/40 border border-slate-400/30 text-center">
+            <div class="text-[10px] text-slate-300 uppercase font-bold">2nd Place (Silver)</div>
+            <div class="font-bold text-white mt-1">${foundEvent.podium.second}</div>
+          </div>
+          <div class="p-3 rounded-xl bg-black/40 border border-amber-700/30 text-center">
+            <div class="text-[10px] text-amber-600 uppercase font-bold">3rd Place (Bronze)</div>
+            <div class="font-bold text-white mt-1">${foundEvent.podium.third}</div>
+          </div>
+        </div>
+      ` : ''}
+    </div>
+
+    <!-- Registration QR & Quick Link -->
+    <div class="p-5 rounded-2xl bg-black/60 border border-white/15 mb-6 flex flex-col sm:flex-row items-center gap-6">
+      <div class="w-32 h-32 rounded-2xl bg-white p-2 shrink-0 shadow-xl flex items-center justify-center">
+        <img src="${foundEvent.qrCodeImage || 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + encodeURIComponent(foundEvent.registrationUrl || 'https://hack2future.iiitdwd.ac.in')}" alt="Registration QR" class="w-full h-full object-contain">
+      </div>
+      <div class="flex-1 text-center sm:text-left">
+        <div class="text-xs font-mono text-slate-400 mb-1">SCAN QR OR REGISTER VIA DIRECT PASS</div>
+        <h4 class="font-display font-bold text-lg text-white mb-2">Claim Candidate Port Pass</h4>
+        <p class="text-xs text-slate-300 font-body mb-4 leading-relaxed">
+          Free registration for all accredited college undergraduates. Secure spot before registration caps out.
+        </p>
+        <a href="${foundEvent.registrationUrl || 'https://hack2future.iiitdwd.ac.in'}" target="_blank" class="btn-primary text-xs !py-2.5 !px-5 inline-flex items-center gap-2">
+          <span>Open Registration Portal</span>
+          <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Sponsor Contributions -->
+    ${sponsorsHtml ? `
+      <div class="mb-6">
+        <h4 class="text-xs font-mono uppercase tracking-widest text-slate-400 mb-3 flex items-center gap-2">
+          <i data-lucide="building-2" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>Event Patrons & Spending Allocation</span>
+        </h4>
+        <div class="space-y-2.5">
+          ${sponsorsHtml}
+        </div>
+      </div>
+    ` : ''}
+
+    <!-- Key Rules -->
+    ${rulesHtml ? `
+      <div class="mb-6">
+        <h4 class="text-xs font-mono uppercase tracking-widest text-slate-400 mb-2.5">Guidelines & Protocols</h4>
+        <ul class="space-y-2">
+          ${rulesHtml}
+        </ul>
+      </div>
+    ` : ''}
+
+    <!-- Host & Coordinator Info -->
+    <div class="p-4 rounded-xl bg-white/5 border border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-slate-400">
+      <div>
+        <span class="text-slate-500">Host Guild:</span>
+        <strong class="text-slate-200 ml-1">${foundEvent.hostClub || 'Avinya Student Committee'}</strong>
+      </div>
+      <div>
+        <span class="text-slate-500">Lead:</span>
+        <strong class="text-amber-400 ml-1">${foundEvent.studentLead || 'Fest Secretariat'}</strong>
+      </div>
+      <div>
+        <span class="text-slate-500">Venue:</span>
+        <strong class="text-slate-200 ml-1">${foundEvent.venue}</strong>
+      </div>
+    </div>
+  `;
+
+  modal.classList.add('is-open');
+  if (window.lucide) lucide.createIcons();
+};
+
+window.closeEventDossier = function() {
+  const modal = document.getElementById('event-dossier-modal');
+  if (modal) {
+    modal.classList.remove('is-open');
+  }
+};
+
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    window.closeEventDossier();
+  }
+});
 
 /* ==========================================================================
    WEB AUDIO API ADAPTIVE SOUNDSCAPE SYNTHESIZER
@@ -1339,6 +1292,43 @@ function initIslandAtollCardsTilt() {
    CUSTOM NAUTICAL COMPASS CURSOR ENGINE
    ========================================================================== */
 function initCustomCursor() {
+  const dot = document.getElementById('custom-cursor-dot');
+  const ring = document.getElementById('custom-cursor-ring');
+  const ripple = document.getElementById('custom-cursor-ripple');
+  if (!dot || !ring) return;
+
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let ringX = mouseX;
+  let ringY = mouseY;
+
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
+    dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+    if (ripple) {
+      ripple.style.left = `${mouseX}px`;
+      ripple.style.top = `${mouseY}px`;
+    }
+  });
+
+  function renderCursor() {
+    ringX += (mouseX - ringX) * 0.18;
+    ringY += (mouseY - ringY) * 0.18;
+    ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
+    requestAnimationFrame(renderCursor);
+  }
+  requestAnimationFrame(renderCursor);
+
+  const hoverTargets = document.querySelectorAll('a, button, [onclick], .island-realm, .island-location-chip, .time-btn');
+  hoverTargets.forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('is-hovering'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('is-hovering'));
+  });
+}
+
+function _unused_old_cursor() {
   const dot = document.getElementById('custom-cursor-dot');
   const ring = document.getElementById('custom-cursor-ring');
   if (!dot || !ring) return;

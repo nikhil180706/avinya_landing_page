@@ -30,6 +30,8 @@ window.AVINYA_DATA = {
       date: "Friday, March 12, 2027",
       name: "The Last Outpost",
       theme: "Dune Desert Sci-Fi",
+      climate: "Arid Sci-Fi Dune Desert • 38°C Thermal Winds",
+      floraFauna: "🌵 Spiced Desert Palms, Crystalline Cacti & Autonomous Rover Caravans",
       portName: "Port of Arid Monoliths (Pier 01)",
       portCoordinates: "15.4288° N, 75.0560° E",
       tagline: "Decipher the Ancient Monoliths of Code across the Shifting Dunes",
@@ -230,6 +232,78 @@ window.AVINYA_DATA = {
               logo: "cpu"
             }
           ]
+        },
+        {
+          id: "d1-e5",
+          title: "Web3 Sandstorm Sprint",
+          islandPlace: "The Spice Terminal Pier 04",
+          category: "Technical / Blockchain",
+          tagline: "Build Zero-Knowledge decentralized protocols across the Dune ledger",
+          time: "02:30 PM - 05:30 PM",
+          venue: "Innovation Hub Room 204",
+          prize: "₹40,000",
+          berries: "40,000,000 Berries",
+          podium: {
+            first: "₹22,000 + Polygon Builder Grant",
+            second: "₹12,000",
+            third: "₹6,000",
+            swag: "Exclusive Web3 Hardware Wallets & Merch"
+          },
+          registrationUrl: "https://forms.gle/avinya27-d1-web3",
+          qrCodeImage: "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https://forms.gle/avinya27-d1-web3",
+          rules: [
+            "Smart contracts must be deployed on testnet (Polygon Amoy / Ethereum Sepolia).",
+            "Teams can consist of 1 to 3 members.",
+            "Complete open-source GitHub repository required for evaluation."
+          ],
+          hostClub: "Web3 & Blockchain Guild IIITDWD",
+          studentLead: "Rohan Nair (+91 97412 88990)",
+          facultyLead: "Dr. Sandeep K. (Blockchain Research Group)",
+          sponsors: [
+            {
+              name: "Polygon Labs",
+              tier: "Web3 Track Sponsor",
+              category: "Layer 2 Infrastructure",
+              spending: "₹1,00,000 Bounty Grant",
+              logo: "layers"
+            }
+          ]
+        },
+        {
+          id: "d1-e6",
+          title: "Imperial Venture Pitch",
+          islandPlace: "Imperial Trading Citadel",
+          category: "Management / E-Cell",
+          tagline: "Pitch your tech startup to angel investors and seed-fund syndicates",
+          time: "04:00 PM - 07:00 PM",
+          venue: "Executive Seminar Hall",
+          prize: "₹50,000",
+          berries: "50,000,000 Berries",
+          podium: {
+            first: "₹28,000 + Seed Mentorship Term Sheet",
+            second: "₹15,000",
+            third: "₹7,000",
+            swag: "Incubation Space at IIITDWD Innovation Park"
+          },
+          registrationUrl: "https://forms.gle/avinya27-d1-pitch",
+          qrCodeImage: "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https://forms.gle/avinya27-d1-pitch",
+          rules: [
+            "5-minute pitch deck presentation followed by 3-minute jury Q&A.",
+            "Working MVP or high-fidelity prototype receives extra weighting.",
+            "Open to student ventures across India."
+          ],
+          hostClub: "E-Cell & Catalyst Guild",
+          studentLead: "Tanvi Kulkarni (+91 91234 56780)",
+          facultyLead: "Dr. Ramesh H. (Head of Innovation Cell)",
+          sponsors: [
+            {
+              name: "Peak XV Partners & TiE Karnataka",
+              tier: "Venture Accelerator Partner",
+              category: "Venture Capital & Incubation",
+              spending: "₹1,50,000 Mentorship & Grants",
+              logo: "briefcase"
+            }
+          ]
         }
       ]
     },
@@ -240,6 +314,8 @@ window.AVINYA_DATA = {
       date: "Saturday, March 13, 2027",
       name: "The Pandemonium",
       theme: "Synthwave Cyberpunk",
+      climate: "Synthwave Cyberpunk • 21°C Neon Rain & Static Mists",
+      floraFauna: "⚡ Bioluminescent Cyber-Spores, Mecha Drones & Neon Sea Flora",
       portName: "Cyber-Bay Marina (Pier Neon 02)",
       portCoordinates: "15.4285° N, 75.0572° E",
       tagline: "Overclock the Neon Surge in the Digital Cyber-Metropolis",
@@ -425,6 +501,78 @@ window.AVINYA_DATA = {
               logo: "headphones"
             }
           ]
+        },
+        {
+          id: "d2-e5",
+          title: "Overclock Speedrun Debugging",
+          islandPlace: "Overclock Sub-Terminal 0",
+          category: "Technical / Systems",
+          tagline: "Hunt race conditions, memory leaks, and concurrency bugs against the countdown",
+          time: "02:00 PM - 04:30 PM",
+          venue: "Systems Lab 3",
+          prize: "₹30,000",
+          berries: "30,000,000 Berries",
+          podium: {
+            first: "₹16,000 + JetBrains All-Products Pack",
+            second: "₹9,000",
+            third: "₹5,000",
+            swag: "Debugger Badges & JetBrains Swag"
+          },
+          registrationUrl: "https://forms.gle/avinya27-d2-overclock",
+          qrCodeImage: "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https://forms.gle/avinya27-d2-overclock",
+          rules: [
+            "5 buggy codebases in C++, Rust, and Go provided with hidden test cases.",
+            "Fastest valid patch submission wins on tiebreak.",
+            "Zero external AI generation allowed; strictly terminal-based debugging."
+          ],
+          hostClub: "SysAdmin & Open Source Society (SOSS)",
+          studentLead: "Dhruv Patel (+91 98234 11223)",
+          facultyLead: "Dr. B. R. Patil (Systems & Cloud Group)",
+          sponsors: [
+            {
+              name: "JetBrains",
+              tier: "Developer Tooling Partner",
+              category: "IDE & Tooling Licenses",
+              spending: "₹75,000 Software Licenses",
+              logo: "terminal"
+            }
+          ]
+        },
+        {
+          id: "d2-e6",
+          title: "Cosplay Cyber-Showcase",
+          islandPlace: "Hologram Boulevard East",
+          category: "Cultural / Creative Arts",
+          tagline: "Bring iconic cyberpunk, anime, and sci-fi characters to life on the neon walkway",
+          time: "04:30 PM - 07:00 PM",
+          venue: "Campus Central Amphitheater",
+          prize: "₹35,000",
+          berries: "35,000,000 Berries",
+          podium: {
+            first: "₹20,000 + Anime Merch Hamper",
+            second: "₹10,000",
+            third: "₹5,000",
+            swag: "Exclusive Collector Figurines & Badges"
+          },
+          registrationUrl: "https://forms.gle/avinya27-d2-cosplay",
+          qrCodeImage: "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https://forms.gle/avinya27-d2-cosplay",
+          rules: [
+            "Costumes can be handcrafted or pre-purchased (handcrafted receives bonus points).",
+            "Each contestant has 2 minutes of background BGM stage performance.",
+            "Zero hazardous or sharp metal props permitted on campus grounds."
+          ],
+          hostClub: "Anime & Creative Expression Guild",
+          studentLead: "Meera Joshi (+91 99123 77665)",
+          facultyLead: "Prof. Shilpa M. (Dept of Humanities)",
+          sponsors: [
+            {
+              name: "Crunchyroll & Comic-Con India",
+              tier: "Cultural Media Partner",
+              category: "Anime Streaming & Merch",
+              spending: "₹85,000 VIP Subscriptions & Merch",
+              logo: "sparkles"
+            }
+          ]
         }
       ]
     },
@@ -435,6 +583,8 @@ window.AVINYA_DATA = {
       date: "Sunday, March 14, 2027",
       name: "The Carnival Island",
       theme: "Grand Midnight Festival",
+      climate: "Midnight Carnival Revelry • 25°C Tropical Starlit Breeze",
+      floraFauna: "🎆 Festive Coastal Palms, Golden Fireworks & Starry Coral Reefs",
       portName: "Grand Carnival Lagoon (Wharf 03)",
       portCoordinates: "15.4295° N, 75.0552° E",
       tagline: "Celebrate the Grand Finale Across Golden Illuminated Waters",
@@ -607,6 +757,78 @@ window.AVINYA_DATA = {
               category: "Runway Cosmetics & Silk Textiles",
               spending: "₹1,50,000 Hamper Hampers & Cash",
               logo: "heart"
+            }
+          ]
+        },
+        {
+          id: "d3-e5",
+          title: "Nukkad Natak: Street Play",
+          islandPlace: "Carnival Plaza Deck",
+          category: "Cultural / Dramatics",
+          tagline: "Thunderous voices and rhythmic dhol beats tackling social awakening",
+          time: "02:00 PM - 05:00 PM",
+          venue: "Student Activity Center Courtyard",
+          prize: "₹40,000",
+          berries: "40,000,000 Berries",
+          podium: {
+            first: "₹22,000 + Best Script Trophy",
+            second: "₹12,000",
+            third: "₹6,000",
+            swag: "Festival Dramatics Citations & Mementos"
+          },
+          registrationUrl: "https://forms.gle/avinya27-d3-nukkad",
+          qrCodeImage: "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https://forms.gle/avinya27-d3-nukkad",
+          rules: [
+            "Team size: 10 to 20 performers.",
+            "Time limit: 12 minutes strictly enforced.",
+            "Only acoustic live instruments (dhol, manjira, flute) permitted; zero electronic amps."
+          ],
+          hostClub: "Dramatics Club (Natya Tarang)",
+          studentLead: "Aditya Hegde (+91 94481 22334)",
+          facultyLead: "Dr. Ananya Roy (Cultural Council Chair)",
+          sponsors: [
+            {
+              name: "Karnataka Tourism & Cultural Board",
+              tier: "Cultural Heritage Partner",
+              category: "State Arts Sponsorship",
+              spending: "₹1,20,000 Grant & Trophies",
+              logo: "flag"
+            }
+          ]
+        },
+        {
+          id: "d3-e6",
+          title: "Laughing Gull Open Mic",
+          islandPlace: "The Laughing Gull Deck",
+          category: "Cultural / Literary",
+          tagline: "Unfiltered punchlines, observational wit, and crowd-roaring comedy",
+          time: "04:30 PM - 06:30 PM",
+          venue: "Multi-Purpose Hall Auditorium",
+          prize: "₹25,000",
+          berries: "25,000,000 Berries",
+          podium: {
+            first: "₹14,000 + Headliner Spot at Star-Nite",
+            second: "₹7,500",
+            third: "₹3,500",
+            swag: "Comedian Pass & Fest Merch"
+          },
+          registrationUrl: "https://forms.gle/avinya27-d3-comedy",
+          qrCodeImage: "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https://forms.gle/avinya27-d3-comedy",
+          rules: [
+            "Time limit: 5 minutes per performer.",
+            "Content must comply with fest community guidelines (strictly no derogatory content).",
+            "Audience decibel meter and jury scores combine for final ranking."
+          ],
+          hostClub: "Literary & Debating Society (LitSoc)",
+          studentLead: "Kunal Bansal (+91 97890 12345)",
+          facultyLead: "Dr. S. K. Hiremath (Student Affairs)",
+          sponsors: [
+            {
+              name: "Red Bull India",
+              tier: "Energy & Refreshment Partner",
+              category: "Beverage & Event Fuel",
+              spending: "₹65,000 Energy Beverage Bars",
+              logo: "zap"
             }
           ]
         }

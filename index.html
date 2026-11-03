@@ -39,8 +39,11 @@
   <div class="cursor-dot" id="custom-cursor-dot"></div>
   <div class="cursor-ring" id="custom-cursor-ring"></div>
 
-  <!-- 3D WebGL Ocean Container -->
-  <div id="webgl-ocean-container"></div>
+  <div class="water-ripple-cursor" id="custom-cursor-ripple"></div>
+
+  <!-- 60 FPS Living Sea Canvas Engine (Time-of-Day Multi-Harmonic Waves) -->
+  <canvas id="living-sea-canvas"></canvas>
+  <div id="webgl-ocean-container" style="display:none;"></div>
 
   <!-- Cinema-Wipe Page Transition Curtain -->
   <div id="page-curtain" class="page-curtain"></div>
@@ -95,6 +98,37 @@
 
     </div>
   </header>
+
+  <!-- ========================================================================
+       LIVE DHARWAD WEATHER & TIME-OF-DAY OCEAN HUD STRIP
+       ======================================================================== -->
+  <aside class="fixed top-[72px] left-0 right-0 z-30 px-4 py-1.5 bg-[#05060A]/85 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+      <!-- Live Dharwad Weather HUD -->
+      <div id="dharwad-weather-hud" class="flex items-center gap-2 text-slate-300">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span class="text-amber-400 font-bold flex items-center gap-1">
+          <i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>DHARWAD LIVE:</span>
+        </span>
+        <span id="weather-temp-desc" class="text-slate-200">28°C Clear Skies</span>
+        <span class="text-slate-600 hidden sm:inline">•</span>
+        <span class="text-slate-400 hidden sm:inline" id="weather-wind">Wind: 14 km/h NE</span>
+        <span class="text-slate-600 hidden md:inline">•</span>
+        <span class="text-slate-400 hidden md:inline">15.4288° N, 75.0560° E</span>
+      </div>
+
+      <!-- Living Sea Time-of-Day Switcher -->
+      <div id="time-of-day-picker" class="flex items-center gap-1.5">
+        <span class="text-[10px] text-slate-400 uppercase tracking-wider hidden lg:inline mr-1">Ocean Lighting:</span>
+        <button class="time-btn" data-time="morning" title="Morning Azure Sea (Light Blue & Waves)">🌅 Dawn</button>
+        <button class="time-btn" data-time="day" title="Noon Ocean Blue">☀️ Noon</button>
+        <button class="time-btn" data-time="sunset" title="Sunset Amber Waters">🌇 Sunset</button>
+        <button class="time-btn" data-time="night" title="Midnight Navy & Bioluminescence">🌙 Night</button>
+        <button class="time-btn is-active" data-time="auto" title="Real-time Local Clock Sync">⚡ Auto</button>
+      </div>
+    </div>
+  </aside>
 
   <main class="relative z-10">
 
@@ -188,297 +222,255 @@
     </section>
 
     <!-- ========================================================================
-         INTERACTIVE ARCHIPELAGO VOYAGE MAP & SAILING PIRATE SHIP
+         ARCHIPELAGO ODYSSEY: 3 DAYS = 3 ISLANDS (DIRECTLY FROM HAND-DRAWN SKETCH)
          ======================================================================== -->
-    <section id="voyage-map" class="py-24 px-4 sm:px-6 max-w-7xl mx-auto">
+    <section id="voyage-map" class="py-24 px-4 sm:px-6 max-w-7xl mx-auto relative archipelago-sea-chart">
       
-      <div class="apple-reveal text-center max-w-3xl mx-auto mb-14">
+      <!-- Section Title & Telemetry Header -->
+      <div class="apple-reveal text-center max-w-3xl mx-auto mb-16">
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono mb-3">
-          <i data-lucide="map" class="w-3.5 h-3.5"></i>
-          <span>THE GRAND ARCHIPELAGO OF DHARWAD</span>
+          <i data-lucide="compass" class="w-3.5 h-3.5 animate-spin" style="animation-duration: 12s;"></i>
+          <span>AVINYA EXPEDITION CHART // ARCHIPELAGO OF DHARWAD</span>
         </div>
         <h2 class="font-display font-black text-4xl sm:text-6xl text-white uppercase tracking-tight mb-4">
-          CHART YOUR <span class="text-amber-400">VOYAGE</span>
+          CHART THE <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-pink-400 to-yellow-400">THREE ISLANDS</span>
         </h2>
         <p class="text-slate-300 font-body text-base sm:text-lg">
-          Click any island coordinate to steer the flagship vessel across the oceanic waters of Avinya.
+          Scroll to sail the flagship vessel along the dashed nautical chart from Island 1 to Island 2 to Island 3. Every island harbors distinct climates, fauna, and secret event locations.
         </p>
       </div>
 
-      <!-- Interactive Map Frame -->
-      <div class="apple-reveal archipelago-map-container p-6 sm:p-12 relative min-h-[480px] sm:min-h-[580px] flex items-center justify-center">
-        
-        <!-- Ocean Background Grid & Dotted Route -->
-        <svg class="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="routeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#F59E0B" />
-              <stop offset="50%" stop-color="#EC4899" />
-              <stop offset="100%" stop-color="#EAB308" />
-            </linearGradient>
-          </defs>
-          <!-- Nautical Sailing Path -->
-          <path d="M 120 400 Q 320 200, 520 340 T 920 180 T 1100 80" 
-                fill="none" 
-                stroke="url(#routeGradient)" 
-                stroke-width="3" 
-                stroke-dasharray="8 8" 
-                class="opacity-60" />
-        </svg>
+      <!-- Sailing Nautical Route SVG (Dashed Curving Path Connecting the 3 Islands) -->
+      <svg class="voyage-svg-route hidden md:block" viewBox="0 0 1200 1800" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="nauticalRouteGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.9" />
+            <stop offset="50%" stop-color="#EC4899" stop-opacity="0.9" />
+            <stop offset="100%" stop-color="#EAB308" stop-opacity="0.9" />
+          </linearGradient>
+          <filter id="routeGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="6" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+        </defs>
+        <!-- Zigzag curve matching user sketch:
+             Start at Island 1 (top-left: x=340, y=220)
+             Curve over to Island 2 (middle-right: x=860, y=820)
+             Curve back down to Island 3 (bottom-left: x=340, y=1480) -->
+        <path id="voyage-curved-track" 
+              d="M 340 220 C 620 320, 860 480, 860 820 C 860 1150, 520 1250, 340 1480" 
+              stroke="url(#nauticalRouteGrad)" 
+              stroke-width="4" 
+              stroke-dasharray="14 14" 
+              stroke-linecap="round"
+              filter="url(#routeGlow)" />
+      </svg>
 
-        <!-- Sailing Ship / Flagship Vessel Icon (Moves dynamically) -->
-        <div id="interactive-ship" class="voyager-ship" style="top: 68%; left: 16%;">
-          <div class="relative w-12 h-12 rounded-full bg-amber-500/20 border-2 border-amber-400 p-2 flex items-center justify-center text-amber-300 shadow-xl shadow-amber-500/40">
-            <i data-lucide="sailboat" class="w-6 h-6 animate-pulse"></i>
-            <div class="water-ripple w-12 h-12"></div>
-          </div>
+      <!-- Dynamic Flagship Sailing Ship Element (Glides smoothly along route on scroll) -->
+      <div id="interactive-ship" class="voyager-ship hidden md:block" style="top: 12%; left: 28%;">
+        <div class="relative w-16 h-16 rounded-full bg-black/85 border-2 border-amber-400 p-2.5 flex items-center justify-center text-amber-300 shadow-2xl shadow-amber-500/60 backdrop-blur-md">
+          <i data-lucide="sailboat" class="w-8 h-8 text-amber-300 drop-shadow-[0_0_12px_rgba(245,158,11,0.9)] animate-pulse"></i>
+          <div class="water-ripple w-16 h-16"></div>
         </div>
-
-        <!-- 3 Interactive Island Atolls on Map -->
-        <div class="relative z-20 w-full max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-          
-          <!-- Island 1 Atoll Anchor -->
-          <div onclick="window.sailToIsland(1)" class="p-6 rounded-3xl glass-panel border border-amber-500/30 hover:border-amber-400 transition-all cursor-pointer group text-left relative overflow-hidden bg-gradient-to-b from-amber-950/30 to-black/80">
-            <div class="flex items-center justify-between mb-3">
-              <span class="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-mono text-[10px] font-bold border border-amber-500/30">
-                ANCHOR 01 // MAR 12
-              </span>
-              <span class="text-xs font-mono text-slate-400 group-hover:text-amber-400 transition-colors">Sail Here &rarr;</span>
-            </div>
-            <h3 class="font-display font-bold text-2xl text-white mb-2 group-hover:text-amber-400 transition-colors">
-              The Last Outpost
-            </h3>
-            <p class="text-xs text-slate-300 font-body leading-relaxed mb-4">
-              Dune Sci-Fi Desert. Algorithmic Monoliths, Sand-Cipher CTF, and autonomous rover dunes.
-            </p>
-            <a href="day1.html" class="text-xs font-mono font-bold text-amber-400 underline underline-offset-4">
-              Enter Dedicated Archive &rarr;
-            </a>
-          </div>
-
-          <!-- Island 2 Atoll Anchor -->
-          <div onclick="window.sailToIsland(2)" class="p-6 rounded-3xl glass-panel border border-pink-500/30 hover:border-pink-400 transition-all cursor-pointer group text-left relative overflow-hidden bg-gradient-to-b from-pink-950/30 to-black/80">
-            <div class="flex items-center justify-between mb-3">
-              <span class="px-2.5 py-0.5 rounded-full bg-pink-500/20 text-pink-300 font-mono text-[10px] font-bold border border-pink-500/30">
-                ANCHOR 02 // MAR 13
-              </span>
-              <span class="text-xs font-mono text-slate-400 group-hover:text-pink-400 transition-colors">Sail Here &rarr;</span>
-            </div>
-            <h3 class="font-display font-bold text-2xl text-white mb-2 group-hover:text-pink-400 transition-colors">
-              The Pandemonium
-            </h3>
-            <p class="text-xs text-slate-300 font-body leading-relaxed mb-4">
-              Synthwave Cyberpunk Delta. Steel Pit RoboWars, RetroWave E-Sports, and Spatial UI/UX sprints.
-            </p>
-            <a href="day2.html" class="text-xs font-mono font-bold text-pink-400 underline underline-offset-4">
-              Enter Dedicated Archive &rarr;
-            </a>
-          </div>
-
-          <!-- Island 3 Atoll Anchor -->
-          <div onclick="window.sailToIsland(3)" class="p-6 rounded-3xl glass-panel border border-yellow-500/30 hover:border-yellow-400 transition-all cursor-pointer group text-left relative overflow-hidden bg-gradient-to-b from-yellow-950/30 to-black/80">
-            <div class="flex items-center justify-between mb-3">
-              <span class="px-2.5 py-0.5 rounded-full bg-yellow-500/20 text-yellow-300 font-mono text-[10px] font-bold border border-yellow-500/30">
-                ANCHOR 03 // MAR 14
-              </span>
-              <span class="text-xs font-mono text-slate-400 group-hover:text-yellow-400 transition-colors">Sail Here &rarr;</span>
-            </div>
-            <h3 class="font-display font-bold text-2xl text-white mb-2 group-hover:text-yellow-400 transition-colors">
-              The Carnival Island
-            </h3>
-            <p class="text-xs text-slate-300 font-body leading-relaxed mb-4">
-              Grand Midnight Waters. Mega Choreography with Dynamight, Band Battles, and the Star-Nite concert.
-            </p>
-            <a href="day3.html" class="text-xs font-mono font-bold text-yellow-400 underline underline-offset-4">
-              Enter Dedicated Archive &rarr;
-            </a>
-          </div>
-
-        </div>
-
       </div>
 
-    </section>
+      <!-- THE 3 ISLANDS CONTAINER (MATCHING SKETCH TOP-LEFT -> MIDDLE-RIGHT -> BOTTOM-LEFT) -->
+      <div class="space-y-24 relative z-10">
 
-    <!-- ========================================================================
-         ISLAND 01: THE LAST OUTPOST (DAY 1)
-         ======================================================================== -->
-    <section id="day1" class="island-section py-24 px-4 sm:px-6 relative overflow-hidden" data-accent="#F59E0B">
-      <div class="absolute inset-0 bg-gradient-to-b from-amber-950/20 via-transparent to-transparent pointer-events-none"></div>
-
-      <div class="max-w-7xl mx-auto relative">
-        
-        <!-- Port Arrival Docking Banner -->
-        <div class="apple-reveal mb-8 p-4 sm:p-5 rounded-2xl glass-panel border border-amber-500/30 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-black/40 backdrop-blur-md">
-          <div class="flex items-center gap-3.5">
-            <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-400 flex items-center justify-center text-amber-400 shrink-0 shadow-lg shadow-amber-500/20">
-              <i data-lucide="anchor" class="w-5 h-5"></i>
-            </div>
-            <div>
-              <div class="flex flex-wrap items-center gap-2 text-xs font-mono font-bold text-amber-400">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                <span>VESSEL STATUS: DOCKED AT PORT OF ARID MONOLITHS</span>
-                <span class="text-slate-500">•</span>
-                <span class="text-slate-300">PIER 01</span>
+        <!-- ====================================================================
+             ISLAND 1 (DAY 1) - TOP-LEFT ALIGNED (THE LAST OUTPOST)
+             ==================================================================== -->
+        <div id="day1" class="island-realm p-6 sm:p-10 md:w-8/12 border border-amber-500/30" style="--realm-accent: #F59E0B; --realm-glow: rgba(245, 158, 11, 0.4);" data-accent="#F59E0B">
+          <!-- Port Arrival Docking Header -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pb-6 border-b border-amber-500/20 mb-6">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-400 flex items-center justify-center text-amber-400 shadow-lg shadow-amber-500/20">
+                <i data-lucide="anchor" class="w-6 h-6"></i>
               </div>
-              <p class="text-[11px] text-slate-300 font-mono mt-0.5">
-                Coordinates: 15.4288° N, 75.0560° E | Disembark to explore 8 active island places & battlegrounds.
-              </p>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <span class="px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30 text-xs font-mono font-semibold">
-              8 Island Places
-            </span>
-            <a href="day1.html" class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-mono transition-colors">
-              Island Archive &rarr;
-            </a>
-          </div>
-        </div>
-
-        <div class="apple-reveal mb-14 flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div>
-            <div class="flex items-center gap-3 font-mono text-xs text-amber-400 font-semibold mb-3">
-              <span class="px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/30">DAY 01 // MARCH 12, 2027</span>
-              <span>DUNE DESERT ARCHIPELAGO</span>
-            </div>
-            <h2 class="font-display font-black text-4xl sm:text-6xl text-white uppercase tracking-tight">
-              THE LAST <span class="text-amber-400">OUTPOST</span>
-            </h2>
-            <p class="text-slate-300 font-body text-base sm:text-lg max-w-2xl mt-2 leading-relaxed">
-              Step onto an ancient desert atoll where monolithic coding citadels, sand-cipher vaults, and rover dunes test every crew member.
-            </p>
-          </div>
-          <a href="day1.html" class="btn-secondary text-xs flex items-center gap-2 self-start md:self-auto">
-            <span>EXPLORE FULL SECTOR 01 (8+ EVENTS)</span>
-            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-          </a>
-        </div>
-
-        <!-- Events Grid (Rendered with .island-atoll-card) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="day1-events-grid"></div>
-      </div>
-    </section>
-
-    <!-- ========================================================================
-         ISLAND 02: THE PANDEMONIUM (DAY 2)
-         ======================================================================== -->
-    <section id="day2" class="island-section py-24 px-4 sm:px-6 relative overflow-hidden" data-accent="#EC4899">
-      <div class="absolute inset-0 bg-gradient-to-b from-pink-950/20 via-transparent to-transparent pointer-events-none"></div>
-
-      <div class="max-w-7xl mx-auto relative">
-        
-        <!-- Port Arrival Docking Banner -->
-        <div class="apple-reveal mb-8 p-4 sm:p-5 rounded-2xl glass-panel border border-pink-500/30 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-black/40 backdrop-blur-md">
-          <div class="flex items-center gap-3.5">
-            <div class="w-10 h-10 rounded-xl bg-pink-500/20 border border-pink-400 flex items-center justify-center text-pink-400 shrink-0 shadow-lg shadow-pink-500/20">
-              <i data-lucide="anchor" class="w-5 h-5"></i>
-            </div>
-            <div>
-              <div class="flex flex-wrap items-center gap-2 text-xs font-mono font-bold text-pink-400">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                <span>VESSEL STATUS: DOCKED AT CYBER-BAY MARINA</span>
-                <span class="text-slate-500">•</span>
-                <span class="text-slate-300">PIER NEON 02</span>
+              <div>
+                <div class="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-amber-400 font-bold">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                  <span>ISLAND 01 // DAY 1 (MARCH 12, 2027)</span>
+                </div>
+                <h3 class="font-display font-black text-2xl sm:text-4xl text-white">THE LAST OUTPOST</h3>
               </div>
-              <p class="text-[11px] text-slate-300 font-mono mt-0.5">
-                Coordinates: 15.4285° N, 75.0572° E | Heavy bot arenas, esports stages, and neon design districts.
-              </p>
             </div>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <span class="px-3 py-1 rounded-full bg-pink-500/10 text-pink-300 border border-pink-500/30 text-xs font-mono font-semibold">
-              8 Cyber Places
-            </span>
-            <a href="day2.html" class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-mono transition-colors">
-              Island Archive &rarr;
+            <a href="day1.html" class="px-4 py-2 rounded-full bg-amber-500/20 hover:bg-amber-500 hover:text-black border border-amber-500/40 text-amber-300 text-xs font-mono font-bold transition-all flex items-center gap-1.5">
+              <span>Day 1 Archive</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
             </a>
           </div>
-        </div>
 
-        <div class="apple-reveal mb-14 flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div>
-            <div class="flex items-center gap-3 font-mono text-xs text-pink-400 font-semibold mb-3">
-              <span class="px-2.5 py-1 rounded bg-pink-500/10 border border-pink-500/30">DAY 02 // MARCH 13, 2027</span>
-              <span>SYNTHWAVE CYBERPUNK ARCHIPELAGO</span>
-            </div>
-            <h2 class="font-display font-black text-4xl sm:text-6xl text-white uppercase tracking-tight">
-              THE <span class="text-pink-500">PANDEMONIUM</span>
-            </h2>
-            <p class="text-slate-300 font-body text-base sm:text-lg max-w-2xl mt-2 leading-relaxed">
-              Magenta sea reflections, overclocked combat robotics, national LAN esports brackets, and spatial design studios.
-            </p>
-          </div>
-          <a href="day2.html" class="btn-secondary text-xs flex items-center gap-2 self-start md:self-auto">
-            <span>EXPLORE FULL SECTOR 02 (8+ EVENTS)</span>
-            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-          </a>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="day2-events-grid"></div>
-      </div>
-    </section>
-
-    <!-- ========================================================================
-         ISLAND 03: THE CARNIVAL ISLAND (DAY 3)
-         ======================================================================== -->
-    <section id="day3" class="island-section py-24 px-4 sm:px-6 relative overflow-hidden" data-accent="#EAB308">
-      <div class="absolute inset-0 bg-gradient-to-b from-yellow-950/20 via-transparent to-transparent pointer-events-none"></div>
-
-      <div class="max-w-7xl mx-auto relative">
-        
-        <!-- Port Arrival Docking Banner -->
-        <div class="apple-reveal mb-8 p-4 sm:p-5 rounded-2xl glass-panel border border-yellow-500/30 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-black/40 backdrop-blur-md">
-          <div class="flex items-center gap-3.5">
-            <div class="w-10 h-10 rounded-xl bg-yellow-500/20 border border-yellow-400 flex items-center justify-center text-yellow-400 shrink-0 shadow-lg shadow-yellow-500/20">
-              <i data-lucide="anchor" class="w-5 h-5"></i>
-            </div>
-            <div>
-              <div class="flex flex-wrap items-center gap-2 text-xs font-mono font-bold text-yellow-400">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                <span>VESSEL STATUS: DOCKED AT GRAND LAGOON WHARF</span>
-                <span class="text-slate-500">•</span>
-                <span class="text-slate-300">WHARF 03</span>
+          <!-- Climate & Flora/Fauna Badges (From Sketch) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 font-mono text-xs">
+            <div class="p-3.5 rounded-2xl bg-amber-950/40 border border-amber-500/30 flex items-start gap-2.5">
+              <span class="text-xl">🌡️</span>
+              <div>
+                <div class="text-[10px] uppercase text-amber-400 font-bold">Island Climate</div>
+                <div class="text-slate-200">Arid Sci-Fi Dune Desert • 38°C Thermal Winds</div>
               </div>
-              <p class="text-[11px] text-slate-300 font-mono mt-0.5">
-                Coordinates: 15.4295° N, 75.0552° E | Pro-Nite concert stage, choreography amphitheaters, and festive night markets.
-              </p>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-amber-950/40 border border-amber-500/30 flex items-start gap-2.5">
+              <span class="text-xl">🌵</span>
+              <div>
+                <div class="text-[10px] uppercase text-amber-400 font-bold">Flora & Fauna</div>
+                <div class="text-slate-200">Spiced Desert Palms, Crystalline Cacti & Autonomous Rover Caravans</div>
+              </div>
             </div>
           </div>
 
-          <div class="flex items-center gap-2">
-            <span class="px-3 py-1 rounded-full bg-yellow-500/10 text-yellow-300 border border-yellow-500/30 text-xs font-mono font-semibold">
-              8 Festival Places
+          <!-- Port Coordinates -->
+          <div class="p-3.5 rounded-xl bg-black/50 border border-white/10 text-xs font-mono text-slate-300 flex flex-wrap items-center justify-between gap-2 mb-8">
+            <span class="flex items-center gap-2">
+              <i data-lucide="map-pin" class="w-4 h-4 text-amber-400"></i>
+              <span>Docking Port: <strong class="text-white">Port of Arid Monoliths (Pier 01)</strong></span>
             </span>
-            <a href="day3.html" class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-mono transition-colors">
-              Island Archive &rarr;
+            <span class="text-amber-400 font-bold">Coordinates: 15.4288° N, 75.0560° E</span>
+          </div>
+
+          <!-- Locations inside Island 1 (Each Location IS an Event) -->
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h4 class="font-display font-bold text-lg text-white flex items-center gap-2">
+                <i data-lucide="compass" class="w-4 h-4 text-amber-400"></i>
+                <span>Locations on Island (Events)</span>
+              </h4>
+              <span class="text-xs font-mono text-amber-400 font-bold">6 Active Locations</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="day1-events-grid"></div>
+          </div>
+        </div>
+
+        <!-- ====================================================================
+             ISLAND 2 (DAY 2) - MIDDLE-RIGHT ALIGNED (THE PANDEMONIUM)
+             ==================================================================== -->
+        <div id="day2" class="island-realm p-6 sm:p-10 md:w-8/12 md:ml-auto border border-pink-500/30" style="--realm-accent: #EC4899; --realm-glow: rgba(236, 72, 153, 0.4);" data-accent="#EC4899">
+          <!-- Port Arrival Docking Header -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pb-6 border-b border-pink-500/20 mb-6">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-pink-500/20 border border-pink-400 flex items-center justify-center text-pink-400 shadow-lg shadow-pink-500/20">
+                <i data-lucide="anchor" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <div class="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-pink-400 font-bold">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                  <span>ISLAND 02 // DAY 2 (MARCH 13, 2027)</span>
+                </div>
+                <h3 class="font-display font-black text-2xl sm:text-4xl text-white">THE PANDEMONIUM</h3>
+              </div>
+            </div>
+            <a href="day2.html" class="px-4 py-2 rounded-full bg-pink-500/20 hover:bg-pink-500 hover:text-black border border-pink-500/40 text-pink-300 text-xs font-mono font-bold transition-all flex items-center gap-1.5">
+              <span>Day 2 Archive</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
             </a>
           </div>
-        </div>
 
-        <div class="apple-reveal mb-14 flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div>
-            <div class="flex items-center gap-3 font-mono text-xs text-yellow-400 font-semibold mb-3">
-              <span class="px-2.5 py-1 rounded bg-yellow-500/10 border border-yellow-500/30">DAY 03 // MARCH 14, 2027</span>
-              <span>CARNIVAL CELEBRATION ARCHIPELAGO</span>
+          <!-- Climate & Flora/Fauna Badges -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 font-mono text-xs">
+            <div class="p-3.5 rounded-2xl bg-pink-950/40 border border-pink-500/30 flex items-start gap-2.5">
+              <span class="text-xl">⚡</span>
+              <div>
+                <div class="text-[10px] uppercase text-pink-400 font-bold">Island Climate</div>
+                <div class="text-slate-200">Synthwave Cyberpunk • 21°C Neon Rain & Static Mists</div>
+              </div>
             </div>
-            <h2 class="font-display font-black text-4xl sm:text-6xl text-white uppercase tracking-tight">
-              THE CARNIVAL <span class="text-yellow-400">ISLAND</span>
-            </h2>
-            <p class="text-slate-300 font-body text-base sm:text-lg max-w-2xl mt-2 leading-relaxed">
-              Grand illuminated waters, midnight fireworks, national band clashes, high-fashion runways, and the Star-Nite concert.
-            </p>
+            <div class="p-3.5 rounded-2xl bg-pink-950/40 border border-pink-500/30 flex items-start gap-2.5">
+              <span class="text-xl">🧬</span>
+              <div>
+                <div class="text-[10px] uppercase text-pink-400 font-bold">Flora & Fauna</div>
+                <div class="text-slate-200">Bioluminescent Cyber-Spores, Mecha Drones & Neon Sea Flora</div>
+              </div>
+            </div>
           </div>
-          <a href="day3.html" class="btn-secondary text-xs flex items-center gap-2 self-start md:self-auto">
-            <span>EXPLORE FULL SECTOR 03 (8+ EVENTS)</span>
-            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-          </a>
+
+          <!-- Port Coordinates -->
+          <div class="p-3.5 rounded-xl bg-black/50 border border-white/10 text-xs font-mono text-slate-300 flex flex-wrap items-center justify-between gap-2 mb-8">
+            <span class="flex items-center gap-2">
+              <i data-lucide="map-pin" class="w-4 h-4 text-pink-400"></i>
+              <span>Docking Port: <strong class="text-white">Cyber-Bay Marina (Pier Neon 02)</strong></span>
+            </span>
+            <span class="text-pink-400 font-bold">Coordinates: 15.4285° N, 75.0572° E</span>
+          </div>
+
+          <!-- Locations inside Island 2 (Events) -->
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h4 class="font-display font-bold text-lg text-white flex items-center gap-2">
+                <i data-lucide="compass" class="w-4 h-4 text-pink-400"></i>
+                <span>Locations on Island (Events)</span>
+              </h4>
+              <span class="text-xs font-mono text-pink-400 font-bold">6 Active Locations</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="day2-events-grid"></div>
+          </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="day3-events-grid"></div>
+        <!-- ====================================================================
+             ISLAND 3 (DAY 3) - BOTTOM-LEFT ALIGNED (THE CARNIVAL ISLAND)
+             ==================================================================== -->
+        <div id="day3" class="island-realm p-6 sm:p-10 md:w-8/12 border border-yellow-500/30" style="--realm-accent: #EAB308; --realm-glow: rgba(234, 179, 8, 0.4);" data-accent="#EAB308">
+          <!-- Port Arrival Docking Header -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pb-6 border-b border-yellow-500/20 mb-6">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-yellow-500/20 border border-yellow-400 flex items-center justify-center text-yellow-400 shadow-lg shadow-yellow-500/20">
+                <i data-lucide="anchor" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <div class="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-yellow-400 font-bold">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                  <span>ISLAND 03 // DAY 3 (MARCH 14, 2027)</span>
+                </div>
+                <h3 class="font-display font-black text-2xl sm:text-4xl text-white">THE CARNIVAL ISLAND</h3>
+              </div>
+            </div>
+            <a href="day3.html" class="px-4 py-2 rounded-full bg-yellow-500/20 hover:bg-yellow-500 hover:text-black border border-yellow-500/40 text-yellow-300 text-xs font-mono font-bold transition-all flex items-center gap-1.5">
+              <span>Day 3 Archive</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </a>
+          </div>
+
+          <!-- Climate & Flora/Fauna Badges -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 font-mono text-xs">
+            <div class="p-3.5 rounded-2xl bg-yellow-950/40 border border-yellow-500/30 flex items-start gap-2.5">
+              <span class="text-xl">🎆</span>
+              <div>
+                <div class="text-[10px] uppercase text-yellow-400 font-bold">Island Climate</div>
+                <div class="text-slate-200">Midnight Carnival Revelry • 25°C Tropical Starlit Breeze</div>
+              </div>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-yellow-950/40 border border-yellow-500/30 flex items-start gap-2.5">
+              <span class="text-xl">🌺</span>
+              <div>
+                <div class="text-[10px] uppercase text-yellow-400 font-bold">Flora & Fauna</div>
+                <div class="text-slate-200">Festive Coastal Palms, Golden Fireworks & Starry Coral Reefs</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Port Coordinates -->
+          <div class="p-3.5 rounded-xl bg-black/50 border border-white/10 text-xs font-mono text-slate-300 flex flex-wrap items-center justify-between gap-2 mb-8">
+            <span class="flex items-center gap-2">
+              <i data-lucide="map-pin" class="w-4 h-4 text-yellow-400"></i>
+              <span>Docking Port: <strong class="text-white">Grand Carnival Lagoon (Wharf 03)</strong></span>
+            </span>
+            <span class="text-yellow-400 font-bold">Coordinates: 15.4295° N, 75.0552° E</span>
+          </div>
+
+          <!-- Locations inside Island 3 (Events) -->
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h4 class="font-display font-bold text-lg text-white flex items-center gap-2">
+                <i data-lucide="compass" class="w-4 h-4 text-yellow-400"></i>
+                <span>Locations on Island (Events)</span>
+              </h4>
+              <span class="text-xs font-mono text-yellow-400 font-bold">6 Active Locations</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="day3-events-grid"></div>
+          </div>
+        </div>
+
       </div>
+
     </section>
 
     <!-- ========================================================================
@@ -919,6 +911,15 @@
       </button>
     </div>
   </aside>
+
+    <!-- ========================================================================
+       EVENT DOSSIER & LOCATION INSPECTOR MODAL
+       ======================================================================== -->
+  <div id="event-dossier-modal" class="event-dossier-modal-backdrop" onclick="if(event.target === this) window.closeEventDossier()">
+    <div class="event-dossier-modal-content p-6 sm:p-8" id="event-dossier-body">
+      <!-- Populated dynamically by app.js -->
+    </div>
+  </div>
 
   <script src="events-data.js"></script>
   <script src="app.js"></script>
