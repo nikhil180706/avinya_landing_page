@@ -731,3 +731,174 @@ body[data-time="night"] {
   100% { transform: translate(-50%, -50%) rotate(360deg) scale(0.8); opacity: 0.8; }
 }
 
+/* ==========================================================================
+   REAL TOPOGRAPHICAL ISLAND LANDMASSES (NOT BOXES)
+   ========================================================================== */
+.island-entity {
+  position: relative;
+  z-index: 15;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+}
+
+.island-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.95));
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.island-entity:hover .island-canvas-wrapper {
+  filter: drop-shadow(0 35px 80px var(--realm-glow, rgba(245, 158, 11, 0.5)));
+  transform: translateY(-4px);
+}
+
+/* Animated Shoreline Foam / Reef Waves */
+.island-shore-ripple {
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  border: 2px dashed var(--realm-accent, #F59E0B);
+  opacity: 0.35;
+  pointer-events: none;
+  animation: shoreSurge 4s ease-in-out infinite alternate;
+}
+
+@keyframes shoreSurge {
+  0% { transform: scale(0.97); opacity: 0.2; }
+  100% { transform: scale(1.03); opacity: 0.6; }
+}
+
+/* Island Floating Waves Motion */
+@keyframes islandFloat1 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(0.3deg); }
+}
+
+@keyframes islandFloat2 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-9px) rotate(-0.4deg); }
+}
+
+@keyframes islandFloat3 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(0.35deg); }
+}
+
+.island-float-1 { animation: islandFloat1 8s ease-in-out infinite; }
+.island-float-2 { animation: islandFloat2 9s ease-in-out infinite 1.5s; }
+.island-float-3 { animation: islandFloat3 7.5s ease-in-out infinite 3s; }
+
+/* Tactical Event Radar Pins Dotted On Island */
+.island-pin-anchor {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 30;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.island-pin-anchor:hover {
+  transform: translate(-50%, -50%) scale(1.12);
+  z-index: 60;
+}
+
+.island-pin-beacon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.pin-pulse-ring {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--realm-accent, #F59E0B);
+  opacity: 0.45;
+  animation: beaconPulse 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
+@keyframes beaconPulse {
+  0% { transform: translate(-50%, -50%) scale(0.4); opacity: 0.9; }
+  100% { transform: translate(-50%, -50%) scale(2.4); opacity: 0; }
+}
+
+.pin-icon-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #080A11;
+  border: 2px solid var(--realm-accent, #F59E0B);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 14px var(--realm-glow, rgba(245, 158, 11, 0.5));
+  font-size: 11px;
+  font-weight: 800;
+  transition: transform 0.25s ease, background-color 0.25s ease;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.island-pin-anchor:hover .pin-icon-badge {
+  background: var(--realm-accent, #F59E0B);
+  color: #05060A;
+  box-shadow: 0 0 22px var(--realm-accent, #F59E0B);
+}
+
+.pin-label-pill {
+  padding: 4px 11px;
+  border-radius: 9999px;
+  background: rgba(8, 11, 18, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+}
+
+.island-pin-anchor:hover .pin-label-pill {
+  border-color: var(--realm-accent, #F59E0B);
+  box-shadow: 0 12px 30px -5px var(--realm-glow, rgba(245, 158, 11, 0.6));
+}
+
+.pin-bounty-badge {
+  color: var(--realm-accent, #F59E0B);
+  font-weight: 800;
+  padding-left: 5px;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Island Header & Telemetry Dock */
+.island-meta-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.island-console-pill {
+  background: rgba(11, 14, 24, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid var(--realm-accent, #F59E0B);
+  border-radius: 28px;
+  padding: 16px 24px;
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.8), 0 0 25px var(--realm-glow, rgba(245, 158, 11, 0.3));
+}
+

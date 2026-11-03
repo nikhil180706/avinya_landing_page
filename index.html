@@ -224,7 +224,7 @@
     <!-- ========================================================================
          ARCHIPELAGO ODYSSEY: 3 DAYS = 3 ISLANDS (DIRECTLY FROM HAND-DRAWN SKETCH)
          ======================================================================== -->
-    <section id="voyage-map" class="py-24 px-4 sm:px-6 max-w-7xl mx-auto relative archipelago-sea-chart">
+    <section id="voyage-map" class="py-24 px-4 sm:px-6 max-w-7xl mx-auto relative archipelago-sea-chart overflow-visible">
       
       <!-- Section Title & Telemetry Header -->
       <div class="apple-reveal text-center max-w-3xl mx-auto mb-16">
@@ -236,12 +236,12 @@
           CHART THE <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-pink-400 to-yellow-400">THREE ISLANDS</span>
         </h2>
         <p class="text-slate-300 font-body text-base sm:text-lg">
-          Scroll to sail the flagship vessel along the dashed nautical chart from Island 1 to Island 2 to Island 3. Every island harbors distinct climates, fauna, and secret event locations.
+          These are the 3 physical island realms of Avinya. Click any location pin directly on the islands to inspect the battleground dossier, or click the island to dock your flagship.
         </p>
       </div>
 
       <!-- Sailing Nautical Route SVG (Dashed Curving Path Connecting the 3 Islands) -->
-      <svg class="voyage-svg-route hidden md:block" viewBox="0 0 1200 1800" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="voyage-svg-route hidden md:block" viewBox="0 0 1200 2400" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="nauticalRouteGrad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.9" />
@@ -254,11 +254,11 @@
           </filter>
         </defs>
         <!-- Zigzag curve matching user sketch:
-             Start at Island 1 (top-left: x=340, y=220)
-             Curve over to Island 2 (middle-right: x=860, y=820)
-             Curve back down to Island 3 (bottom-left: x=340, y=1480) -->
+             Start at Island 1 (top-left: x=340, y=300)
+             Curve over to Island 2 (middle-right: x=880, y=1100)
+             Curve back down to Island 3 (bottom-left: x=340, y=1900) -->
         <path id="voyage-curved-track" 
-              d="M 340 220 C 620 320, 860 480, 860 820 C 860 1150, 520 1250, 340 1480" 
+              d="M 340 300 C 620 450, 880 700, 880 1100 C 880 1500, 520 1650, 340 1900" 
               stroke="url(#nauticalRouteGrad)" 
               stroke-width="4" 
               stroke-dasharray="14 14" 
@@ -274,205 +274,587 @@
         </div>
       </div>
 
-      <!-- THE 3 ISLANDS CONTAINER (MATCHING SKETCH TOP-LEFT -> MIDDLE-RIGHT -> BOTTOM-LEFT) -->
-      <div class="space-y-24 relative z-10">
+      <!-- THE 3 REAL ISLAND REALMS (MATCHING SKETCH TOP-LEFT -> MIDDLE-RIGHT -> BOTTOM-LEFT) -->
+      <div class="space-y-36 relative z-10">
 
         <!-- ====================================================================
              ISLAND 1 (DAY 1) - TOP-LEFT ALIGNED (THE LAST OUTPOST)
              ==================================================================== -->
-        <div id="day1" class="island-realm p-6 sm:p-10 md:w-8/12 border border-amber-500/30" style="--realm-accent: #F59E0B; --realm-glow: rgba(245, 158, 11, 0.4);" data-accent="#F59E0B">
-          <!-- Port Arrival Docking Header -->
-          <div class="flex flex-wrap items-center justify-between gap-3 pb-6 border-b border-amber-500/20 mb-6">
-            <div class="flex items-center gap-3">
-              <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-400 flex items-center justify-center text-amber-400 shadow-lg shadow-amber-500/20">
-                <i data-lucide="anchor" class="w-6 h-6"></i>
-              </div>
-              <div>
-                <div class="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-amber-400 font-bold">
-                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                  <span>ISLAND 01 // DAY 1 (MARCH 12, 2027)</span>
+        <div id="day1" class="island-entity md:w-8/12" style="--realm-accent: #F59E0B; --realm-glow: rgba(245, 158, 11, 0.45);" data-accent="#F59E0B">
+          
+          <!-- Island Telemetry Console Bar -->
+          <div class="island-console-pill mb-6">
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-amber-500/20 mb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-400 flex items-center justify-center text-amber-400 shadow-lg shadow-amber-500/30">
+                  <i data-lucide="anchor" class="w-6 h-6"></i>
                 </div>
-                <h3 class="font-display font-black text-2xl sm:text-4xl text-white">THE LAST OUTPOST</h3>
+                <div>
+                  <div class="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-amber-400 font-bold">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span>ISLAND 01 // DAY 1 (FRIDAY, MARCH 12)</span>
+                  </div>
+                  <h3 class="font-display font-black text-2xl sm:text-3xl text-white">THE LAST OUTPOST</h3>
+                </div>
+              </div>
+
+              <!-- Direct link to full island archive page -->
+              <a href="day1.html" class="px-5 py-2.5 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-display font-black text-xs tracking-wider uppercase transition-all shadow-lg shadow-amber-500/30 flex items-center gap-1.5">
+                <span>OPEN ISLAND ARCHIVE</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </a>
+            </div>
+
+            <!-- Climate & Flora/Fauna Badges -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 font-mono text-xs">
+              <div class="p-3 rounded-xl bg-amber-950/40 border border-amber-500/25 flex items-start gap-2.5">
+                <span class="text-lg">🌡️</span>
+                <div>
+                  <div class="text-[10px] uppercase text-amber-400 font-bold">Climate Telemetry</div>
+                  <div class="text-slate-200">Arid Sci-Fi Dune Desert • 38°C Thermal Winds</div>
+                </div>
+              </div>
+              <div class="p-3 rounded-xl bg-amber-950/40 border border-amber-500/25 flex items-start gap-2.5">
+                <span class="text-lg">🌵</span>
+                <div>
+                  <div class="text-[10px] uppercase text-amber-400 font-bold">Flora & Fauna</div>
+                  <div class="text-slate-200">Spiced Desert Palms & Autonomous Rover Caravans</div>
+                </div>
               </div>
             </div>
-            <a href="day1.html" class="px-4 py-2 rounded-full bg-amber-500/20 hover:bg-amber-500 hover:text-black border border-amber-500/40 text-amber-300 text-xs font-mono font-bold transition-all flex items-center gap-1.5">
-              <span>Day 1 Archive</span>
-              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-            </a>
-          </div>
 
-          <!-- Climate & Flora/Fauna Badges (From Sketch) -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 font-mono text-xs">
-            <div class="p-3.5 rounded-2xl bg-amber-950/40 border border-amber-500/30 flex items-start gap-2.5">
-              <span class="text-xl">🌡️</span>
-              <div>
-                <div class="text-[10px] uppercase text-amber-400 font-bold">Island Climate</div>
-                <div class="text-slate-200">Arid Sci-Fi Dune Desert • 38°C Thermal Winds</div>
-              </div>
-            </div>
-            <div class="p-3.5 rounded-2xl bg-amber-950/40 border border-amber-500/30 flex items-start gap-2.5">
-              <span class="text-xl">🌵</span>
-              <div>
-                <div class="text-[10px] uppercase text-amber-400 font-bold">Flora & Fauna</div>
-                <div class="text-slate-200">Spiced Desert Palms, Crystalline Cacti & Autonomous Rover Caravans</div>
-              </div>
+            <div class="flex flex-wrap items-center justify-between text-xs font-mono text-slate-400 pt-2 border-t border-white/5">
+              <span class="text-slate-300">Port of Arid Monoliths (Pier 01)</span>
+              <span class="text-amber-400 font-bold">15.4288° N, 75.0560° E</span>
             </div>
           </div>
 
-          <!-- Port Coordinates -->
-          <div class="p-3.5 rounded-xl bg-black/50 border border-white/10 text-xs font-mono text-slate-300 flex flex-wrap items-center justify-between gap-2 mb-8">
-            <span class="flex items-center gap-2">
-              <i data-lucide="map-pin" class="w-4 h-4 text-amber-400"></i>
-              <span>Docking Port: <strong class="text-white">Port of Arid Monoliths (Pier 01)</strong></span>
-            </span>
-            <span class="text-amber-400 font-bold">Coordinates: 15.4288° N, 75.0560° E</span>
-          </div>
+          <!-- THE REAL PHYSICAL ISLAND LANDMASS GRAPHIC -->
+          <div class="island-canvas-wrapper island-float-1">
+  <div class="island-shore-ripple" style="--realm-accent: #F59E0B;"></div>
+  <svg viewBox="0 0 800 650" class="w-full h-auto drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="duneReefGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.35" />
+        <stop offset="60%" stop-color="#0284C7" stop-opacity="0.25" />
+        <stop offset="100%" stop-color="#0C4A6E" stop-opacity="0.1" />
+      </linearGradient>
+      <linearGradient id="duneSandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#FBBF24" />
+        <stop offset="40%" stop-color="#D97706" />
+        <stop offset="85%" stop-color="#B45309" />
+        <stop offset="100%" stop-color="#78350F" />
+      </linearGradient>
+      <linearGradient id="dunePlateauGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#F59E0B" />
+        <stop offset="100%" stop-color="#92400E" />
+      </linearGradient>
+      <filter id="duneShadow" x="-10%" y="-10%" width="130%" height="130%">
+        <feDropShadow dx="0" dy="16" stdDeviation="16" flood-color="#000000" flood-opacity="0.9" />
+      </filter>
+    </defs>
+    
+    <!-- Outer Shallow Coral Reef Water Shelf -->
+    <path d="M 120 280 C 100 160, 240 80, 410 70 C 580 60, 710 130, 730 250 C 750 370, 720 510, 580 570 C 440 630, 260 620, 160 540 C 80 470, 140 380, 120 280 Z" 
+          fill="url(#duneReefGrad)" 
+          stroke="#F59E0B" 
+          stroke-width="2.5" 
+          stroke-dasharray="8 6" 
+          opacity="0.8" />
+    
+    <!-- Organic Island Base Landmass (Sand Beach Contour) -->
+    <path d="M 160 280 C 140 180, 260 110, 400 100 C 550 90, 670 160, 680 270 C 690 370, 660 480, 550 530 C 430 580, 280 570, 190 500 C 130 440, 180 360, 160 280 Z" 
+          fill="url(#duneSandGrad)" 
+          filter="url(#duneShadow)" />
+    
+    <!-- Mid Topographic Elevation Plateau -->
+    <path d="M 220 270 C 210 200, 300 150, 410 140 C 520 130, 610 190, 620 270 C 630 350, 600 440, 500 470 C 390 500, 290 480, 240 430 C 200 380, 230 320, 220 270 Z" 
+          fill="url(#dunePlateauGrad)" 
+          opacity="0.9" />
 
-          <!-- Locations inside Island 1 (Each Location IS an Event) -->
-          <div>
-            <div class="flex items-center justify-between mb-4">
-              <h4 class="font-display font-bold text-lg text-white flex items-center gap-2">
-                <i data-lucide="compass" class="w-4 h-4 text-amber-400"></i>
-                <span>Locations on Island (Events)</span>
-              </h4>
-              <span class="text-xs font-mono text-amber-400 font-bold">6 Active Locations</span>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="day1-events-grid"></div>
-          </div>
+    <!-- High Mountain Ridge / Dune Spines -->
+    <path d="M 280 260 Q 400 200, 540 250 Q 560 340, 460 380 Q 340 410, 280 340 Z" 
+          fill="#78350F" 
+          opacity="0.8" />
+
+    <!-- Dune Ridges Topographic Contour Lines -->
+    <path d="M 200 240 Q 320 180, 440 190 T 630 220" fill="none" stroke="#FDE68A" stroke-width="1.5" opacity="0.4" />
+    <path d="M 240 320 Q 360 270, 480 290 T 610 330" fill="none" stroke="#FDE68A" stroke-width="1.5" opacity="0.4" />
+    <path d="M 220 400 Q 340 370, 460 390 T 570 420" fill="none" stroke="#FDE68A" stroke-width="1.5" opacity="0.4" />
+
+    <!-- Ancient Monolith Citadels (Sci-Fi Dune Pillars) -->
+    <rect x="250" y="170" width="14" height="38" rx="3" fill="#1C1917" stroke="#F59E0B" stroke-width="1.5" />
+    <rect x="272" y="180" width="12" height="30" rx="3" fill="#1C1917" stroke="#F59E0B" stroke-width="1.5" />
+    <rect x="580" y="220" width="16" height="42" rx="3" fill="#1C1917" stroke="#F59E0B" stroke-width="1.5" />
+    <rect x="602" y="235" width="10" height="26" rx="3" fill="#1C1917" stroke="#F59E0B" stroke-width="1.5" />
+
+    <!-- Rover Tracks across the Dunes -->
+    <path d="M 330 450 Q 400 480, 480 440 T 540 390" fill="none" stroke="#451A03" stroke-width="2" stroke-dasharray="4 4" opacity="0.6" />
+
+    <!-- Stone Pier 01 Extending into Sea Water (Docking Pier) -->
+    <path d="M 390 540 L 410 540 L 415 630 L 385 630 Z" fill="#292524" stroke="#F59E0B" stroke-width="1.5" />
+    <circle cx="400" cy="625" r="7" fill="#F59E0B" />
+    <text x="400" y="642" font-family="monospace" font-size="10" font-weight="bold" fill="#FBBF24" text-anchor="middle">PIER 01</text>
+  </svg>
+
+  <!-- Location Pin 1: The Algorithmic Monolith -->
+  <div class="island-pin-anchor" style="left: 28%; top: 26%;" onclick="window.openEventDossier('d1-e1')" title="The Algorithmic Monolith">
+    <div class="pin-pulse-ring" style="--realm-accent: #F59E0B;"></div>
+    <div class="island-pin-beacon" style="--realm-accent: #F59E0B; --realm-glow: rgba(245, 158, 11, 0.5);">
+      <div class="pin-icon-badge">1</div>
+      <div class="pin-label-pill">
+        <span>📍 Algorithmic Monolith</span>
+        <span class="pin-bounty-badge">₹45k</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location Pin 2: Sandstorm Cyber Fortress -->
+  <div class="island-pin-anchor" style="left: 72%; top: 24%;" onclick="window.openEventDossier('d1-e2')" title="Sandstorm Cyber Fortress">
+    <div class="pin-pulse-ring" style="--realm-accent: #F59E0B;"></div>
+    <div class="island-pin-beacon" style="--realm-accent: #F59E0B; --realm-glow: rgba(245, 158, 11, 0.5);">
+      <div class="pin-icon-badge">2</div>
+      <div class="pin-label-pill">
+        <span>📍 Cyber Fortress</span>
+        <span class="pin-bounty-badge">₹35k</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location Pin 3: Silicon Foundry Caverns -->
+  <div class="island-pin-anchor" style="left: 22%; top: 60%;" onclick="window.openEventDossier('d1-e3')" title="Silicon Foundry Caverns">
+    <div class="pin-pulse-ring" style="--realm-accent: #F59E0B;"></div>
+    <div class="island-pin-beacon" style="--realm-accent: #F59E0B; --realm-glow: rgba(245, 158, 11, 0.5);">
+      <div class="pin-icon-badge">3</div>
+      <div class="pin-label-pill">
+        <span>📍 Silicon Caverns</span>
+        <span class="pin-bounty-badge">₹30k</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location Pin 4: Terra-Rover Dunes -->
+  <div class="island-pin-anchor" style="left: 52%; top: 48%;" onclick="window.openEventDossier('d1-e4')" title="Terra-Rover Dunes">
+    <div class="pin-pulse-ring" style="--realm-accent: #F59E0B;"></div>
+    <div class="island-pin-beacon" style="--realm-accent: #F59E0B; --realm-glow: rgba(245, 158, 11, 0.5);">
+      <div class="pin-icon-badge">4</div>
+      <div class="pin-label-pill">
+        <span>📍 Rover Dunes</span>
+        <span class="pin-bounty-badge">₹25k</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location Pin 5: The Spice Terminal Pier 04 -->
+  <div class="island-pin-anchor" style="left: 75%; top: 64%;" onclick="window.openEventDossier('d1-e5')" title="The Spice Terminal Pier 04">
+    <div class="pin-pulse-ring" style="--realm-accent: #F59E0B;"></div>
+    <div class="island-pin-beacon" style="--realm-accent: #F59E0B; --realm-glow: rgba(245, 158, 11, 0.5);">
+      <div class="pin-icon-badge">5</div>
+      <div class="pin-label-pill">
+        <span>📍 Spice Terminal</span>
+        <span class="pin-bounty-badge">₹40k</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location Pin 6: Imperial Trading Citadel -->
+  <div class="island-pin-anchor" style="left: 48%; top: 78%;" onclick="window.openEventDossier('d1-e6')" title="Imperial Trading Citadel">
+    <div class="pin-pulse-ring" style="--realm-accent: #F59E0B;"></div>
+    <div class="island-pin-beacon" style="--realm-accent: #F59E0B; --realm-glow: rgba(245, 158, 11, 0.5);">
+      <div class="pin-icon-badge">6</div>
+      <div class="pin-label-pill">
+        <span>📍 Trading Citadel</span>
+        <span class="pin-bounty-badge">₹50k</span>
+      </div>
+    </div>
+  </div>
+</div>
         </div>
 
         <!-- ====================================================================
              ISLAND 2 (DAY 2) - MIDDLE-RIGHT ALIGNED (THE PANDEMONIUM)
              ==================================================================== -->
-        <div id="day2" class="island-realm p-6 sm:p-10 md:w-8/12 md:ml-auto border border-pink-500/30" style="--realm-accent: #EC4899; --realm-glow: rgba(236, 72, 153, 0.4);" data-accent="#EC4899">
-          <!-- Port Arrival Docking Header -->
-          <div class="flex flex-wrap items-center justify-between gap-3 pb-6 border-b border-pink-500/20 mb-6">
-            <div class="flex items-center gap-3">
-              <div class="w-12 h-12 rounded-2xl bg-pink-500/20 border border-pink-400 flex items-center justify-center text-pink-400 shadow-lg shadow-pink-500/20">
-                <i data-lucide="anchor" class="w-6 h-6"></i>
-              </div>
-              <div>
-                <div class="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-pink-400 font-bold">
-                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                  <span>ISLAND 02 // DAY 2 (MARCH 13, 2027)</span>
+        <div id="day2" class="island-entity md:w-8/12 md:ml-auto" style="--realm-accent: #EC4899; --realm-glow: rgba(236, 72, 153, 0.45);" data-accent="#EC4899">
+          
+          <!-- Island Telemetry Console Bar -->
+          <div class="island-console-pill mb-6" style="border-color: #EC4899; box-shadow: 0 20px 45px -10px rgba(0,0,0,0.8), 0 0 25px rgba(236,72,153,0.3);">
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-pink-500/20 mb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-pink-500/20 border border-pink-400 flex items-center justify-center text-pink-400 shadow-lg shadow-pink-500/30">
+                  <i data-lucide="anchor" class="w-6 h-6"></i>
                 </div>
-                <h3 class="font-display font-black text-2xl sm:text-4xl text-white">THE PANDEMONIUM</h3>
+                <div>
+                  <div class="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-pink-400 font-bold">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span>ISLAND 02 // DAY 2 (SATURDAY, MARCH 13)</span>
+                  </div>
+                  <h3 class="font-display font-black text-2xl sm:text-3xl text-white">THE PANDEMONIUM</h3>
+                </div>
+              </div>
+
+              <!-- Direct link to full island archive page -->
+              <a href="day2.html" class="px-5 py-2.5 rounded-full bg-pink-500 hover:bg-pink-400 text-black font-display font-black text-xs tracking-wider uppercase transition-all shadow-lg shadow-pink-500/30 flex items-center gap-1.5">
+                <span>OPEN ISLAND ARCHIVE</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </a>
+            </div>
+
+            <!-- Climate & Flora/Fauna Badges -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 font-mono text-xs">
+              <div class="p-3 rounded-xl bg-pink-950/40 border border-pink-500/25 flex items-start gap-2.5">
+                <span class="text-lg">⚡</span>
+                <div>
+                  <div class="text-[10px] uppercase text-pink-400 font-bold">Climate Telemetry</div>
+                  <div class="text-slate-200">Synthwave Cyberpunk • 21°C Neon Rain</div>
+                </div>
+              </div>
+              <div class="p-3 rounded-xl bg-pink-950/40 border border-pink-500/25 flex items-start gap-2.5">
+                <span class="text-lg">🧬</span>
+                <div>
+                  <div class="text-[10px] uppercase text-pink-400 font-bold">Flora & Fauna</div>
+                  <div class="text-slate-200">Bioluminescent Cyber-Spores & Neon Sea Flora</div>
+                </div>
               </div>
             </div>
-            <a href="day2.html" class="px-4 py-2 rounded-full bg-pink-500/20 hover:bg-pink-500 hover:text-black border border-pink-500/40 text-pink-300 text-xs font-mono font-bold transition-all flex items-center gap-1.5">
-              <span>Day 2 Archive</span>
-              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-            </a>
-          </div>
 
-          <!-- Climate & Flora/Fauna Badges -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 font-mono text-xs">
-            <div class="p-3.5 rounded-2xl bg-pink-950/40 border border-pink-500/30 flex items-start gap-2.5">
-              <span class="text-xl">⚡</span>
-              <div>
-                <div class="text-[10px] uppercase text-pink-400 font-bold">Island Climate</div>
-                <div class="text-slate-200">Synthwave Cyberpunk • 21°C Neon Rain & Static Mists</div>
-              </div>
-            </div>
-            <div class="p-3.5 rounded-2xl bg-pink-950/40 border border-pink-500/30 flex items-start gap-2.5">
-              <span class="text-xl">🧬</span>
-              <div>
-                <div class="text-[10px] uppercase text-pink-400 font-bold">Flora & Fauna</div>
-                <div class="text-slate-200">Bioluminescent Cyber-Spores, Mecha Drones & Neon Sea Flora</div>
-              </div>
+            <div class="flex flex-wrap items-center justify-between text-xs font-mono text-slate-400 pt-2 border-t border-white/5">
+              <span class="text-slate-300">Cyber-Bay Marina (Pier Neon 02)</span>
+              <span class="text-pink-400 font-bold">15.4285° N, 75.0572° E</span>
             </div>
           </div>
 
-          <!-- Port Coordinates -->
-          <div class="p-3.5 rounded-xl bg-black/50 border border-white/10 text-xs font-mono text-slate-300 flex flex-wrap items-center justify-between gap-2 mb-8">
-            <span class="flex items-center gap-2">
-              <i data-lucide="map-pin" class="w-4 h-4 text-pink-400"></i>
-              <span>Docking Port: <strong class="text-white">Cyber-Bay Marina (Pier Neon 02)</strong></span>
-            </span>
-            <span class="text-pink-400 font-bold">Coordinates: 15.4285° N, 75.0572° E</span>
-          </div>
+          <!-- THE REAL PHYSICAL ISLAND LANDMASS GRAPHIC -->
+          <div class="island-canvas-wrapper island-float-2">
+  <div class="island-shore-ripple" style="--realm-accent: #EC4899;"></div>
+  <svg viewBox="0 0 800 650" class="w-full h-auto drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="cyberReefGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#EC4899" stop-opacity="0.3" />
+        <stop offset="50%" stop-color="#06B6D4" stop-opacity="0.25" />
+        <stop offset="100%" stop-color="#3B0764" stop-opacity="0.1" />
+      </linearGradient>
+      <linearGradient id="cyberBasaltGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#1E1B4B" />
+        <stop offset="50%" stop-color="#0F172A" />
+        <stop offset="100%" stop-color="#05060A" />
+      </linearGradient>
+      <linearGradient id="neonCircuitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#EC4899" />
+        <stop offset="100%" stop-color="#06B6D4" />
+      </linearGradient>
+      <filter id="cyberGlow" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="5" result="blur" />
+        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+      </filter>
+    </defs>
+    
+    <!-- Outer Bioluminescent Cyber Surf Shelf -->
+    <polygon points="140,240 220,100 420,70 620,110 720,240 680,440 580,560 380,590 200,530 110,380" 
+             fill="url(#cyberReefGrad)" 
+             stroke="#EC4899" 
+             stroke-width="2.5" 
+             stroke-dasharray="8 6" 
+             opacity="0.8" />
+    
+    <!-- Jagged Basalt Island Landmass -->
+    <polygon points="170,250 240,120 410,95 590,130 680,250 640,420 540,530 370,550 220,490 140,360" 
+             fill="url(#cyberBasaltGrad)" 
+             stroke="rgba(236, 72, 153, 0.4)" 
+             stroke-width="3" 
+             filter="url(#duneShadow)" />
+    
+    <!-- Elevated Cyber-Grid Core Plateau -->
+    <polygon points="250,260 300,160 420,140 530,170 590,260 560,380 480,440 370,450 270,410" 
+             fill="#0B0E17" 
+             stroke="#06B6D4" 
+             stroke-width="1.5" />
 
-          <!-- Locations inside Island 2 (Events) -->
-          <div>
-            <div class="flex items-center justify-between mb-4">
-              <h4 class="font-display font-bold text-lg text-white flex items-center gap-2">
-                <i data-lucide="compass" class="w-4 h-4 text-pink-400"></i>
-                <span>Locations on Island (Events)</span>
-              </h4>
-              <span class="text-xs font-mono text-pink-400 font-bold">6 Active Locations</span>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="day2-events-grid"></div>
-          </div>
+    <!-- Neon Circuit Trenches (Glowing Circuitry across Landmass) -->
+    <path d="M 240 180 L 320 220 L 420 220 L 480 180 L 540 210" fill="none" stroke="url(#neonCircuitGrad)" stroke-width="2.5" filter="url(#cyberGlow)" />
+    <path d="M 280 340 L 350 310 L 440 330 L 510 290 L 580 330" fill="none" stroke="url(#neonCircuitGrad)" stroke-width="2.5" filter="url(#cyberGlow)" />
+    <path d="M 370 450 L 400 380 L 400 280 L 440 240" fill="none" stroke="#EC4899" stroke-width="2" />
+    <path d="M 310 260 L 360 260 L 390 310 L 340 380" fill="none" stroke="#06B6D4" stroke-width="2" />
+
+    <!-- Cyber Skyscraper Spire Matrix -->
+    <rect x="390" y="160" width="22" height="65" fill="#08090D" stroke="#EC4899" stroke-width="1.5" />
+    <line x1="401" y1="160" x2="401" y2="135" stroke="#EC4899" stroke-width="2" />
+    <circle cx="401" cy="133" r="4" fill="#EC4899" filter="url(#cyberGlow)" />
+    
+    <rect x="420" y="180" width="18" height="50" fill="#08090D" stroke="#06B6D4" stroke-width="1.5" />
+    <rect x="365" y="190" width="16" height="42" fill="#08090D" stroke="#06B6D4" stroke-width="1.5" />
+
+    <!-- High-Tech Neon Marina Pier 02 (Extending out to sea) -->
+    <path d="M 360 550 L 385 550 L 385 635 L 350 635 Z" fill="#0B0F19" stroke="#EC4899" stroke-width="2" />
+    <circle cx="368" cy="630" r="7" fill="#EC4899" filter="url(#cyberGlow)" />
+    <text x="368" y="647" font-family="monospace" font-size="10" font-weight="bold" fill="#F472B6" text-anchor="middle">PIER NEON 02</text>
+  </svg>
+
+  <!-- Location Pin 1: The Steel Colosseum -->
+  <div class="island-pin-anchor" style="left: 50%; top: 32%;" onclick="window.openEventDossier('d2-e1')" title="The Steel Colosseum">
+    <div class="pin-pulse-ring" style="--realm-accent: #EC4899;"></div>
+    <div class="island-pin-beacon" style="--realm-accent: #EC4899; --realm-glow: rgba(236, 72, 153, 0.5);">
+      <div class="pin-icon-badge">1</div>
+      <div class="pin-label-pill">
+        <span>📍 Steel Colosseum</span>
+        <span class="pin-bounty-badge">₹60k</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location Pin 2: Spatial Hologram Studio -->
+  <div class="island-pin-anchor" style="left: 24%; top: 26%;" onclick="window.openEventDossier('d2-e2')" title="Spatial Hologram Studio">
+    <div class="pin-pulse-ring" style="--realm-accent: #EC4899;"></div>
+    <div class="island-pin-beacon" style="--realm-accent: #EC4899; --realm-glow: rgba(236, 72, 153, 0.5);">
+      <div class="pin-icon-badge">2</div>
+      <div class="pin-label-pill">
+        <span>📍 Spatial Holodeck</span>
+        <span class="pin-bounty-badge">₹25k</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location Pin 3: Neon Grid Arcade -->
+  <div class="island-pin-anchor" style="left: 74%; top: 38%;" onclick="window.openEventDossier('d2-e3')" title="Neon Grid Arcade">
+    <div class="pin-pulse-ring" style="--realm-accent: #EC4899;"></div>
+    <div class="island-pin-beacon" style="--realm-accent: #EC4899; --realm-glow: rgba(236, 72, 153, 0.5);">
+      <div class="pin-icon-badge">3</div>
+      <div class="pin-label-pill">
+        <span>📍 Neon Arcade</span>
+        <span class="pin-bounty-badge">₹35k</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location Pin 4: Cyber Beats Stage -->
+  <div class="island-pin-anchor" style="left: 30%; top: 70%;" onclick="window.openEventDossier('d2-e4')" title="Cyber Beats Stage">
+    <div class="pin-pulse-ring" style="--realm-accent: #EC4899;"></div>
+    <div class="island-pin-beacon" style="--realm-accent: #EC4899; --realm-glow: rgba(236, 72, 153, 0.5);">
+      <div class="pin-icon-badge">4</div>
+      <div class="pin-label-pill">
+        <span>📍 Cyber Beats</span>
+        <span class="pin-bounty-badge">₹25k</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location Pin 5: Overclock Sub-Terminal 0 -->
+  <div class="island-pin-anchor" style="left: 74%; top: 66%;" onclick="window.openEventDossier('d2-e5')" title="Overclock Sub-Terminal 0">
+    <div class="pin-pulse-ring" style="--realm-accent: #EC4899;"></div>
+    <div class="island-pin-beacon" style="--realm-accent: #EC4899; --realm-glow: rgba(236, 72, 153, 0.5);">
+      <div class="pin-icon-badge">5</div>
+      <div class="pin-label-pill">
+        <span>📍 Overclock Lab</span>
+        <span class="pin-bounty-badge">₹30k</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location Pin 6: Hologram Boulevard East -->
+  <div class="island-pin-anchor" style="left: 52%; top: 80%;" onclick="window.openEventDossier('d2-e6')" title="Hologram Boulevard East">
+    <div class="pin-pulse-ring" style="--realm-accent: #EC4899;"></div>
+    <div class="island-pin-beacon" style="--realm-accent: #EC4899; --realm-glow: rgba(236, 72, 153, 0.5);">
+      <div class="pin-icon-badge">6</div>
+      <div class="pin-label-pill">
+        <span>📍 Hologram Blvd</span>
+        <span class="pin-bounty-badge">₹35k</span>
+      </div>
+    </div>
+  </div>
+</div>
         </div>
 
         <!-- ====================================================================
              ISLAND 3 (DAY 3) - BOTTOM-LEFT ALIGNED (THE CARNIVAL ISLAND)
              ==================================================================== -->
-        <div id="day3" class="island-realm p-6 sm:p-10 md:w-8/12 border border-yellow-500/30" style="--realm-accent: #EAB308; --realm-glow: rgba(234, 179, 8, 0.4);" data-accent="#EAB308">
-          <!-- Port Arrival Docking Header -->
-          <div class="flex flex-wrap items-center justify-between gap-3 pb-6 border-b border-yellow-500/20 mb-6">
-            <div class="flex items-center gap-3">
-              <div class="w-12 h-12 rounded-2xl bg-yellow-500/20 border border-yellow-400 flex items-center justify-center text-yellow-400 shadow-lg shadow-yellow-500/20">
-                <i data-lucide="anchor" class="w-6 h-6"></i>
-              </div>
-              <div>
-                <div class="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-yellow-400 font-bold">
-                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                  <span>ISLAND 03 // DAY 3 (MARCH 14, 2027)</span>
+        <div id="day3" class="island-entity md:w-8/12" style="--realm-accent: #EAB308; --realm-glow: rgba(234, 179, 8, 0.45);" data-accent="#EAB308">
+          
+          <!-- Island Telemetry Console Bar -->
+          <div class="island-console-pill mb-6" style="border-color: #EAB308; box-shadow: 0 20px 45px -10px rgba(0,0,0,0.8), 0 0 25px rgba(234,179,8,0.3);">
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-yellow-500/20 mb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-yellow-500/20 border border-yellow-400 flex items-center justify-center text-yellow-400 shadow-lg shadow-yellow-500/30">
+                  <i data-lucide="anchor" class="w-6 h-6"></i>
                 </div>
-                <h3 class="font-display font-black text-2xl sm:text-4xl text-white">THE CARNIVAL ISLAND</h3>
+                <div>
+                  <div class="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-yellow-400 font-bold">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span>ISLAND 03 // DAY 3 (SUNDAY, MARCH 14)</span>
+                  </div>
+                  <h3 class="font-display font-black text-2xl sm:text-3xl text-white">THE CARNIVAL ISLAND</h3>
+                </div>
+              </div>
+
+              <!-- Direct link to full island archive page -->
+              <a href="day3.html" class="px-5 py-2.5 rounded-full bg-yellow-500 hover:bg-yellow-400 text-black font-display font-black text-xs tracking-wider uppercase transition-all shadow-lg shadow-yellow-500/30 flex items-center gap-1.5">
+                <span>OPEN ISLAND ARCHIVE</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </a>
+            </div>
+
+            <!-- Climate & Flora/Fauna Badges -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 font-mono text-xs">
+              <div class="p-3 rounded-xl bg-yellow-950/40 border border-yellow-500/25 flex items-start gap-2.5">
+                <span class="text-lg">🎆</span>
+                <div>
+                  <div class="text-[10px] uppercase text-yellow-400 font-bold">Climate Telemetry</div>
+                  <div class="text-slate-200">Midnight Carnival Revelry • 25°C Tropical Breeze</div>
+                </div>
+              </div>
+              <div class="p-3 rounded-xl bg-yellow-950/40 border border-yellow-500/25 flex items-start gap-2.5">
+                <span class="text-lg">🌺</span>
+                <div>
+                  <div class="text-[10px] uppercase text-yellow-400 font-bold">Flora & Fauna</div>
+                  <div class="text-slate-200">Festive Coastal Palms & Starry Coral Reefs</div>
+                </div>
               </div>
             </div>
-            <a href="day3.html" class="px-4 py-2 rounded-full bg-yellow-500/20 hover:bg-yellow-500 hover:text-black border border-yellow-500/40 text-yellow-300 text-xs font-mono font-bold transition-all flex items-center gap-1.5">
-              <span>Day 3 Archive</span>
-              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-            </a>
-          </div>
 
-          <!-- Climate & Flora/Fauna Badges -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 font-mono text-xs">
-            <div class="p-3.5 rounded-2xl bg-yellow-950/40 border border-yellow-500/30 flex items-start gap-2.5">
-              <span class="text-xl">🎆</span>
-              <div>
-                <div class="text-[10px] uppercase text-yellow-400 font-bold">Island Climate</div>
-                <div class="text-slate-200">Midnight Carnival Revelry • 25°C Tropical Starlit Breeze</div>
-              </div>
-            </div>
-            <div class="p-3.5 rounded-2xl bg-yellow-950/40 border border-yellow-500/30 flex items-start gap-2.5">
-              <span class="text-xl">🌺</span>
-              <div>
-                <div class="text-[10px] uppercase text-yellow-400 font-bold">Flora & Fauna</div>
-                <div class="text-slate-200">Festive Coastal Palms, Golden Fireworks & Starry Coral Reefs</div>
-              </div>
+            <div class="flex flex-wrap items-center justify-between text-xs font-mono text-slate-400 pt-2 border-t border-white/5">
+              <span class="text-slate-300">Grand Carnival Lagoon (Wharf 03)</span>
+              <span class="text-yellow-400 font-bold">15.4295° N, 75.0552° E</span>
             </div>
           </div>
 
-          <!-- Port Coordinates -->
-          <div class="p-3.5 rounded-xl bg-black/50 border border-white/10 text-xs font-mono text-slate-300 flex flex-wrap items-center justify-between gap-2 mb-8">
-            <span class="flex items-center gap-2">
-              <i data-lucide="map-pin" class="w-4 h-4 text-yellow-400"></i>
-              <span>Docking Port: <strong class="text-white">Grand Carnival Lagoon (Wharf 03)</strong></span>
-            </span>
-            <span class="text-yellow-400 font-bold">Coordinates: 15.4295° N, 75.0552° E</span>
-          </div>
+          <!-- THE REAL PHYSICAL ISLAND LANDMASS GRAPHIC -->
+          <div class="island-canvas-wrapper island-float-3">
+  <div class="island-shore-ripple" style="--realm-accent: #EAB308;"></div>
+  <svg viewBox="0 0 800 650" class="w-full h-auto drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="carnivalReefGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#EAB308" stop-opacity="0.35" />
+        <stop offset="50%" stop-color="#10B981" stop-opacity="0.25" />
+        <stop offset="100%" stop-color="#0284C7" stop-opacity="0.1" />
+      </linearGradient>
+      <linearGradient id="lagoonWaterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#0284C7" />
+        <stop offset="50%" stop-color="#06B6D4" />
+        <stop offset="100%" stop-color="#10B981" />
+      </linearGradient>
+      <linearGradient id="carnivalSandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#FEF08A" />
+        <stop offset="30%" stop-color="#FDE047" />
+        <stop offset="70%" stop-color="#047857" />
+        <stop offset="100%" stop-color="#064E3B" />
+      </linearGradient>
+    </defs>
+    
+    <!-- Outer Tropical Coral Reef Shelf -->
+    <path d="M 120 260 C 90 140, 240 70, 420 60 C 600 50, 720 120, 740 260 C 760 390, 720 530, 560 580 C 410 630, 240 610, 150 520 C 70 430, 140 360, 120 260 Z" 
+          fill="url(#carnivalReefGrad)" 
+          stroke="#EAB308" 
+          stroke-width="2.5" 
+          stroke-dasharray="8 6" 
+          opacity="0.8" />
+    
+    <!-- Crescent Atoll Outer Island Landmass -->
+    <path d="M 160 270 C 130 170, 260 100, 420 90 C 580 80, 680 150, 690 270 C 700 380, 660 500, 530 540 C 400 580, 260 560, 180 480 C 120 410, 180 340, 160 270 Z" 
+          fill="url(#carnivalSandGrad)" 
+          filter="url(#duneShadow)" />
+    
+    <!-- Inner Glowing Lagoon Basin (Turquoise Core Water) -->
+    <ellipse cx="420" cy="320" rx="150" ry="95" fill="url(#lagoonWaterGrad)" stroke="#FEF08A" stroke-width="2" stroke-dasharray="6 4" opacity="0.9" />
+    <circle cx="420" cy="320" r="45" fill="#0284C7" opacity="0.7" />
 
-          <!-- Locations inside Island 3 (Events) -->
-          <div>
-            <div class="flex items-center justify-between mb-4">
-              <h4 class="font-display font-bold text-lg text-white flex items-center gap-2">
-                <i data-lucide="compass" class="w-4 h-4 text-yellow-400"></i>
-                <span>Locations on Island (Events)</span>
-              </h4>
-              <span class="text-xs font-mono text-yellow-400 font-bold">6 Active Locations</span>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="day3-events-grid"></div>
-          </div>
+    <!-- Palm Tree Clusters on Atoll Rim -->
+    <circle cx="240" cy="220" r="14" fill="#059669" />
+    <circle cx="255" cy="210" r="11" fill="#10B981" />
+    <circle cx="600" cy="240" r="15" fill="#059669" />
+    <circle cx="615" cy="230" r="12" fill="#10B981" />
+    <circle cx="280" cy="460" r="14" fill="#059669" />
+
+    <!-- Festival Carnival Big-Top Pavilion Structures -->
+    <polygon points="410,230 430,230 420,205" fill="#E11D48" stroke="#FEF08A" stroke-width="1.5" />
+    <polygon points="435,240 455,240 445,215" fill="#9333EA" stroke="#FEF08A" stroke-width="1.5" />
+    <polygon points="385,240 405,240 395,215" fill="#F59E0B" stroke="#FEF08A" stroke-width="1.5" />
+
+    <!-- Starlight Fireworks Burst Reflections in Lagoon -->
+    <circle cx="420" cy="320" r="2" fill="#FFFFFF" />
+    <line x1="420" y1="310" x2="420" y2="330" stroke="#FEF08A" stroke-width="1.5" opacity="0.8" />
+    <line x1="410" y1="320" x2="430" y2="320" stroke="#FEF08A" stroke-width="1.5" opacity="0.8" />
+
+    <!-- Lantern Boardwalk Pier extending out to Sea (Wharf 03) -->
+    <path d="M 405 550 L 430 550 L 430 635 L 395 635 Z" fill="#451A03" stroke="#EAB308" stroke-width="2" />
+    <circle cx="412" cy="630" r="7" fill="#EAB308" />
+    <text x="412" y="647" font-family="monospace" font-size="10" font-weight="bold" fill="#FDE047" text-anchor="middle">WHARF 03</text>
+  </svg>
+
+  <!-- Location Pin 1: The Grand Lagoon Stage -->
+  <div class="island-pin-anchor" style="left: 50%; top: 46%;" onclick="window.openEventDossier('d3-e1')" title="The Grand Lagoon Stage">
+    <div class="pin-pulse-ring" style="--realm-accent: #EAB308;"></div>
+    <div class="island-pin-beacon" style="--realm-accent: #EAB308; --realm-glow: rgba(234, 179, 8, 0.5);">
+      <div class="pin-icon-badge">1</div>
+      <div class="pin-label-pill">
+        <span>📍 Grand Lagoon Stage</span>
+        <span class="pin-bounty-badge">₹150k+</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location Pin 2: Starlight Dance Arena -->
+  <div class="island-pin-anchor" style="left: 26%; top: 28%;" onclick="window.openEventDossier('d3-e2')" title="Starlight Dance Arena">
+    <div class="pin-pulse-ring" style="--realm-accent: #EAB308;"></div>
+    <div class="island-pin-beacon" style="--realm-accent: #EAB308; --realm-glow: rgba(234, 179, 8, 0.5);">
+      <div class="pin-icon-badge">2</div>
+      <div class="pin-label-pill">
+        <span>📍 Starlight Arena</span>
+        <span class="pin-bounty-badge">₹50k</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location Pin 3: Sunken Amphitheatre -->
+  <div class="island-pin-anchor" style="left: 74%; top: 28%;" onclick="window.openEventDossier('d3-e3')" title="Sunken Amphitheatre">
+    <div class="pin-pulse-ring" style="--realm-accent: #EAB308;"></div>
+    <div class="island-pin-beacon" style="--realm-accent: #EAB308; --realm-glow: rgba(234, 179, 8, 0.5);">
+      <div class="pin-icon-badge">3</div>
+      <div class="pin-label-pill">
+        <span>📍 Amphitheatre</span>
+        <span class="pin-bounty-badge">₹40k</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location Pin 4: Lantern Promenade -->
+  <div class="island-pin-anchor" style="left: 22%; top: 66%;" onclick="window.openEventDossier('d3-e4')" title="Lantern Promenade">
+    <div class="pin-pulse-ring" style="--realm-accent: #EAB308;"></div>
+    <div class="island-pin-beacon" style="--realm-accent: #EAB308; --realm-glow: rgba(234, 179, 8, 0.5);">
+      <div class="pin-icon-badge">4</div>
+      <div class="pin-label-pill">
+        <span>📍 Lantern Runway</span>
+        <span class="pin-bounty-badge">₹35k</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location Pin 5: Carnival Plaza Deck -->
+  <div class="island-pin-anchor" style="left: 74%; top: 64%;" onclick="window.openEventDossier('d3-e5')" title="Carnival Plaza Deck">
+    <div class="pin-pulse-ring" style="--realm-accent: #EAB308;"></div>
+    <div class="island-pin-beacon" style="--realm-accent: #EAB308; --realm-glow: rgba(234, 179, 8, 0.5);">
+      <div class="pin-icon-badge">5</div>
+      <div class="pin-label-pill">
+        <span>📍 Carnival Plaza</span>
+        <span class="pin-bounty-badge">₹40k</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location Pin 6: The Laughing Gull Deck -->
+  <div class="island-pin-anchor" style="left: 48%; top: 80%;" onclick="window.openEventDossier('d3-e6')" title="The Laughing Gull Deck">
+    <div class="pin-pulse-ring" style="--realm-accent: #EAB308;"></div>
+    <div class="island-pin-beacon" style="--realm-accent: #EAB308; --realm-glow: rgba(234, 179, 8, 0.5);">
+      <div class="pin-icon-badge">6</div>
+      <div class="pin-label-pill">
+        <span>📍 Laughing Gull</span>
+        <span class="pin-bounty-badge">₹25k</span>
+      </div>
+    </div>
+  </div>
+</div>
         </div>
 
       </div>
 
     </section>
-
     <!-- ========================================================================
          DEDICATED SECTION: HACK2FUTURE (ASTRONAUT / SPACE THEME)
          ======================================================================== -->

@@ -67,9 +67,9 @@ function initArchipelagoShip() {
       const nextPt = path.getPointAtLength(Math.min(pathLength, currentLength + 8));
       const angle = Math.atan2(nextPt.y - pt.y, nextPt.x - pt.x) * (180 / Math.PI);
 
-      // SVG viewBox is 1200 x 1800
+      // SVG viewBox is 1200 x 2400
       const leftPct = (pt.x / 1200) * 100;
-      const topPct = (pt.y / 1800) * 100;
+      const topPct = (pt.y / 2400) * 100;
 
       ship.style.left = `${leftPct}%`;
       ship.style.top = `${topPct}%`;
@@ -780,6 +780,10 @@ window.openEventDossier = function(eventId) {
             <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
             <span>${foundEvent.islandPlace || foundEvent.venue}</span>
           </span>
+          <span>•</span>
+          <a href="${parentIsland ? parentIsland.id + '.html' : 'index.html'}" class="text-[11px] underline underline-offset-2 text-slate-300 hover:text-amber-400 transition-colors">
+            ${parentIsland ? parentIsland.name : 'Sector'} Archive &rarr;
+          </a>
         </div>
         <h3 class="font-display font-black text-2xl sm:text-3xl text-white">${foundEvent.title}</h3>
         <p class="text-xs text-slate-300 font-body mt-1">${foundEvent.tagline || foundEvent.summary}</p>
@@ -873,6 +877,17 @@ window.openEventDossier = function(eventId) {
         <span class="text-slate-500">Venue:</span>
         <strong class="text-slate-200 ml-1">${foundEvent.venue}</strong>
       </div>
+    </div>
+
+    <!-- Island & Standalone Navigation -->
+    <div class="mt-5 pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+      <a href="event.html?id=${foundEvent.id}" class="text-amber-400 hover:text-white underline underline-offset-4 flex items-center gap-1.5">
+        <span>Open Standalone Event Page</span>
+        <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+      </a>
+      <a href="${parentIsland ? parentIsland.id + '.html' : 'index.html'}" class="text-slate-400 hover:text-amber-400 flex items-center gap-1">
+        <span>Explore All Locations in ${parentIsland ? parentIsland.name : 'Island'} &rarr;</span>
+      </a>
     </div>
   `;
 
