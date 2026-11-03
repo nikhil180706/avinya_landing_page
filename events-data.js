@@ -1,12 +1,64 @@
 /**
- * AVINYA '27 - MASTER KNOWLEDGE & EVENT REPOSITORY (EXTENDED)
+ * ============================================================================
+ * AVINYA '27 - MASTER DATA & EVENT REGISTRY
  * Indian Institute of Information Technology, Dharwad
- * --------------------------------------------------------------------
- * Includes:
- * - Detailed Podium Cash Prize Splits (1st, 2nd, 3rd + Berries)
- * - Official Corporate & Tech Sponsors with declared category & spending budgets
- * - Direct QR registration links
- * - Host student clubs & faculty leads
+ * ============================================================================
+ * 
+ * 🛠️ DEVELOPER & ORGANIZER QUICKSTART GUIDE:
+ * ----------------------------------------------------------------------------
+ * As events are still being decided, this entire repository is built to be
+ * 100% dynamic and developer-friendly. Any change made here automatically
+ * updates the interactive island maps, pins, schedule grids, and side dossiers!
+ *
+ * 1. HOW TO ADD A NEW EVENT:
+ *    Just copy-paste this block into the `events: [ ... ]` array of any island:
+ *
+ *    {
+ *      id: "d1-e7",                                        // Unique event ID
+ *      title: "Your Event Name",                           // Official title
+ *      islandPlace: "Landmark Name (e.g. Solar Citadel)",  // Name of place on the island
+ *      shortLabel: "Solar Citadel",                        // Short pill label on pin
+ *      pinX: 42,                                           // X coordinate % on island (10 to 90)
+ *      pinY: 55,                                           // Y coordinate % on island (10 to 90)
+ *      badgeNum: 7,                                        // Number rendered inside the pin
+ *      club: "Velocity Coding Club",                       // Host student guild / club
+ *      category: "AI & Innovation",                        // Event category
+ *      time: "02:00 PM - 05:00 PM",                        // Event schedule
+ *      venue: "Auditorium / Lab 3",                        // Campus physical venue
+ *      totalBounty: "₹50,000",                             // Total cash prize
+ *      podium: {
+ *        first: "₹25,000 + Gold Medal",
+ *        second: "₹15,000 + Silver Medal",
+ *        third: "₹10,000 + Bronze Medal"
+ *      },
+ *      summary: "Exciting 2-line summary describing the event...",
+ *      rules: [
+ *        "Teams of 2 to 4 students",
+ *        "College ID mandatory at checkpoint",
+ *        "All code must be written on-site during the fest"
+ *      ],
+ *      coordinator: {
+ *        name: "Lead Name",
+ *        contact: "+91 99999 99999",
+ *        email: "lead@iiitdwd.ac.in"
+ *      },
+ *      sponsors: [
+ *        { name: "Sponsor Brand", tier: "Gold Patron", spending: "₹30,000 Grant", logo: "award" }
+ *      ]
+ *    },
+ *
+ * 2. HOW TO TWEAK AN EVENT:
+ *    Simply edit the fields in any event below. When you change `totalBounty`,
+ *    `rules`, `sponsors`, or `title`, the UI automatically reflects your changes.
+ *
+ * 3. HOW TO CHANGE PIN POSITIONS:
+ *    Adjust `pinX` (0 to 100) and `pinY` (0 to 100) to move the pin across the island.
+ *
+ * 4. IN-BROWSER VISUAL DEV STUDIO:
+ *    You can also press [Ctrl + Shift + D] or click the floating "DEV STUDIO"
+ *    button on the live website to visually edit events, click on the island to
+ *    pick coordinates, and export the updated file with 1 click!
+ * ============================================================================
  */
 
 window.AVINYA_DATA = {
@@ -46,6 +98,10 @@ window.AVINYA_DATA = {
       events: [
         {
           id: "d1-e1",
+          pinX: 28,
+          pinY: 26,
+          badgeNum: 1,
+          shortLabel: "Algorithmic Monolith",
           title: "Algorithmic Dunes (Flagship CP)",
           islandPlace: "The Algorithmic Monolith",
           islandLocationTag: "North Plateau • Pier Alpha",
@@ -99,6 +155,10 @@ window.AVINYA_DATA = {
         },
         {
           id: "d1-e2",
+          pinX: 72,
+          pinY: 24,
+          badgeNum: 2,
+          shortLabel: "Cyber Fortress",
           title: "Sand-Cipher: National CTF",
           islandPlace: "Sandstorm Cyber Fortress",
           islandLocationTag: "Citadel Bastion • Sub-node 4",
@@ -145,6 +205,10 @@ window.AVINYA_DATA = {
         },
         {
           id: "d1-e3",
+          pinX: 22,
+          pinY: 60,
+          badgeNum: 3,
+          shortLabel: "Silicon Caverns",
           title: "YUKTI: Silicon & VLSI Showdown",
           islandPlace: "Silicon Foundry Caverns",
           islandLocationTag: "FPGA Deep Chamber • Tech Vault 2",
@@ -190,6 +254,10 @@ window.AVINYA_DATA = {
         },
         {
           id: "d1-e4",
+          pinX: 52,
+          pinY: 48,
+          badgeNum: 4,
+          shortLabel: "Rover Dunes",
           title: "Dune Rover Autonomous Challenge",
           islandPlace: "Terra-Rover Dunes",
           islandLocationTag: "Crater Proving Grounds • Dune Basin",
@@ -235,6 +303,10 @@ window.AVINYA_DATA = {
         },
         {
           id: "d1-e5",
+          pinX: 75,
+          pinY: 64,
+          badgeNum: 5,
+          shortLabel: "Spice Terminal",
           title: "Web3 Sandstorm Sprint",
           islandPlace: "The Spice Terminal Pier 04",
           category: "Technical / Blockchain",
@@ -271,6 +343,10 @@ window.AVINYA_DATA = {
         },
         {
           id: "d1-e6",
+          pinX: 48,
+          pinY: 78,
+          badgeNum: 6,
+          shortLabel: "Trading Citadel",
           title: "Imperial Venture Pitch",
           islandPlace: "Imperial Trading Citadel",
           category: "Management / E-Cell",
@@ -330,6 +406,10 @@ window.AVINYA_DATA = {
       events: [
         {
           id: "d2-e1",
+          pinX: 50,
+          pinY: 32,
+          badgeNum: 1,
+          shortLabel: "Steel Colosseum",
           title: "RoboWars: Cyber Clash",
           islandPlace: "The Steel Colosseum",
           islandLocationTag: "Lower Mecha Docks • Grid 7",
@@ -375,6 +455,10 @@ window.AVINYA_DATA = {
         },
         {
           id: "d2-e2",
+          pinX: 24,
+          pinY: 26,
+          badgeNum: 2,
+          shortLabel: "Hologram Studio",
           title: "Neon Overdrive: Spatial UI/UX",
           islandPlace: "Spatial Hologram Studio",
           islandLocationTag: "Design Tower Apex • Sector Magenta",
@@ -420,6 +504,10 @@ window.AVINYA_DATA = {
         },
         {
           id: "d2-e3",
+          pinX: 74,
+          pinY: 38,
+          badgeNum: 3,
+          shortLabel: "Neon Grid Arcade",
           title: "RetroWave E-Sports Arena",
           islandPlace: "Neon Grid Arcade",
           islandLocationTag: "Cyber Arcade Alley • Floor 3",
@@ -462,6 +550,10 @@ window.AVINYA_DATA = {
         },
         {
           id: "d2-e4",
+          pinX: 30,
+          pinY: 70,
+          badgeNum: 4,
+          shortLabel: "Cyber Beats",
           title: "Cyber Beats: DJ War & Beatbox",
           islandPlace: "Cyber Beats Stage",
           islandLocationTag: "Neon Waterfront Amphitheater",
@@ -504,6 +596,10 @@ window.AVINYA_DATA = {
         },
         {
           id: "d2-e5",
+          pinX: 74,
+          pinY: 66,
+          badgeNum: 5,
+          shortLabel: "Overclock Sub-0",
           title: "Overclock Speedrun Debugging",
           islandPlace: "Overclock Sub-Terminal 0",
           category: "Technical / Systems",
@@ -540,6 +636,10 @@ window.AVINYA_DATA = {
         },
         {
           id: "d2-e6",
+          pinX: 52,
+          pinY: 80,
+          badgeNum: 6,
+          shortLabel: "Hologram Blvd",
           title: "Cosplay Cyber-Showcase",
           islandPlace: "Hologram Boulevard East",
           category: "Cultural / Creative Arts",
@@ -599,6 +699,10 @@ window.AVINYA_DATA = {
       events: [
         {
           id: "d3-e1",
+          pinX: 50,
+          pinY: 46,
+          badgeNum: 1,
+          shortLabel: "Grand Lagoon Stage",
           title: "Star-Nite: Grand Celebrity Concert",
           islandPlace: "The Grand Lagoon Stage",
           islandLocationTag: "Open Waterfront Pavilion",
@@ -642,6 +746,10 @@ window.AVINYA_DATA = {
         },
         {
           id: "d3-e2",
+          pinX: 26,
+          pinY: 28,
+          badgeNum: 2,
+          shortLabel: "Starlight Arena",
           title: "Rhythm of the Tide: Mega Choreo",
           islandPlace: "Starlight Dance Arena",
           islandLocationTag: "Central Festival Grounds",
@@ -684,6 +792,10 @@ window.AVINYA_DATA = {
         },
         {
           id: "d3-e3",
+          pinX: 74,
+          pinY: 28,
+          badgeNum: 3,
+          shortLabel: "Sunken Amphitheatre",
           title: "Battle of the Bands: Sound Clash",
           islandPlace: "Sunken Amphitheatre",
           islandLocationTag: "Acoustic Basin Wharf",
@@ -723,6 +835,10 @@ window.AVINYA_DATA = {
         },
         {
           id: "d3-e4",
+          pinX: 22,
+          pinY: 66,
+          badgeNum: 4,
+          shortLabel: "Lantern Promenade",
           title: "Haute Couture: The Grand Runway",
           islandPlace: "Lantern Promenade",
           islandLocationTag: "Grand Ramp Walkway • Wharf 3",
@@ -762,6 +878,10 @@ window.AVINYA_DATA = {
         },
         {
           id: "d3-e5",
+          pinX: 74,
+          pinY: 64,
+          badgeNum: 5,
+          shortLabel: "Carnival Plaza",
           title: "Nukkad Natak: Street Play",
           islandPlace: "Carnival Plaza Deck",
           category: "Cultural / Dramatics",
@@ -798,6 +918,10 @@ window.AVINYA_DATA = {
         },
         {
           id: "d3-e6",
+          pinX: 48,
+          pinY: 80,
+          badgeNum: 6,
+          shortLabel: "Laughing Gull Deck",
           title: "Laughing Gull Open Mic",
           islandPlace: "The Laughing Gull Deck",
           category: "Cultural / Literary",

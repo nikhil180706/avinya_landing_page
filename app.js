@@ -22,6 +22,9 @@ function initApp() {
   try { initWeatherWidget(); } catch(e) { console.warn('Weather error', e); }
   try { initAdaptiveSoundscape(); } catch(e) { console.warn('Audio error', e); }
   try { initHolographicPass(); } catch(e) { console.warn('Pass error', e); }
+  try { loadCustomFestOverrides(); } catch(e) { console.warn('Overrides error', e); }
+  try { renderDynamicIslandPins(); } catch(e) { console.warn('Dynamic pins error', e); }
+  try { initDevStudio(); } catch(e) { console.warn('Dev studio error', e); }
   try { renderAllEvents(); } catch(e) { console.warn('Events render error', e); }
   try { renderChampionsAndRegulations(); } catch(e) { console.warn('Champions render error', e); }
   try { renderCampusTransit(); } catch(e) { console.warn('Transit render error', e); }
@@ -660,6 +663,560 @@ function initWeatherWidget() {
 /**
  * Stage 1 Zoom: Click on Island entity -> zooms into island & scatters event pins
  */
+
+/* ==========================================================================
+   DYNAMIC FEST EVENT ARCHITECT & LOCALSTORAGE SYNC
+   ========================================================================== */
+
+function loadCustomFestOverrides() {
+  try {
+    const raw = localStorage.getItem('AVINYA_CUSTOM_EVENTS');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && parsed.islands && Array.isArray(parsed.islands)) {
+        window.AVINYA_DATA = parsed;
+        console.log('⚡ Fest Dev Studio: Loaded custom fest events from localStorage');
+      }
+    }
+  } catch (e) {
+    console.warn('LocalStorage load error', e);
+  }
+}
+
+/**
+ * Dynamically renders event pins on each island based on window.AVINYA_DATA
+ */
+function renderDynamicIslandPins() {
+  const data = window.AVINYA_DATA;
+  if (!data || !data.islands) return;
+
+  const defaultScatter = [
+    { x: 28, y: 26 }, { x: 72, y: 24 }, { x: 22, y: 60 },
+    { x: 52, y: 48 }, { x: 75, y: 64 }, { x: 48, y: 78 },
+    { x: 38, y: 36 }, { x: 64, y: 82 }
+  ];
+
+  data.islands.forEach(island => {
+    const container = document.getElementById(`island-pins-${island.id}`);
+    if (!container) return;
+
+    container.innerHTML = (island.events || []).map((ev, idx) => {
+      const pinX = ev.pinX !== undefined ? ev.pinX : (defaultScatter[idx % defaultScatter.length].x);
+      const pinY = ev.pinY !== undefined ? ev.pinY : (defaultScatter[idx % defaultScatter.length].y);
+      const badgeNum = ev.badgeNum !== undefined ? ev.badgeNum : (idx + 1);
+      const shortPlace = ev.shortLabel || ev.islandPlace || ev.venue || `Landmark ${badgeNum}`;
+      const bounty = ev.totalBounty || ev.prize || ev.bounty || '';
+      const accent = island.accentColor || '#F59E0B';
+
+      return `
+        <div class="island-pin-anchor" id="pin-${ev.id}" style="left: ${pinX}%; top: ${pinY}%;"
+             onclick="event.stopPropagation(); window.focusEventLocation('${island.id}', '${ev.id}', ${pinX}, ${pinY})"
+             title="${ev.title} (${shortPlace})">
+          <div class="pin-pulse-ring" style="--realm-accent: ${accent};"></div>
+          <div class="island-pin-beacon" style="--realm-accent: ${accent}; --realm-glow: ${accent}80;">
+            <div class="pin-icon-badge">${badgeNum}</div>
+            <div class="pin-label-pill">
+              <span>📍 ${shortPlace}</span>
+              ${bounty ? `<span class="pin-bounty-badge">${bounty}</span>` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  });
+}
+
+/* ==========================================================================
+   DEV STUDIO // DEVELOPER & ORGANIZER EVENT CUSTOMIZER CONTROLLER
+   ========================================================================== */
+
+let currentDevDay = 'day1';
+let activePickingSession = null;
+
+function initDevStudio() {
+  // Keybinding shortcut: Ctrl + Shift + D to toggle Dev Studio
+  window.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && (e.key === 'D' || e.key === 'd')) {
+      e.preventDefault();
+      window.toggleDevStudio();
+    }
+  });
+}
+
+window.toggleDevStudio = function() {
+  const modal = document.getElementById('dev-studio-modal');
+  const backdrop = document.getElementById('dev-studio-backdrop');
+  if (!modal) return;
+
+  const isOpen = modal.classList.contains('is-open');
+  if (isOpen) {
+    modal.classList.remove('is-open');
+    if (backdrop) backdrop.classList.remove('is-open');
+  } else {
+    modal.classList.add('is-open');
+    if (backdrop) backdrop.classList.add('is-open');
+    window.selectDevDay(currentDevDay);
+  }
+};
+
+window.selectDevDay = function(dayId) {
+  currentDevDay = dayId;
+  const tabs = document.querySelectorAll('#dev-studio-day-tabs .dev-day-tab');
+  tabs.forEach(tab => {
+    if (tab.getAttribute('data-day') === dayId) {
+      tab.classList.add('is-active', 'border-amber-500/40', 'text-amber-300', 'bg-amber-500/10');
+      tab.classList.remove('border-white/10', 'text-slate-400', 'bg-black/30');
+    } else {
+      tab.classList.remove('is-active', 'border-amber-500/40', 'text-amber-300', 'bg-amber-500/10');
+      tab.classList.add('border-white/10', 'text-slate-400', 'bg-black/30');
+    }
+  });
+
+  window.renderDevEventsList(dayId);
+};
+
+window.renderDevEventsList = function(dayId) {
+  const listEl = document.getElementById('dev-studio-events-list');
+  if (!listEl) return;
+
+  const data = window.AVINYA_DATA;
+  if (!data || !data.islands) return;
+
+  const island = data.islands.find(i => i.id === dayId);
+  if (!island) return;
+
+  const events = island.events || [];
+
+  listEl.innerHTML = `
+    <!-- Island Theme & Header Bar -->
+    <div class="p-4 rounded-2xl bg-black/40 border border-white/10 mb-6 flex flex-wrap items-center justify-between gap-4">
+      <div>
+        <div class="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider">${island.dayNumber} REALM SETTINGS</div>
+        <h3 class="font-display font-black text-xl text-white">${island.name}</h3>
+        <p class="text-xs text-slate-400 font-mono mt-0.5">${island.theme} • Accent: <span style="color: ${island.accentColor}; font-weight: bold;">${island.accentColor}</span></p>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="window.zoomIntoIsland('${island.id}'); window.toggleDevStudio();" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-white text-xs font-mono font-bold transition-all flex items-center gap-1.5">
+          <i data-lucide="eye" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>Inspect Island Canvas</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Events List Container -->
+    <div class="space-y-4">
+      ${events.length === 0 ? `
+        <div class="p-8 text-center text-slate-400 font-mono text-xs border border-dashed border-white/10 rounded-2xl">
+          No events created for this island yet. Click "＋ Add Event to Day" above to create one.
+        </div>
+      ` : events.map((ev, idx) => `
+        <div class="p-5 rounded-2xl bg-black/60 border border-white/10 hover:border-amber-500/40 transition-all" id="dev-card-${ev.id}">
+          <!-- Card Header Summary -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/10 mb-4">
+            <div class="flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-lg bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400 font-mono text-xs font-bold">
+                ${ev.badgeNum || (idx + 1)}
+              </span>
+              <div>
+                <h4 class="font-display font-bold text-base text-white">${ev.title}</h4>
+                <div class="text-[10px] font-mono text-slate-400 flex items-center gap-2">
+                  <span>📍 ${ev.islandPlace || 'Unset Landmark'}</span>
+                  <span>•</span>
+                  <span class="text-amber-400 font-bold">${ev.totalBounty || ev.prize || 'No Prize Set'}</span>
+                  <span>•</span>
+                  <span>Coords: (${ev.pinX || 50}%, ${ev.pinY || 50}%)</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="window.pickPinCoordinate('${island.id}', '${ev.id}')" class="px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-mono font-bold flex items-center gap-1.5 transition-all" title="Click on the island SVG to place this pin">
+                <i data-lucide="crosshair" class="w-3.5 h-3.5"></i>
+                <span>Pick on Island</span>
+              </button>
+              <button onclick="window.duplicateEvent('${island.id}', '${ev.id}')" class="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition-all" title="Duplicate Event">
+                <i data-lucide="copy" class="w-4 h-4"></i>
+              </button>
+              <button onclick="window.deleteEvent('${island.id}', '${ev.id}')" class="p-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 transition-all" title="Delete Event">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Expandable Live Form Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs font-mono">
+            <div>
+              <label class="block text-[10px] text-slate-400 uppercase mb-1">Event Title</label>
+              <input type="text" class="dev-input" value="${ev.title || ''}" id="inp-title-${ev.id}">
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-400 uppercase mb-1">Island Landmark Name</label>
+              <input type="text" class="dev-input" value="${ev.islandPlace || ''}" id="inp-place-${ev.id}">
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-400 uppercase mb-1">Short Pin Label</label>
+              <input type="text" class="dev-input" value="${ev.shortLabel || ''}" id="inp-shortLabel-${ev.id}">
+            </div>
+
+            <div>
+              <label class="block text-[10px] text-slate-400 uppercase mb-1">Total Prize Bounty</label>
+              <input type="text" class="dev-input" value="${ev.totalBounty || ev.prize || '₹50,000'}" id="inp-bounty-${ev.id}">
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-400 uppercase mb-1">1st Place (Gold)</label>
+              <input type="text" class="dev-input" value="${ev.podium ? (ev.podium.first || '') : ''}" id="inp-podium1-${ev.id}">
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-400 uppercase mb-1">2nd Place (Silver)</label>
+              <input type="text" class="dev-input" value="${ev.podium ? (ev.podium.second || '') : ''}" id="inp-podium2-${ev.id}">
+            </div>
+
+            <div>
+              <label class="block text-[10px] text-slate-400 uppercase mb-1">Pin X Coordinate (%)</label>
+              <input type="number" min="5" max="95" class="dev-input" value="${ev.pinX !== undefined ? ev.pinX : 50}" id="inp-pinX-${ev.id}">
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-400 uppercase mb-1">Pin Y Coordinate (%)</label>
+              <input type="number" min="5" max="95" class="dev-input" value="${ev.pinY !== undefined ? ev.pinY : 50}" id="inp-pinY-${ev.id}">
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-400 uppercase mb-1">Time Schedule</label>
+              <input type="text" class="dev-input" value="${ev.time || '10:00 AM - 01:00 PM'}" id="inp-time-${ev.id}">
+            </div>
+
+            <div>
+              <label class="block text-[10px] text-slate-400 uppercase mb-1">Category</label>
+              <input type="text" class="dev-input" value="${ev.category || 'Technical'}" id="inp-cat-${ev.id}">
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-400 uppercase mb-1">Host Guild / Club</label>
+              <input type="text" class="dev-input" value="${ev.club || 'Avinya Secretariat'}" id="inp-club-${ev.id}">
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-400 uppercase mb-1">Coordinator Contact</label>
+              <input type="text" class="dev-input" value="${ev.coordinator ? (ev.coordinator.contact || '') : ''}" id="inp-coord-${ev.id}">
+            </div>
+
+            <div class="sm:col-span-2 md:col-span-3">
+              <label class="block text-[10px] text-slate-400 uppercase mb-1">Tagline / Summary</label>
+              <input type="text" class="dev-input" value="${ev.tagline || ev.summary || ''}" id="inp-summary-${ev.id}">
+            </div>
+
+            <div class="sm:col-span-2 md:col-span-3">
+              <label class="block text-[10px] text-slate-400 uppercase mb-1">Rules (One rule per line)</label>
+              <textarea rows="2" class="dev-input" id="inp-rules-${ev.id}">${(ev.rules || []).join('\n')}</textarea>
+            </div>
+          </div>
+
+          <!-- Save Button Bar -->
+          <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-end gap-3">
+            <button onclick="window.saveEventFromForm('${island.id}', '${ev.id}')" class="btn-primary text-xs !py-2 !px-5 inline-flex items-center gap-1.5">
+              <i data-lucide="check" class="w-3.5 h-3.5"></i>
+              <span>Save & Apply Live</span>
+            </button>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  if (window.lucide) lucide.createIcons();
+};
+
+window.saveEventFromForm = function(dayId, eventId) {
+  const data = window.AVINYA_DATA;
+  if (!data || !data.islands) return;
+
+  const island = data.islands.find(i => i.id === dayId);
+  if (!island) return;
+
+  const ev = (island.events || []).find(e => e.id === eventId);
+  if (!ev) return;
+
+  // Read fields
+  const titleVal = document.getElementById(`inp-title-${eventId}`)?.value;
+  const placeVal = document.getElementById(`inp-place-${eventId}`)?.value;
+  const shortLabelVal = document.getElementById(`inp-shortLabel-${eventId}`)?.value;
+  const bountyVal = document.getElementById(`inp-bounty-${eventId}`)?.value;
+  const podium1Val = document.getElementById(`inp-podium1-${eventId}`)?.value;
+  const podium2Val = document.getElementById(`inp-podium2-${eventId}`)?.value;
+  const pinXVal = parseFloat(document.getElementById(`inp-pinX-${eventId}`)?.value);
+  const pinYVal = parseFloat(document.getElementById(`inp-pinY-${eventId}`)?.value);
+  const timeVal = document.getElementById(`inp-time-${eventId}`)?.value;
+  const catVal = document.getElementById(`inp-cat-${eventId}`)?.value;
+  const clubVal = document.getElementById(`inp-club-${eventId}`)?.value;
+  const coordVal = document.getElementById(`inp-coord-${eventId}`)?.value;
+  const summaryVal = document.getElementById(`inp-summary-${eventId}`)?.value;
+  const rulesVal = document.getElementById(`inp-rules-${eventId}`)?.value;
+
+  if (titleVal) ev.title = titleVal;
+  if (placeVal) ev.islandPlace = placeVal;
+  if (shortLabelVal) ev.shortLabel = shortLabelVal;
+  if (bountyVal) {
+    ev.totalBounty = bountyVal;
+    ev.prize = bountyVal;
+  }
+  if (!ev.podium) ev.podium = {};
+  if (podium1Val) ev.podium.first = podium1Val;
+  if (podium2Val) ev.podium.second = podium2Val;
+  if (!isNaN(pinXVal)) ev.pinX = Math.round(pinXVal);
+  if (!isNaN(pinYVal)) ev.pinY = Math.round(pinYVal);
+  if (timeVal) ev.time = timeVal;
+  if (catVal) ev.category = catVal;
+  if (clubVal) ev.club = clubVal;
+  if (coordVal) {
+    if (!ev.coordinator) ev.coordinator = { name: "Coordinator" };
+    ev.coordinator.contact = coordVal;
+  }
+  if (summaryVal) {
+    ev.summary = summaryVal;
+    ev.tagline = summaryVal;
+  }
+  if (rulesVal) {
+    ev.rules = rulesVal.split('\n').map(s => s.trim()).filter(Boolean);
+  }
+
+  // Persist to localStorage
+  try {
+    localStorage.setItem('AVINYA_CUSTOM_EVENTS', JSON.stringify(data));
+  } catch (e) {
+    console.warn('Storage error', e);
+  }
+
+  // Refresh live components
+  renderDynamicIslandPins();
+  renderAllEvents();
+  if (window.renderMasterSchedule) window.renderMasterSchedule('all');
+
+  window.showDevToast(`✓ "${ev.title}" saved & updated on live page!`);
+};
+
+window.openAddNewEventForm = function() {
+  const data = window.AVINYA_DATA;
+  if (!data || !data.islands) return;
+
+  const island = data.islands.find(i => i.id === currentDevDay);
+  if (!island) return;
+
+  const nextIdx = (island.events || []).length + 1;
+  const newId = `${currentDevDay}-e${Date.now().toString().slice(-4)}`;
+
+  const defaultCoords = [
+    { x: 35, y: 35 }, { x: 65, y: 35 }, { x: 35, y: 65 }, { x: 65, y: 65 }, { x: 50, y: 50 }
+  ];
+  const coord = defaultCoords[nextIdx % defaultCoords.length];
+
+  const newEvent = {
+    id: newId,
+    title: `New Event ${nextIdx}`,
+    islandPlace: `Sector Landmark ${nextIdx}`,
+    shortLabel: `Landmark ${nextIdx}`,
+    badgeNum: nextIdx,
+    pinX: coord.x,
+    pinY: coord.y,
+    totalBounty: "₹40,000",
+    prize: "₹40,000",
+    podium: {
+      first: "₹20,000 + Gold Medal",
+      second: "₹12,000 + Silver Medal",
+      third: "₹8,000 + Bronze Medal"
+    },
+    category: "Technical",
+    club: "Avinya Student Guild",
+    time: "11:00 AM - 02:00 PM",
+    venue: "Main Auditorium / Lab",
+    summary: "New flagship challenge added via Fest Dev Studio.",
+    rules: [
+      "Open to all registered undergraduate student teams",
+      "Valid institution ID card mandatory at entry checkpoint"
+    ],
+    coordinator: {
+      name: "Student Lead",
+      contact: "+91 98765 00000"
+    },
+    sponsors: [
+      { name: "Industry Partner", tier: "Gold Patron", spending: "₹25,000 Grant", logo: "award" }
+    ]
+  };
+
+  island.events.push(newEvent);
+
+  try {
+    localStorage.setItem('AVINYA_CUSTOM_EVENTS', JSON.stringify(data));
+  } catch (e) {
+    console.warn('Storage error', e);
+  }
+
+  renderDynamicIslandPins();
+  renderAllEvents();
+  window.renderDevEventsList(currentDevDay);
+  window.showDevToast(`＋ Added "${newEvent.title}". Customize details below.`);
+};
+
+window.duplicateEvent = function(dayId, eventId) {
+  const data = window.AVINYA_DATA;
+  const island = data.islands.find(i => i.id === dayId);
+  if (!island) return;
+
+  const ev = (island.events || []).find(e => e.id === eventId);
+  if (!ev) return;
+
+  const clone = JSON.parse(JSON.stringify(ev));
+  clone.id = `${dayId}-e${Date.now().toString().slice(-4)}`;
+  clone.title = `${clone.title} (Copy)`;
+  clone.badgeNum = island.events.length + 1;
+  clone.pinX = Math.min(90, (clone.pinX || 50) + 6);
+  clone.pinY = Math.min(90, (clone.pinY || 50) + 6);
+
+  island.events.push(clone);
+
+  try {
+    localStorage.setItem('AVINYA_CUSTOM_EVENTS', JSON.stringify(data));
+  } catch (e) {}
+
+  renderDynamicIslandPins();
+  renderAllEvents();
+  window.renderDevEventsList(dayId);
+  window.showDevToast(`📋 Duplicated "${clone.title}"`);
+};
+
+window.deleteEvent = function(dayId, eventId) {
+  const data = window.AVINYA_DATA;
+  const island = data.islands.find(i => i.id === dayId);
+  if (!island) return;
+
+  const idx = (island.events || []).findIndex(e => e.id === eventId);
+  if (idx === -1) return;
+
+  const removed = island.events.splice(idx, 1)[0];
+
+  try {
+    localStorage.setItem('AVINYA_CUSTOM_EVENTS', JSON.stringify(data));
+  } catch (e) {}
+
+  renderDynamicIslandPins();
+  renderAllEvents();
+  window.renderDevEventsList(dayId);
+  window.showDevToast(`🗑️ Deleted "${removed.title}"`);
+};
+
+/**
+ * Visual Interactive Pin Coordinate Picker on Island SVG
+ */
+window.pickPinCoordinate = function(dayId, eventId) {
+  const banner = document.getElementById('pin-picker-banner');
+  const modal = document.getElementById('dev-studio-modal');
+  const backdrop = document.getElementById('dev-studio-backdrop');
+
+  if (modal) modal.classList.remove('is-open');
+  if (backdrop) backdrop.classList.remove('is-open');
+  if (banner) banner.classList.remove('hidden');
+
+  document.body.classList.add('is-picking-pin');
+  window.zoomIntoIsland(dayId);
+
+  const inner = document.getElementById(`island-inner-${dayId}`);
+  if (!inner) return;
+
+  function onIslandClick(e) {
+    const rect = inner.getBoundingClientRect();
+    const x = Math.round(Math.max(8, Math.min(92, ((e.clientX - rect.left) / rect.width) * 100)));
+    const y = Math.round(Math.max(12, Math.min(88, ((e.clientY - rect.top) / rect.height) * 100)));
+
+    const data = window.AVINYA_DATA;
+    const island = data.islands.find(i => i.id === dayId);
+    if (island) {
+      const ev = island.events.find(e => e.id === eventId);
+      if (ev) {
+        ev.pinX = x;
+        ev.pinY = y;
+        try {
+          localStorage.setItem('AVINYA_CUSTOM_EVENTS', JSON.stringify(data));
+        } catch (err) {}
+      }
+    }
+
+    renderDynamicIslandPins();
+    cleanupPicker();
+
+    window.toggleDevStudio();
+    window.showDevToast(`📍 Pin placed at (${x}%, ${y}%) on ${island ? island.name : 'Island'}`);
+  }
+
+  function onKeyEsc(e) {
+    if (e.key === 'Escape') {
+      cleanupPicker();
+      window.toggleDevStudio();
+    }
+  }
+
+  function cleanupPicker() {
+    if (banner) banner.classList.add('hidden');
+    document.body.classList.remove('is-picking-pin');
+    inner.removeEventListener('click', onIslandClick);
+    window.removeEventListener('keydown', onKeyEsc);
+  }
+
+  inner.addEventListener('click', onIslandClick, { once: true });
+  window.addEventListener('keydown', onKeyEsc);
+};
+
+window.cancelPinPick = function() {
+  const banner = document.getElementById('pin-picker-banner');
+  if (banner) banner.classList.add('hidden');
+  document.body.classList.remove('is-picking-pin');
+  window.toggleDevStudio();
+};
+
+window.exportEventsJs = function() {
+  const data = window.AVINYA_DATA;
+  const jsonStr = JSON.stringify(data, null, 2);
+  const fileContent = `/**\n * AVINYA '27 - MASTER DATA & EVENT REGISTRY\n * Generated via Fest Dev Studio\n */\n\nwindow.AVINYA_DATA = ${jsonStr};\n`;
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(fileContent)
+      .then(() => {
+        window.showDevToast('✓ Copied complete events-data.js to clipboard!');
+      })
+      .catch(() => {
+        downloadEventsFile(fileContent);
+      });
+  } else {
+    downloadEventsFile(fileContent);
+  }
+};
+
+function downloadEventsFile(text) {
+  const blob = new Blob([text], { type: 'application/javascript' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'events-data.js';
+  a.click();
+  URL.revokeObjectURL(url);
+  window.showDevToast('⬇️ Downloaded events-data.js file!');
+}
+
+window.resetEventsToDefault = function() {
+  if (confirm('Reset all fest event customizations back to original repo defaults?')) {
+    localStorage.removeItem('AVINYA_CUSTOM_EVENTS');
+    window.showDevToast('🔄 Reverting to repo defaults...');
+    setTimeout(() => {
+      window.location.reload();
+    }, 400);
+  }
+};
+
+window.showDevToast = function(msg) {
+  const toast = document.getElementById('dev-toast');
+  if (!toast) return;
+  toast.textContent = msg;
+  toast.classList.add('is-visible');
+  setTimeout(() => {
+    toast.classList.remove('is-visible');
+  }, 3200);
+};
+
+
 window.zoomIntoIsland = function(islandId) {
   const target = document.getElementById(islandId);
   if (!target) return;

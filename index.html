@@ -385,79 +385,8 @@
                 <text x="400" y="642" font-family="monospace" font-size="10" font-weight="bold" fill="#FBBF24" text-anchor="middle">PIER 01</text>
               </svg>
 
-              <!-- 6 SCATTERED EVENT LOCATION PINS (Pop in when island is zoomed) -->
-              <!-- Pin 1 -->
-              <div class="island-pin-anchor" id="pin-d1-e1" style="left: 28%; top: 26%;" onclick="window.focusEventLocation('day1', 'd1-e1', 28, 26)" title="The Algorithmic Monolith">
-                <div class="pin-pulse-ring" style="--realm-accent: #F59E0B;"></div>
-                <div class="island-pin-beacon" style="--realm-accent: #F59E0B; --realm-glow: rgba(245, 158, 11, 0.5);">
-                  <div class="pin-icon-badge">1</div>
-                  <div class="pin-label-pill">
-                    <span>📍 Algorithmic Monolith</span>
-                    <span class="pin-bounty-badge">₹45k</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Pin 2 -->
-              <div class="island-pin-anchor" id="pin-d1-e2" style="left: 72%; top: 24%;" onclick="window.focusEventLocation('day1', 'd1-e2', 72, 24)" title="Sandstorm Cyber Fortress">
-                <div class="pin-pulse-ring" style="--realm-accent: #F59E0B;"></div>
-                <div class="island-pin-beacon" style="--realm-accent: #F59E0B; --realm-glow: rgba(245, 158, 11, 0.5);">
-                  <div class="pin-icon-badge">2</div>
-                  <div class="pin-label-pill">
-                    <span>📍 Cyber Fortress</span>
-                    <span class="pin-bounty-badge">₹35k</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Pin 3 -->
-              <div class="island-pin-anchor" id="pin-d1-e3" style="left: 22%; top: 60%;" onclick="window.focusEventLocation('day1', 'd1-e3', 22, 60)" title="Silicon Foundry Caverns">
-                <div class="pin-pulse-ring" style="--realm-accent: #F59E0B;"></div>
-                <div class="island-pin-beacon" style="--realm-accent: #F59E0B; --realm-glow: rgba(245, 158, 11, 0.5);">
-                  <div class="pin-icon-badge">3</div>
-                  <div class="pin-label-pill">
-                    <span>📍 Silicon Caverns</span>
-                    <span class="pin-bounty-badge">₹30k</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Pin 4 -->
-              <div class="island-pin-anchor" id="pin-d1-e4" style="left: 52%; top: 48%;" onclick="window.focusEventLocation('day1', 'd1-e4', 52, 48)" title="Terra-Rover Dunes">
-                <div class="pin-pulse-ring" style="--realm-accent: #F59E0B;"></div>
-                <div class="island-pin-beacon" style="--realm-accent: #F59E0B; --realm-glow: rgba(245, 158, 11, 0.5);">
-                  <div class="pin-icon-badge">4</div>
-                  <div class="pin-label-pill">
-                    <span>📍 Rover Dunes</span>
-                    <span class="pin-bounty-badge">₹25k</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Pin 5 -->
-              <div class="island-pin-anchor" id="pin-d1-e5" style="left: 75%; top: 64%;" onclick="window.focusEventLocation('day1', 'd1-e5', 75, 64)" title="The Spice Terminal Pier 04">
-                <div class="pin-pulse-ring" style="--realm-accent: #F59E0B;"></div>
-                <div class="island-pin-beacon" style="--realm-accent: #F59E0B; --realm-glow: rgba(245, 158, 11, 0.5);">
-                  <div class="pin-icon-badge">5</div>
-                  <div class="pin-label-pill">
-                    <span>📍 Spice Terminal</span>
-                    <span class="pin-bounty-badge">₹40k</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Pin 6 -->
-              <div class="island-pin-anchor" id="pin-d1-e6" style="left: 48%; top: 78%;" onclick="window.focusEventLocation('day1', 'd1-e6', 48, 78)" title="Imperial Trading Citadel">
-                <div class="pin-pulse-ring" style="--realm-accent: #F59E0B;"></div>
-                <div class="island-pin-beacon" style="--realm-accent: #F59E0B; --realm-glow: rgba(245, 158, 11, 0.5);">
-                  <div class="pin-icon-badge">6</div>
-                  <div class="pin-label-pill">
-                    <span>📍 Trading Citadel</span>
-                    <span class="pin-bounty-badge">₹50k</span>
-                  </div>
-                </div>
-              </div>
-
+              <!-- DYNAMIC SCATTERED EVENT PINS CONTAINER (Driven by events-data.js) -->
+              <div class="island-pins-layer" id="island-pins-day1"></div>
             </div>
           </div>
         </div>
@@ -558,79 +487,8 @@
                 <text x="368" y="647" font-family="monospace" font-size="10" font-weight="bold" fill="#F472B6" text-anchor="middle">PIER NEON 02</text>
               </svg>
 
-              <!-- 6 SCATTERED EVENT LOCATION PINS -->
-              <!-- Pin 1 -->
-              <div class="island-pin-anchor" id="pin-d2-e1" style="left: 50%; top: 32%;" onclick="window.focusEventLocation('day2', 'd2-e1', 50, 32)" title="The Steel Colosseum">
-                <div class="pin-pulse-ring" style="--realm-accent: #EC4899;"></div>
-                <div class="island-pin-beacon" style="--realm-accent: #EC4899; --realm-glow: rgba(236, 72, 153, 0.5);">
-                  <div class="pin-icon-badge">1</div>
-                  <div class="pin-label-pill">
-                    <span>📍 Steel Colosseum</span>
-                    <span class="pin-bounty-badge">₹60k</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Pin 2 -->
-              <div class="island-pin-anchor" id="pin-d2-e2" style="left: 24%; top: 26%;" onclick="window.focusEventLocation('day2', 'd2-e2', 24, 26)" title="Spatial Hologram Studio">
-                <div class="pin-pulse-ring" style="--realm-accent: #EC4899;"></div>
-                <div class="island-pin-beacon" style="--realm-accent: #EC4899; --realm-glow: rgba(236, 72, 153, 0.5);">
-                  <div class="pin-icon-badge">2</div>
-                  <div class="pin-label-pill">
-                    <span>📍 Spatial Holodeck</span>
-                    <span class="pin-bounty-badge">₹25k</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Pin 3 -->
-              <div class="island-pin-anchor" id="pin-d2-e3" style="left: 74%; top: 38%;" onclick="window.focusEventLocation('day2', 'd2-e3', 74, 38)" title="Neon Grid Arcade">
-                <div class="pin-pulse-ring" style="--realm-accent: #EC4899;"></div>
-                <div class="island-pin-beacon" style="--realm-accent: #EC4899; --realm-glow: rgba(236, 72, 153, 0.5);">
-                  <div class="pin-icon-badge">3</div>
-                  <div class="pin-label-pill">
-                    <span>📍 Neon Arcade</span>
-                    <span class="pin-bounty-badge">₹35k</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Pin 4 -->
-              <div class="island-pin-anchor" id="pin-d2-e4" style="left: 30%; top: 70%;" onclick="window.focusEventLocation('day2', 'd2-e4', 30, 70)" title="Cyber Beats Stage">
-                <div class="pin-pulse-ring" style="--realm-accent: #EC4899;"></div>
-                <div class="island-pin-beacon" style="--realm-accent: #EC4899; --realm-glow: rgba(236, 72, 153, 0.5);">
-                  <div class="pin-icon-badge">4</div>
-                  <div class="pin-label-pill">
-                    <span>📍 Cyber Beats</span>
-                    <span class="pin-bounty-badge">₹25k</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Pin 5 -->
-              <div class="island-pin-anchor" id="pin-d2-e5" style="left: 74%; top: 66%;" onclick="window.focusEventLocation('day2', 'd2-e5', 74, 66)" title="Overclock Sub-Terminal 0">
-                <div class="pin-pulse-ring" style="--realm-accent: #EC4899;"></div>
-                <div class="island-pin-beacon" style="--realm-accent: #EC4899; --realm-glow: rgba(236, 72, 153, 0.5);">
-                  <div class="pin-icon-badge">5</div>
-                  <div class="pin-label-pill">
-                    <span>📍 Overclock Lab</span>
-                    <span class="pin-bounty-badge">₹30k</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Pin 6 -->
-              <div class="island-pin-anchor" id="pin-d2-e6" style="left: 52%; top: 80%;" onclick="window.focusEventLocation('day2', 'd2-e6', 52, 80)" title="Hologram Boulevard East">
-                <div class="pin-pulse-ring" style="--realm-accent: #EC4899;"></div>
-                <div class="island-pin-beacon" style="--realm-accent: #EC4899; --realm-glow: rgba(236, 72, 153, 0.5);">
-                  <div class="pin-icon-badge">6</div>
-                  <div class="pin-label-pill">
-                    <span>📍 Hologram Blvd</span>
-                    <span class="pin-bounty-badge">₹35k</span>
-                  </div>
-                </div>
-              </div>
-
+              <!-- DYNAMIC SCATTERED EVENT PINS CONTAINER (Driven by events-data.js) -->
+              <div class="island-pins-layer" id="island-pins-day2"></div>
             </div>
           </div>
         </div>
@@ -733,85 +591,13 @@
                 <text x="412" y="647" font-family="monospace" font-size="10" font-weight="bold" fill="#FDE047" text-anchor="middle">WHARF 03</text>
               </svg>
 
-              <!-- 6 SCATTERED EVENT LOCATION PINS -->
-              <!-- Pin 1 -->
-              <div class="island-pin-anchor" id="pin-d3-e1" style="left: 50%; top: 46%;" onclick="window.focusEventLocation('day3', 'd3-e1', 50, 46)" title="The Grand Lagoon Stage">
-                <div class="pin-pulse-ring" style="--realm-accent: #EAB308;"></div>
-                <div class="island-pin-beacon" style="--realm-accent: #EAB308; --realm-glow: rgba(234, 179, 8, 0.5);">
-                  <div class="pin-icon-badge">1</div>
-                  <div class="pin-label-pill">
-                    <span>📍 Grand Lagoon Stage</span>
-                    <span class="pin-bounty-badge">₹150k+</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Pin 2 -->
-              <div class="island-pin-anchor" id="pin-d3-e2" style="left: 26%; top: 28%;" onclick="window.focusEventLocation('day3', 'd3-e2', 26, 28)" title="Starlight Dance Arena">
-                <div class="pin-pulse-ring" style="--realm-accent: #EAB308;"></div>
-                <div class="island-pin-beacon" style="--realm-accent: #EAB308; --realm-glow: rgba(234, 179, 8, 0.5);">
-                  <div class="pin-icon-badge">2</div>
-                  <div class="pin-label-pill">
-                    <span>📍 Starlight Arena</span>
-                    <span class="pin-bounty-badge">₹50k</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Pin 3 -->
-              <div class="island-pin-anchor" id="pin-d3-e3" style="left: 74%; top: 28%;" onclick="window.focusEventLocation('day3', 'd3-e3', 74, 28)" title="Sunken Amphitheatre">
-                <div class="pin-pulse-ring" style="--realm-accent: #EAB308;"></div>
-                <div class="island-pin-beacon" style="--realm-accent: #EAB308; --realm-glow: rgba(234, 179, 8, 0.5);">
-                  <div class="pin-icon-badge">3</div>
-                  <div class="pin-label-pill">
-                    <span>📍 Amphitheatre</span>
-                    <span class="pin-bounty-badge">₹40k</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Pin 4 -->
-              <div class="island-pin-anchor" id="pin-d3-e4" style="left: 22%; top: 66%;" onclick="window.focusEventLocation('day3', 'd3-e4', 22, 66)" title="Lantern Promenade">
-                <div class="pin-pulse-ring" style="--realm-accent: #EAB308;"></div>
-                <div class="island-pin-beacon" style="--realm-accent: #EAB308; --realm-glow: rgba(234, 179, 8, 0.5);">
-                  <div class="pin-icon-badge">4</div>
-                  <div class="pin-label-pill">
-                    <span>📍 Lantern Runway</span>
-                    <span class="pin-bounty-badge">₹35k</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Pin 5 -->
-              <div class="island-pin-anchor" id="pin-d3-e5" style="left: 74%; top: 64%;" onclick="window.focusEventLocation('day3', 'd3-e5', 74, 64)" title="Carnival Plaza Deck">
-                <div class="pin-pulse-ring" style="--realm-accent: #EAB308;"></div>
-                <div class="island-pin-beacon" style="--realm-accent: #EAB308; --realm-glow: rgba(234, 179, 8, 0.5);">
-                  <div class="pin-icon-badge">5</div>
-                  <div class="pin-label-pill">
-                    <span>📍 Carnival Plaza</span>
-                    <span class="pin-bounty-badge">₹40k</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Pin 6 -->
-              <div class="island-pin-anchor" id="pin-d3-e6" style="left: 48%; top: 80%;" onclick="window.focusEventLocation('day3', 'd3-e6', 48, 80)" title="The Laughing Gull Deck">
-                <div class="pin-pulse-ring" style="--realm-accent: #EAB308;"></div>
-                <div class="island-pin-beacon" style="--realm-accent: #EAB308; --realm-glow: rgba(234, 179, 8, 0.5);">
-                  <div class="pin-icon-badge">6</div>
-                  <div class="pin-label-pill">
-                    <span>📍 Laughing Gull</span>
-                    <span class="pin-bounty-badge">₹25k</span>
-                  </div>
-                </div>
-              </div>
-
+              <!-- DYNAMIC SCATTERED EVENT PINS CONTAINER (Driven by events-data.js) -->
+              <div class="island-pins-layer" id="island-pins-day3"></div>
             </div>
           </div>
         </div>
       </div>
-
-    </section>
+      </section>
 
     <!-- ========================================================================
          DEDICATED SECTION: HACK2FUTURE (ASTRONAUT / SPACE THEME)
@@ -1273,5 +1059,82 @@
 
   <script src="events-data.js"></script>
   <script src="app.js"></script>
+  <!-- ========================================================================
+       DEV STUDIO // DEVELOPER & ORGANIZER EVENT CUSTOMIZER MODAL
+       ======================================================================== -->
+  <!-- Coordinate Picker Overlay Banner (Hidden until user clicks "Pick on Island") -->
+  <div id="pin-picker-banner" class="fixed top-6 left-1/2 -translate-x-1/2 z-[250] hidden px-6 py-3 rounded-2xl bg-amber-500 text-black font-mono text-xs font-black shadow-2xl flex items-center gap-3 border-2 border-black animate-bounce">
+    <i data-lucide="crosshair" class="w-4 h-4 animate-spin"></i>
+    <span>CLICK ANYWHERE ON THE ISLAND TO PLACE THIS EVENT PIN</span>
+    <button onclick="window.cancelPinPick()" class="ml-2 px-2.5 py-1 rounded-lg bg-black text-amber-400 text-[10px] uppercase">Cancel [Esc]</button>
+  </div>
+
+  <!-- Floating Dev Studio Pill Trigger (Bottom-Right) -->
+  <button id="dev-studio-trigger" onclick="window.toggleDevStudio()" title="Customize Fest Events (Ctrl+Shift+D)">
+    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+    <i data-lucide="sliders" class="w-3.5 h-3.5 text-amber-400"></i>
+    <span>DEV STUDIO // CUSTOMIZE FEST</span>
+  </button>
+
+  <!-- Dev Studio Glassmorphic Command Center Modal -->
+  <div id="dev-studio-backdrop" onclick="window.toggleDevStudio()"></div>
+  <div id="dev-studio-modal" role="dialog" aria-modal="true" aria-labelledby="dev-studio-heading">
+    
+    <!-- Modal Header -->
+    <div class="px-6 py-4 border-b border-white/10 flex items-center justify-between bg-black/40">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400 shrink-0">
+          <i data-lucide="terminal" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h2 id="dev-studio-heading" class="font-display font-black text-lg text-white tracking-wide flex items-center gap-2">
+            <span>FEST DEV STUDIO</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-400/30 text-emerald-300">LIVE SYNC ACTIVE</span>
+          </h2>
+          <p class="text-[11px] font-mono text-slate-400">Add, edit, or delete events • Interactive island pin picker • Instant export</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="window.exportEventsJs()" class="px-3.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-mono text-xs font-bold transition-all flex items-center gap-1.5 shadow-lg shadow-amber-500/20" title="Export formatted events-data.js code">
+          <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+          <span>Export Code</span>
+        </button>
+        <button onclick="window.resetEventsToDefault()" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-slate-300 font-mono text-xs font-bold transition-all" title="Reset all changes back to repo state">
+          Reset
+        </button>
+        <button onclick="window.toggleDevStudio()" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white transition-colors" title="Close Studio">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Day Navigation Bar -->
+    <div class="px-6 py-3 border-b border-white/10 flex flex-wrap items-center justify-between gap-3 bg-black/20 text-xs font-mono">
+      <div class="flex items-center gap-2" id="dev-studio-day-tabs">
+        <button onclick="window.selectDevDay('day1')" class="dev-day-tab is-active px-3 py-1.5 rounded-lg border border-amber-500/40 text-amber-300 bg-amber-500/10 font-bold transition-all" data-day="day1">
+          Day 1: Desert Sci-Fi
+        </button>
+        <button onclick="window.selectDevDay('day2')" class="dev-day-tab px-3 py-1.5 rounded-lg border border-white/10 text-slate-400 hover:text-white bg-black/30 font-bold transition-all" data-day="day2">
+          Day 2: Synthwave Cyberpunk
+        </button>
+        <button onclick="window.selectDevDay('day3')" class="dev-day-tab px-3 py-1.5 rounded-lg border border-white/10 text-slate-400 hover:text-white bg-black/30 font-bold transition-all" data-day="day3">
+          Day 3: Carnival & Concert
+        </button>
+      </div>
+      <button onclick="window.openAddNewEventForm()" class="px-3.5 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 font-bold flex items-center gap-1.5 transition-all">
+        <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+        <span>＋ Add New Event</span>
+      </button>
+    </div>
+
+    <!-- Scrollable Events Manager Grid -->
+    <div class="dev-studio-body" id="dev-studio-events-list">
+      <!-- Populated dynamically by app.js -->
+    </div>
+  </div>
+
+  <!-- Toast Notification Pill -->
+  <div id="dev-toast" class="dev-toast"></div>
+
 </body>
 </html>

@@ -1232,3 +1232,142 @@ body[data-time="night"] {
   will-change: transform;
   filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.9));
 }
+
+
+/* ==========================================================================
+   DEV STUDIO & DYNAMIC EVENT ARCHITECT STYLING
+   ========================================================================== */
+.island-pins-layer {
+  display: contents;
+}
+
+body.is-picking-pin .island-viewport,
+body.is-picking-pin .island-landmass-inner,
+body.is-picking-pin .island-landmass-inner svg {
+  cursor: crosshair !important;
+}
+
+#dev-studio-trigger {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 130;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: rgba(10, 15, 26, 0.92);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #F59E0B;
+  font-family: monospace;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 9999px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(245, 158, 11, 0.2);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+#dev-studio-trigger:hover {
+  background: #000;
+  border-color: #FBBF24;
+  color: #FBBF24;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.9), 0 0 25px rgba(245, 158, 11, 0.4);
+}
+
+#dev-studio-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 190;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+#dev-studio-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#dev-studio-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  width: min(94vw, 1050px);
+  max-height: 90vh;
+  z-index: 200;
+  background: rgba(13, 17, 28, 0.96);
+  border: 1.5px solid rgba(245, 158, 11, 0.35);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.95), 0 0 40px rgba(245, 158, 11, 0.15);
+  border-radius: 24px;
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+#dev-studio-modal.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.dev-studio-body {
+  overflow-y: auto;
+  flex: 1;
+  padding: 24px;
+}
+
+.dev-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 8px 12px;
+  color: #fff;
+  font-family: monospace;
+  font-size: 12px;
+  transition: border-color 0.2s;
+}
+
+.dev-input:focus {
+  outline: none;
+  border-color: #F59E0B;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.dev-toast {
+  position: fixed;
+  bottom: 80px;
+  right: 24px;
+  z-index: 260;
+  padding: 12px 20px;
+  background: #10B981;
+  color: #000;
+  font-family: monospace;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  transform: translateY(20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.dev-toast.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
